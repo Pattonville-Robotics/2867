@@ -34,18 +34,27 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
+import org.atteo.classindex.ClassIndex;
+import org.pattonvillerobotics.commoncode.OpMode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Register Op Modes
  */
 public class FtcOpModeRegister implements OpModeRegister {
 
-  /**
-   * The Op Mode Manager will call this method when it wants a list of all
-   * available op modes. Add your op mode to the list to enable it.
-   *
-   * @param manager op mode manager
-   */
-  public void register(OpModeManager manager) {
+    /**
+     * The Op Mode Manager will call this method when it wants a list of all
+     * available op modes. Add your op mode to the list to enable it.
+     *
+     * @param manager op mode manager
+     */
+    @SuppressWarnings("unchecked")
+    public void register(OpModeManager manager) {
 
     /*
      * register your op modes here.
@@ -54,45 +63,35 @@ public class FtcOpModeRegister implements OpModeRegister {
      *
      * If two or more op modes are registered with the same name, the app will display an error.
      */
-
-      manager.register("Example TeleOp", ExampleTeleOp.class);
-      manager.register("Test Autonomous", TestAutonomous.class);
-      manager.register("B&M Autonomous", AutoMoveForward.class);
-      manager.register("Servo Tester", ServoTester.class);
+        List<Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode>> opModes = new ArrayList<Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode>>();
 
 
-    /*
-     * Uncomment any of the following lines if you want to register an op mode.
-     */
+        for (Class<?> c : ClassIndex.getAnnotated(OpMode.class)) { // Some annotation wizardry at work here...
+            if (com.qualcomm.robotcore.eventloop.opmode.OpMode.class.isAssignableFrom(c)) {
+                //manager.register(c.getAnnotation(OpMode.class).value(), c);
+                opModes.add((Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode>) c);
+            } else {
+                try {
+                    //manager.register(c.getAnnotation(OpMode.class).value(), c);
+                    opModes.add((Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode>) c);
+                } catch (Exception e) {
+                    throw new ClassCastException("Could not register OpMode! \"" + c.getSimpleName() + "\" cannot be cast to OpMode. Please only annotate classes extending OpMode with the @OpMode annotation.");
+                }
+            }
+        }
 
-    //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
-    //manager.register("ColorSensorDriver", ColorSensorDriver.class);
+        Collections.sort(opModes, new Comparator<Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode>>() {
+            @Override
+            public int compare(Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode> lhs, Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode> rhs) {
+                String left = lhs.getAnnotation(OpMode.class).value();
+                String right = rhs.getAnnotation(OpMode.class).value();
 
-    //manager.register("IrSeekerOp", IrSeekerOp.class);
-    //manager.register("CompassCalibration", CompassCalibration.class);
-    //manager.register("I2cAddressChangeExample", LinearI2cAddressChange.class);
+                return left.compareTo(right);
+            }
+        });
 
-
-    //manager.register("NxtTeleOp", NxtTeleOp.class);
-    
-    //manager.register("LinearK9TeleOp", LinearK9TeleOp.class);
-    //manager.register("LinearIrExample", LinearIrExample.class);
-
-    
-    //manager.register ("PushBotManual1", PushBotManual1.class);
-    //manager.register ("PushBotAutoSensors", PushBotAutoSensors.class);
-    //manager.register ("PushBotIrEvent", PushBotIrEvent.class);
-    
-    //manager.register ("PushBotManualSensors", PushBotManualSensors.class);
-    //manager.register ("PushBotOdsDetectEvent", PushBotOdsDetectEvent.class);
-    //manager.register ("PushBotOdsFollowEvent", PushBotOdsFollowEvent.class);
-    //manager.register ("PushBotTouchEvent", PushBotTouchEvent.class);    
-    
-    //manager.register("PushBotDriveTouch", PushBotDriveTouch.java);
-    //manager.register("PushBotIrSeek", PushBotIrSeek.java);
-    //manager.register("PushBotSquare", PushBotSquare.java);
-
-    
-    
-  }
+        for (Class<? extends com.qualcomm.robotcore.eventloop.opmode.OpMode> klass : opModes) {
+            manager.register(klass.getAnnotation(OpMode.class).value(), klass);
+        }
+    }
 }
