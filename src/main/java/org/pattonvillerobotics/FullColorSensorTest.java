@@ -69,7 +69,7 @@ public class FullColorSensorTest extends LinearOpMode {
 
 
     public void initalize(){
-        ColorSensor cs = hardwareMap.colorSensor.get("color_senor");
+        ColorSensor cs = hardwareMap.colorSensor.get("color");
 
         buttonPresser = hardwareMap.servo.get("servo");
         buttonPresser.setPosition(0.5);
