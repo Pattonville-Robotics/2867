@@ -45,12 +45,12 @@ public class FullColorSensorTest extends LinearOpMode {
             colorSensor.determineColor(allianceColor, new Runnable() {
                 @Override
                 public void run() {
-                    buttonPresser.setPosition(1.0);
+                    telemetry.addData("Servo", "Moving to Position 1");
                 }
             }, new Runnable() {
                 @Override
                 public void run() {
-                    buttonPresser.setPosition(0.0);
+                    telemetry.addData("Servo", "Moving to Position 0");
                 }
             }, new Runnable(){
                 @Override
@@ -69,7 +69,7 @@ public class FullColorSensorTest extends LinearOpMode {
 
 
     public void initalize(){
-        ColorSensor cs = hardwareMap.colorSensor.get("color");
+        ColorSensor cs = hardwareMap.colorSensor.get("color sensor");
 
         buttonPresser = hardwareMap.servo.get("servo");
         buttonPresser.setPosition(0.5);
