@@ -1,11 +1,15 @@
 package org.pattonvillerobotics;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 
 /**
  * Created by developer on 8/6/16.
  */
+@TeleOp(name = "ServoValueFinder", group = "Test")
 public class ServoValueFinder extends LinearOpMode {
 
     private final static String SERVO_NAME = "servo";
