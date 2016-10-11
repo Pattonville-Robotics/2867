@@ -13,7 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 @Autonomous(name = "FiveSeconds", group = "None")
 public class CapBallPush_1 extends LinearOpMode {
 
-    SimpleDrive drive;
+    private SimpleDrive drive;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -27,18 +27,20 @@ public class CapBallPush_1 extends LinearOpMode {
 
         while(opModeIsActive()){
             drive.move(Direction.FORWARD, 0.5);
+            telemetry.addData("OpModeIsActive", "Should be moving");
+            telemetry.addData("MotorPower", drive.leftDriveMotor.getPower());
+            telemetry.update();
         }
 
-
+        /*while(opModeIsActive()){
+            drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
+        }*/
 
     }
 
-    public void initialize(){
+    private void initialize(){
 
-        telemetry.addData("Startup", "started!");
         drive = new SimpleDrive(this, hardwareMap);
-        telemetry.addData("Drive", drive);
-        telemetry.update();
 
     }
 
