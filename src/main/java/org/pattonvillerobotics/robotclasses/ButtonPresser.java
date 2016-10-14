@@ -13,17 +13,17 @@ public class ButtonPresser {
 
     public ButtonPresser(HardwareMap hardwaremap){
         buttonPresser = hardwaremap.servo.get("button_presser");
-
+        setPosition(0);
     }
 
     public void presserExtend(){
-        buttonPresser.setPosition(0);
+        setPosition(0.5);
     }
     public void presserDefault(){
-        buttonPresser.setPosition(1);
+        setPosition(1);
     }
-    public void setPostion(double postiton){
-        buttonPresser.setPosition(postiton);
+    public void setPosition(double posititon){
+        buttonPresser.setPosition(posititon);
     }
 
     @Override
