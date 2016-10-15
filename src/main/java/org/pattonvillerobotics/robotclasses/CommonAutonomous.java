@@ -59,9 +59,9 @@ public class CommonAutonomous {
     public void wallPos1ToBeacon1() {
         //12 inches forward
         //53 degrees turn
-        //60 forward
+        //60 inches forward
         //37 turn
-        //20 forward
+        //20 inches forward
     }
     
     public void wallPos1ToBeacon2() {
@@ -71,7 +71,7 @@ public class CommonAutonomous {
     public void beacon1ToBeacon2() {
         //24 inches forward
         //90 turn
-        //43 forward
+        //43 inches forward
         //90 turn
         //20 inches forward
     }

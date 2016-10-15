@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.robotclasses;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,10 +9,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 
 public class BigWheel {
-    public DcMotor bigWheel;
 
-    public BigWheel(HardwareMap hardwaremap){
+    public DcMotor bigWheel;
+    public LinearOpMode linearOpMode;
+
+    public BigWheel(HardwareMap hardwaremap, LinearOpMode linearOpMode){
         bigWheel = hardwaremap.dcMotor.get("big_wheel");
+        this.linearOpMode = linearOpMode;
     }
 
     public void wheelForward(){
@@ -24,6 +28,11 @@ public class BigWheel {
 
     public void wheelStop(){
         bigWheel.setPower(0);
+    }
+
+    public void primeToShoot(){
+        wheelForward();
+        linearOpMode.sleep(250);
     }
 
 }

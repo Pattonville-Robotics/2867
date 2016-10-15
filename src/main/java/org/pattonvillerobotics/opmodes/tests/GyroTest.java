@@ -22,11 +22,11 @@ public class GyroTest extends LinearOpMode {
         drive.stop();
         sleep(1000);
 
-        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+        drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
         drive.stop();
         sleep(1000);
 
-        drive.rotateDegrees(Direction.RIGHT, 135, 0.5);
+        drive.rotateDegrees(Direction.LEFT, 180, 0.5);
         drive.stop();
         sleep(1000);
 
