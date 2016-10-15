@@ -25,16 +25,8 @@ public class CapBallPush_1 extends LinearOpMode {
         initialize();
         waitForStart();
 
-        while(opModeIsActive()){
-            drive.move(Direction.FORWARD, 0.5);
-            telemetry.addData("OpModeIsActive", "Should be moving");
-            telemetry.addData("MotorPower", drive.leftDriveMotor.getPower());
-            telemetry.update();
-        }
-
-        /*while(opModeIsActive()){
-            drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
-        }*/
+        drive.move(Direction.FORWARD, 0.5);
+        sleep(5000);
 
     }
 

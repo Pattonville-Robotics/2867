@@ -22,8 +22,8 @@ public class ButtonPresser {
     public void presserDefault(){
         setPosition(1);
     }
-    public void setPosition(double posititon){
-        buttonPresser.setPosition(posititon);
+    public void setPosition(double position){
+        buttonPresser.setPosition(position);
     }
 
     @Override
