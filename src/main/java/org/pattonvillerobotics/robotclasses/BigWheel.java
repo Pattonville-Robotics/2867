@@ -33,6 +33,7 @@ public class BigWheel {
     public void primeToShoot(){
         wheelForward();
         linearOpMode.sleep(250);
+        wheelStop();
     }
 
 }
