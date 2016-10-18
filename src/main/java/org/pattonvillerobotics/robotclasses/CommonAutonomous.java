@@ -33,9 +33,9 @@ public class CommonAutonomous {
     private static int WALL_1_CENTER_TO_TAPE_2_ANGLE    =   67; //Tile #3 -> Tape 2
     private static int TAPE_2_TO_STRAIGHT_ANGLE         =   23; //Tile #3 -> Tape 2 Straighten
 
-    private Direction turnDirection;
+    public static Direction turnDirection;
 
-    public CommonAutonomous(AllianceColor allianceColor){
+    public static void setAllianceColor(AllianceColor allianceColor){
         if(allianceColor == AllianceColor.BLUE){
             turnDirection = Direction.RIGHT;
         }else{
@@ -44,19 +44,19 @@ public class CommonAutonomous {
     }
 
     //Autonomous Modules
-    public void wallPos1ToBall() {
+    public static void wallPos1ToBall() {
         //Forward 60 inches
         //Hit Ball
     }
 
-    public void pressBeacon() {
+    public static void pressBeacon() {
         //20 inches forward
         //read beacon color
         //rotate pressed mech
         //4 inches forward
     }
 
-    public void wallPos1ToBeacon1() {
+    public static void wallPos1ToBeacon1() {
         //12 inches forward
         //53 degrees turn
         //60 inches forward
@@ -64,11 +64,11 @@ public class CommonAutonomous {
         //20 inches forward
     }
     
-    public void wallPos1ToBeacon2() {
+    public static void wallPos1ToBeacon2() {
         
     }
 
-    public void beacon1ToBeacon2() {
+    public static void beacon1ToBeacon2() {
         //24 inches forward
         //90 turn
         //43 inches forward
@@ -76,11 +76,11 @@ public class CommonAutonomous {
         //20 inches forward
     }
 
-    public void tape1ToBall() {
+    public static void tape1ToBall() {
         //60 inches back
     }
     
-    public void tape2ToBall() {
+    public static void tape2ToBall() {
         
     }
 

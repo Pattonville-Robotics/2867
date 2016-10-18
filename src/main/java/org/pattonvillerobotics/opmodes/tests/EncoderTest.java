@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.opmodes.tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.enums.Direction;
@@ -10,6 +11,7 @@ import org.pattonvillerobotics.opmodes.CustomRobotParameters;
  * Created by developer on 10/15/16.
  */
 
+@Autonomous(name = "EndoerTest", group = "Tests")
 public class EncoderTest extends LinearOpMode {
 
     private EncoderDrive drive;
