@@ -29,12 +29,11 @@ public class TeleOp extends LinearOpMode {
     public void initialize(){
         drive = new SimpleDrive(this, hardwareMap);
         buttonPresser = new ButtonPresser(hardwareMap);
-        //drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        //drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         gamepad1.left_stick_y = 0;
         gamepad1.right_stick_y = 0;
 
-        buttonPresser.setPosition(0);
     }
 
     public void doLoop(){
