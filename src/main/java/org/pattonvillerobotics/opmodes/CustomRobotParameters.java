@@ -1,5 +1,7 @@
 package org.pattonvillerobotics.opmodes;
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 /**
@@ -12,10 +14,12 @@ public class CustomRobotParameters {
 
     static {
         ROBOT_PARAMETERS = new RobotParameters.Builder()
+                .leftDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
+                .rightDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
                 .encodersEnabled(true)
-                .gyroEnabled(false)
-                .driveGearRatio(2) //Needs Edit
-                .wheelBaseRadius(14) //Needs Edit
+                .gyroEnabled(true)
+                .driveGearRatio(3) //Needs Edit
+                .wheelBaseRadius(8.25) //Needs Edit
                 .wheelRadius(2) //Needs Edit
                 .build();
     }
