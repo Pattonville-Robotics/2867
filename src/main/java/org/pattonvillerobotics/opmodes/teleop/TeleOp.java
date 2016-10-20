@@ -1,12 +1,19 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 import org.pattonvillerobotics.robotclasses.ButtonPresser;
 
 /**
  * Created by developer on 10/11/16.
+ *<p>
+ * The TeleOp Class gives the driver control over the robot.
+ * <p>
+ * The driver can also use the following controls on the
+ * gamepad: A, B, X, Y, right trigger, left trigger,
+ * start, up d-pad, down d-pad, left stick, and right stick.
  */
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "Teleop")
 public class TeleOp extends LinearOpMode {
