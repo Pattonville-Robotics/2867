@@ -1,8 +1,6 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 import org.pattonvillerobotics.robotclasses.ButtonPresser;
@@ -17,16 +15,19 @@ public class TeleOp extends LinearOpMode {
     private ButtonPresser buttonPresser;
 
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
 
-        while (opModeIsActive()){
+        while (opModeIsActive()) {
             doLoop();
         }
     }
 
-    public void initialize(){
+    /**
+     * This method initializes the robot.
+     */
+    public void initialize() {
         drive = new SimpleDrive(this, hardwareMap);
         buttonPresser = new ButtonPresser(hardwareMap);
         //drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -37,12 +38,20 @@ public class TeleOp extends LinearOpMode {
         buttonPresser.setPosition(0);
     }
 
-    public void doLoop(){
+    /**
+     * This method allows the driver to control the robot with the gamepad.
+     *<p>
+     * If the driver presses x, the button presser will extend. If the driver
+     * presses b, the button presser will return to the default position.
+     * Using the left and right sticks allow the driver to turn the robot
+     * and move it forward and backward.
+     */
+    public void doLoop() {
         drive.moveFreely(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
 
-        if(gamepad1.x){
+        if (gamepad1.x) {
             buttonPresser.presserExtend();
-        } else if(gamepad1.b){
+        } else if (gamepad1.b) {
             buttonPresser.presserDefault();
         }
     }
