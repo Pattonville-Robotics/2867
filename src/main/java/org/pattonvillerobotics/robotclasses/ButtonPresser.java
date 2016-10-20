@@ -13,11 +13,11 @@ public class ButtonPresser {
 
     public ButtonPresser(HardwareMap hardwaremap){
         buttonPresser = hardwaremap.servo.get("button_presser");
-        setPosition(0);
+        setPosition(0.5);
     }
 
     public void presserExtend(){
-        setPosition(0.5);
+        setPosition(0);
     }
     public void presserDefault(){
         setPosition(1);
