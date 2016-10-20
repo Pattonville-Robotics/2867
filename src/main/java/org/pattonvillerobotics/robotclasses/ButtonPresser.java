@@ -16,12 +16,23 @@ public class ButtonPresser {
         setPosition(0.5);
     }
 
+    /**
+     * This method extends the button presser at position 0.
+     */
     public void presserExtend(){
         setPosition(0);
     }
+
+    /**
+     * This method returns the button presser at position 1.
+     */
     public void presserDefault(){
         setPosition(1);
     }
+
+    /**
+     * This method creates a new position for the button presser.
+     */
     public void setPosition(double position){
         buttonPresser.setPosition(position);
     }
