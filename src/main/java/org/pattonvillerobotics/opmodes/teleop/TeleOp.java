@@ -32,7 +32,10 @@ public class TeleOp extends LinearOpMode {
     }
 
     /**
-     * This method initializes the robot and defines what drive is, defines what the button presser is, defines the motor directions, and defines the gamepad controls that are sticky.
+     * This method initializes the robot.'
+     * <p>
+     * It defines what drive, button presser,
+     * the motor directions, and the gamepad controls are.
      */
     public void initialize() {
         drive = new SimpleDrive(this, hardwareMap);
@@ -41,7 +44,6 @@ public class TeleOp extends LinearOpMode {
         drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         gamepad1.left_stick_y = 0;
         gamepad1.right_stick_y = 0;
-
     }
 
     /**
