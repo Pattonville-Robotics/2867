@@ -10,12 +10,23 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class GuideRail {
 
     public Servo guideRail;
-
+/**
+ * <p>
+ *     Defines what the GuideRail is,
+ *     defines the Servo that controls it,
+ *     and sets the starting position
+ * </p>
+    */
     public GuideRail(HardwareMap hardwareMap){
         guideRail = hardwareMap.servo.get("rail");
         guideRail.setPosition(0.25);
     }
 
+    /**
+     * <p>
+     *     Sets the position of the guide rail
+     * </p>
+     */
     public void setToAngle(double angle){
         guideRail.setPosition(degreesToPosition(angle));
     }

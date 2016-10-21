@@ -15,6 +15,13 @@ public class CapBallPush_1 extends LinearOpMode {
 
     private SimpleDrive drive;
 
+    /**
+     * <p>
+     *     Initalizes robot and waits for start.
+     *     After Start sets the direction to forward at .5 speed
+     *     sleeps for 5 seconds
+     * </p>
+    */
     @Override
     public void runOpMode() throws InterruptedException {
         //drive forward 60in
@@ -30,6 +37,11 @@ public class CapBallPush_1 extends LinearOpMode {
 
     }
 
+    /**
+     * <p>
+     *     Initalizes and defines drive.
+     * </p>
+     */
     private void initialize(){
 
         drive = new SimpleDrive(this, hardwareMap);
