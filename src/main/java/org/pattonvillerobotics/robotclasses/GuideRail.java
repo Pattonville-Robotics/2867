@@ -31,6 +31,11 @@ public class GuideRail {
         guideRail.setPosition(degreesToPosition(angle));
     }
 
+    /**
+     * <p>
+     *     Translates degree into servo position
+     * </p>
+     */
     private double degreesToPosition(double degrees){
         return (degrees * 3)/360;
     }
