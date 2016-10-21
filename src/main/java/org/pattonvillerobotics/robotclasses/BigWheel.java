@@ -2,6 +2,7 @@ package org.pattonvillerobotics.robotclasses;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -23,6 +24,7 @@ public class BigWheel {
 
     public BigWheel(HardwareMap hardwaremap, LinearOpMode linearOpMode){
         bigWheel = hardwaremap.dcMotor.get("big_wheel");
+        bigWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         this.linearOpMode = linearOpMode;
     }
 
