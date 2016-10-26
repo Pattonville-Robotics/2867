@@ -22,16 +22,25 @@ public class EncoderTest extends LinearOpMode {
         initialize();
         waitForStart();
 
-        drive.moveInches(Direction.FORWARD, 50, 0.15);
-        /*sleep(1000);
-        drive.moveInches(Direction.BACKWARD, 50, 0.5);
-        sleep(1000);
-        drive.moveInches(Direction.FORWARD, 25, 0.5);
-        sleep(1000);
-        drive.moveInches(Direction.BACKWARD, 25, 0.5);
-        sleep(1000);
+        /*drive.moveInches(Direction.FORWARD, 50, 0.3);
+        sleep(5000);*/
 
-        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+        /*drive.moveInches(Direction.FORWARD, 50, 0.25);
+        drive.stop();
+        sleep(1000);
+        drive.moveInches(Direction.BACKWARD, 25, 0.25);
+        drive.stop();
+        sleep(1000);
+        drive.moveInches(Direction.FORWARD, 50, 0.25);
+        drive.stop();
+        sleep(1000);
+        drive.moveInches(Direction.BACKWARD, 25, 0.25);
+        drive.stop();
+        sleep(1000);*/
+
+        drive.rotateDegrees(Direction.LEFT, 180, 0.25);
+
+        /*drive.rotateDegrees(Direction.LEFT, 90, 0.5);
         sleep(1000);
         drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
         sleep(1000);

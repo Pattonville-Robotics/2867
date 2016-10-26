@@ -15,12 +15,12 @@ public class CustomRobotParameters {
     static {
         ROBOT_PARAMETERS = new RobotParameters.Builder()
                 .leftDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
-                .rightDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
+                .rightDriveMotorDirection(DcMotorSimple.Direction.REVERSE)
                 .encodersEnabled(true)
                 .gyroEnabled(true)
                 .driveGearRatio(3) //Needs Edit
                 .wheelBaseRadius(8.25) //Needs Edit
-                .wheelRadius(2) //Needs Edit
+                .wheelRadius(2 * (45.0/50.0) * (98.0/100.0))
                 .build();
     }
 

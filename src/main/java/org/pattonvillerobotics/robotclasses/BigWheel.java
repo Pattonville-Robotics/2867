@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
- * Created by developer on 10/13/16.
+ * Created by Bridget Farrell on 10/13/16.
  * <p>
  * The BigWheel Class allows the user to move the wheel
  * forward or backward.
@@ -22,6 +22,14 @@ public class BigWheel {
     public DcMotor bigWheel;
     public LinearOpMode linearOpMode;
 
+    /**
+     *
+     * @param hardwaremap the hardwareMap associated with the robot
+     * @param linearOpMode the linearOpMode in which the object is
+     *                     instantiated. This allows us to effectively
+     *                     stop the wheel.
+     */
+
     public BigWheel(HardwareMap hardwaremap, LinearOpMode linearOpMode){
         bigWheel = hardwaremap.dcMotor.get("big_wheel");
         bigWheel.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -29,33 +37,46 @@ public class BigWheel {
     }
 
     /**
-     * This method moves the wheel forward at 0.5 motor speed.
+     * Moves the wheel forward at 0.5 motor speed.
      */
-    public void wheelForward(){
+    public void moveForward(){
         bigWheel.setPower(.5);
     }
 
     /**
-     * This method moves the wheel backward at -0.5 motor speed.
+     * Moves the wheel backward at -0.5 motor speed.
      */
-    public void wheelBackward(){
+    public void moveBackward(){
         bigWheel.setPower(-.5);
     }
 
     /**
-     * This method stops the wheel.
+     * Stops the wheel.
      */
-    public void wheelStop(){
+    public void stop(){
         bigWheel.setPower(0);
     }
 
     /**
-     * This method primes the wheel to shoot.
+     * Primes the wheel to shoot. This allows for the driver
+     * to capture a ball and move to a good position to fire
+     * it into the center vortex.
      */
     public void primeToShoot(){
-        wheelForward();
+        moveForward();
         linearOpMode.sleep(250);
-        wheelStop();
+        stop();
+    }
+
+    /**
+     * Moves wheel with supplied power. Used in teleOp to map
+     * values of trigger buttons to motor power for wheel.
+     *
+     * @param power motor power to supply to the motor. Positive
+     *              rotates forward, negative rotates backward.
+     */
+    public void move(double power){
+        bigWheel.setPower(power);
     }
 
 }
