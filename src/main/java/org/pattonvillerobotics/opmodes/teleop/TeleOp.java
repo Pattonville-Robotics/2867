@@ -1,13 +1,14 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
+import org.pattonvillerobotics.robotclasses.BigWheel;
 import org.pattonvillerobotics.robotclasses.ButtonPresser;
+import org.pattonvillerobotics.robotclasses.GuideRail;
 
 /**
- * Created by developer on 10/11/16.
+ * Created by Joshua Zahner on 10/11/16.
  *<p>
  * The TeleOp Class gives the driver control over the robot.
  * <p>
@@ -20,6 +21,8 @@ public class TeleOp extends LinearOpMode {
 
     private SimpleDrive drive;
     private ButtonPresser buttonPresser;
+    private BigWheel wheel;
+    private GuideRail guideRail;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -32,13 +35,19 @@ public class TeleOp extends LinearOpMode {
     }
 
     /**
-     * This method initializes the robot and defines what drive is, defines what the button presser is, defines the motor directions, and defines the gamepad controls that are sticky.
+     * This method initializes the robot and defines what drive is,
+     * defines what the button presser is, defines the motor directions,
+     * and defines the gamepad controls that are sticky.
      */
     public void initialize() {
         drive = new SimpleDrive(this, hardwareMap);
+
         buttonPresser = new ButtonPresser(hardwareMap);
-        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        wheel = new BigWheel(hardwareMap, this);
+
+        guideRail = new GuideRail(hardwareMap, this);
+
         gamepad1.left_stick_y = 0;
         gamepad1.right_stick_y = 0;
 
@@ -53,6 +62,9 @@ public class TeleOp extends LinearOpMode {
      * and move it forward and backward.
      */
     public void doLoop() {
+
+        double guideRailCurrentPosition = guideRail.guideRail.getPosition();
+
         drive.moveFreely(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
 
         if (gamepad1.x) {
@@ -60,5 +72,22 @@ public class TeleOp extends LinearOpMode {
         } else if (gamepad1.b) {
             buttonPresser.presserDefault();
         }
+
+        if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
+            wheel.move(-gamepad1.left_trigger);
+        }else if(gamepad1.right_trigger > 0 && gamepad1.left_trigger == 0){
+            wheel.move(gamepad1.right_trigger);
+        }else{
+            wheel.stop();
+        }
+
+        if(gamepad1.dpad_up){
+            guideRail.setPosition(guideRailCurrentPosition + 0.01);
+        }else if(gamepad1.dpad_down){
+            guideRail.setPosition(guideRailCurrentPosition - 0.01);
+        }
+
+        telemetry.update();
+
     }
 }
