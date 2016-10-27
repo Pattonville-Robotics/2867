@@ -3,10 +3,13 @@ package org.pattonvillerobotics.opmodes.tests;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
+import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.opmodes.CustomRobotParameters;
+import org.pattonvillerobotics.robotclasses.ButtonPresser;
 
 /**
  * Created by developer on 9/27/16.
@@ -15,67 +18,62 @@ import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 @TeleOp(name = "Full Color Sensor Test", group = "Common")
 public class FullColorSensorTest extends LinearOpMode {
 
-    Servo buttonPresser;
-    BeaconColorSensor colorSensor;
-    AllianceColor allianceColor;
-
-    boolean aCurrState, aPrevState;
+    BeaconColorSensor beaconColorSensor;
+    ButtonPresser buttonPresser;
+    EncoderDrive drive;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        initalize();
+        initialize();
         waitForStart();
 
-        while(opModeIsActive()){
+        drive.moveInches(Direction.FORWARD, 18, 0.25);
 
-            aCurrState = gamepad1.a;
-
-            if(aCurrState && (aCurrState != aPrevState))  {
-                // button is transitioning to a pressed state. So Toggle LED
-                if(allianceColor == AllianceColor.BLUE){
-                    allianceColor = AllianceColor.RED;
-                }else{
-                    allianceColor = AllianceColor.BLUE;
-                }
-            }
-
-            aPrevState = aCurrState;
-
-            colorSensor.determineColor(allianceColor, new Runnable() {
-                @Override
-                public void run() {
-                    telemetry.addData("Servo", "Moving to Position 1");
-                }
-            }, new Runnable() {
-                @Override
-                public void run() {
-                    telemetry.addData("Servo", "Moving to Position 0");
-                }
-            }, new Runnable(){
-                @Override
-                public void run() {
-                    telemetry.addData("NONE", " ");
-                }
-            });
-
-            telemetry.addData("AllianceColor", allianceColor);
-            telemetry.update();
-            idle();
-
-        }
+        pressButton();
 
     }
 
 
-    public void initalize(){
-        ColorSensor cs = hardwareMap.colorSensor.get("color sensor");
+    public void initialize(){
 
-        buttonPresser = hardwareMap.servo.get("servo");
-        buttonPresser.setPosition(0.5);
+        ColorSensor cs = hardwareMap.colorSensor.get("color_sensor");
+        beaconColorSensor = new BeaconColorSensor(cs);
 
-        colorSensor = new BeaconColorSensor(cs);
-        allianceColor = AllianceColor.BLUE;
+        beaconColorSensor.colorSensor.enableLed(true);
+
+        buttonPresser = new ButtonPresser(hardwareMap);
+
+        drive = new EncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
+
+    }
+
+    private void pressButton(){
+        telemetry.addData("Red:", beaconColorSensor.red());
+        telemetry.addData("Blue:", beaconColorSensor.blue());
+
+        telemetry.update();
+
+       /* beaconColorSensor.colorSensor.enableLed(false);
+
+        beaconColorSensor.determineColor(AllianceColor.BLUE, new Runnable() {
+            @Override
+            public void run() {
+                buttonPresser.presserLeft();
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                buttonPresser.presserRight();
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                drive.moveInches(Direction.FORWARD, 1, 0.2);
+                pressButton();
+            }
+        });*/
+
     }
 
 }

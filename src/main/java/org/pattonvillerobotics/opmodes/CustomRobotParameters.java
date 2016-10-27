@@ -19,7 +19,7 @@ public class CustomRobotParameters {
                 .encodersEnabled(true)
                 .gyroEnabled(true)
                 .driveGearRatio(3) //Needs Edit
-                .wheelBaseRadius(8.25) //Needs Edit
+                .wheelBaseRadius(8.25 * 180/170) //Needs Edit
                 .wheelRadius(2 * (45.0/50.0) * (98.0/100.0))
                 .build();
     }

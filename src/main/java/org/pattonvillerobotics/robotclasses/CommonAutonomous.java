@@ -2,6 +2,7 @@ package org.pattonvillerobotics.robotclasses;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 
 /**
  * Created by developer on 10/4/16.
@@ -34,6 +35,7 @@ public class CommonAutonomous {
     private static int TAPE_2_TO_STRAIGHT_ANGLE         =   23; //Tile #3 -> Tape 2 Straighten
 
     public static Direction turnDirection;
+    public static EncoderDrive drive;
 
     public static void setAllianceColor(AllianceColor allianceColor){
         if(allianceColor == AllianceColor.BLUE){
@@ -41,6 +43,10 @@ public class CommonAutonomous {
         }else{
             turnDirection = Direction.LEFT;
         }
+    }
+
+    public static void setDrive(EncoderDrive encoderDrive){
+        drive = encoderDrive;
     }
 
     //Autonomous Modules
