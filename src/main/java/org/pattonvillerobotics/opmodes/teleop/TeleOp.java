@@ -68,9 +68,9 @@ public class TeleOp extends LinearOpMode {
         drive.moveFreely(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
 
         if (gamepad1.x) {
-            buttonPresser.presserExtend();
+            buttonPresser.presserLeft();
         } else if (gamepad1.b) {
-            buttonPresser.presserDefault();
+            buttonPresser.presserRight();
         }
 
         if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
