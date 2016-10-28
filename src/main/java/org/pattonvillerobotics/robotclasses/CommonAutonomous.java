@@ -1,7 +1,11 @@
 package org.pattonvillerobotics.robotclasses;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 
 /**
@@ -36,6 +40,7 @@ public class CommonAutonomous {
 
     public static Direction turnDirection;
     public static EncoderDrive drive;
+    public static HardwareMap hardware;
 
     public static void setAllianceColor(AllianceColor allianceColor){
         if(allianceColor == AllianceColor.BLUE){
@@ -49,10 +54,16 @@ public class CommonAutonomous {
         drive = encoderDrive;
     }
 
+    public static void setHardwareMap(HardwareMap hardwareMap){
+        hardware = hardwareMap;
+    }
+
     //Autonomous Modules
     public static void wallPos1ToBall() {
         //Forward 60 inches
         //Hit Ball
+        drive.moveInches(Direction.FORWARD, 60, 0.3);
+       // hitBall();
     }
 
     public static void pressBeacon() {
@@ -60,6 +71,37 @@ public class CommonAutonomous {
         //read beacon color
         //rotate pressed mech
         //4 inches forward
+
+        drive.moveInches(Direction.FORWARD, 20, 0.3);
+
+
+
+        BeaconColorSensor beaconColorSensor;
+        final ButtonPresser buttonPresser;
+        ColorSensor cs = hardware.colorSensor.get("color_sensor");
+        beaconColorSensor = new BeaconColorSensor(cs);
+        beaconColorSensor.colorSensor.enableLed(true);
+        buttonPresser = new ButtonPresser(hardware);
+
+        beaconColorSensor.colorSensor.enableLed(false);
+
+        beaconColorSensor.determineColor(AllianceColor.BLUE, new Runnable() {
+            @Override
+            public void run() {
+                buttonPresser.presserLeft();
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                buttonPresser.presserRight();
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                drive.moveInches(Direction.FORWARD, 1, 0.2);
+                pressBeacon();
+            }
+        });
     }
 
     public static void wallPos1ToBeacon1() {
@@ -68,6 +110,11 @@ public class CommonAutonomous {
         //60 inches forward
         //37 turn
         //20 inches forward
+        drive.moveInches(Direction.FORWARD, 12, 0.3);
+        drive.rotateDegrees(Direction.RIGHT, 53, 0.25);
+        drive.moveInches(Direction.FORWARD, 60, 0.3);
+        drive.rotateDegrees(Direction.RIGHT, 37, 0.25);
+        drive.moveInches(Direction.FORWARD, 20, 0.3);
     }
     
     public static void wallPos1ToBeacon2() {
@@ -80,10 +127,16 @@ public class CommonAutonomous {
         //43 inches forward
         //90 turn
         //20 inches forward
+        drive.moveInches(Direction.FORWARD, 24, 0.3);
+        drive.rotateDegrees(Direction.RIGHT, 90, 0.25);
+        drive.moveInches(Direction.FORWARD, 43, 0.3);
+        drive.rotateDegrees(Direction.RIGHT, 90, 0.25);
+        drive.moveInches(Direction.FORWARD, 20, 0.3);
     }
 
     public static void tape1ToBall() {
         //60 inches back
+        drive.moveInches(Direction.BACKWARD, 60, 0.3);
     }
     
     public static void tape2ToBall() {
