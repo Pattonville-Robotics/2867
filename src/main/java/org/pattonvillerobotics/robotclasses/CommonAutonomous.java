@@ -31,9 +31,9 @@ public class CommonAutonomous {
 
     //Angle Constants (degrees)
     private static int RIGHT_ANGLE                      =   90; //Right Angle
-    private static int Wall_1_CENTER_TO_TAPE_1_ANGLE    =   53; //Tile #3 -> Tape 1
+    private static int WALL_1_CENTER_TO_TAPE_1_ANGLE    =   37; //Tile #3 -> Tape 1
     private static int BALL_TO_TAPE_2_ANGLE             =   53; //Ball -> Tape 2
-    private static int TAPE_1__TO_STRAIGHT_ANGLE        =   37; //Tile #3 -> Tape 1 Straighten
+    private static int TAPE_1__TO_STRAIGHT_ANGLE        =   53; //Tile #3 -> Tape 1 Straighten
     private static int TAPE_2_TO_BALL_ANGLE             =   37; //Tape 2 -> Ball
     private static int WALL_1_CENTER_TO_TAPE_2_ANGLE    =   67; //Tile #3 -> Tape 2
     private static int TAPE_2_TO_STRAIGHT_ANGLE         =   23; //Tile #3 -> Tape 2 Straighten
@@ -42,7 +42,13 @@ public class CommonAutonomous {
     public static EncoderDrive drive;
     public static HardwareMap hardware;
 
-    public static void setAllianceColor(AllianceColor allianceColor){
+    public static void setUp(AllianceColor allianceColor, HardwareMap hardware, EncoderDrive drive){
+        setAllianceColor(allianceColor);
+        setHardwareMap(hardware);
+        setDrive(drive);
+    }
+
+    private static void setAllianceColor(AllianceColor allianceColor){
         if(allianceColor == AllianceColor.BLUE){
             turnDirection = Direction.RIGHT;
         }else{
@@ -50,11 +56,11 @@ public class CommonAutonomous {
         }
     }
 
-    public static void setDrive(EncoderDrive encoderDrive){
+    private static void setDrive(EncoderDrive encoderDrive){
         drive = encoderDrive;
     }
 
-    public static void setHardwareMap(HardwareMap hardwareMap){
+    private static void setHardwareMap(HardwareMap hardwareMap){
         hardware = hardwareMap;
     }
 
@@ -72,18 +78,14 @@ public class CommonAutonomous {
         //rotate pressed mech
         //4 inches forward
 
-        drive.moveInches(Direction.FORWARD, 20, 0.3);
-
-
-
         BeaconColorSensor beaconColorSensor;
         final ButtonPresser buttonPresser;
+
         ColorSensor cs = hardware.colorSensor.get("color_sensor");
         beaconColorSensor = new BeaconColorSensor(cs);
-        beaconColorSensor.colorSensor.enableLed(true);
         buttonPresser = new ButtonPresser(hardware);
 
-        beaconColorSensor.colorSensor.enableLed(false);
+        drive.moveInches(Direction.FORWARD, 20, 0.3);
 
         beaconColorSensor.determineColor(AllianceColor.BLUE, new Runnable() {
             @Override
@@ -111,10 +113,23 @@ public class CommonAutonomous {
         //37 turn
         //20 inches forward
         drive.moveInches(Direction.FORWARD, 12, 0.3);
-        drive.rotateDegrees(Direction.RIGHT, 53, 0.25);
-        drive.moveInches(Direction.FORWARD, 60, 0.3);
-        drive.rotateDegrees(Direction.RIGHT, 37, 0.25);
-        drive.moveInches(Direction.FORWARD, 20, 0.3);
+        drive.rotateDegrees(turnDirection,  WALL_1_CENTER_TO_TAPE_1_ANGLE, 0.25);
+        drive.moveInches(Direction.FORWARD, 42, 0.3);
+        drive.rotateDegrees(turnDirection,  TAPE_1__TO_STRAIGHT_ANGLE, 0.25);
+        drive.moveInches(Direction.FORWARD, 28, 0.3);
+    }
+
+    public static void wallPos1ToBeacon1_Blue() {
+        //12 inches forward
+        //53 degrees turn
+        //60 inches forward
+        //37 turn
+        //20 inches forward
+        drive.moveInches(Direction.FORWARD, 6, 0.3);
+        drive.rotateDegrees(turnDirection,  WALL_1_CENTER_TO_TAPE_1_ANGLE, 0.25);
+        drive.moveInches(Direction.FORWARD, 49, 0.3);
+        drive.rotateDegrees(turnDirection,  TAPE_1__TO_STRAIGHT_ANGLE + 3, 0.25);
+        drive.moveInches(Direction.FORWARD, 23, 0.3);
     }
     
     public static void wallPos1ToBeacon2() {
@@ -123,14 +138,14 @@ public class CommonAutonomous {
 
     public static void beacon1ToBeacon2() {
         //24 inches forward
-        //90 turn
+        //RIGHT_ANGLE turn
         //43 inches forward
-        //90 turn
+        //RIGHT_ANGLE turn
         //20 inches forward
         drive.moveInches(Direction.FORWARD, 24, 0.3);
-        drive.rotateDegrees(Direction.RIGHT, 90, 0.25);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
         drive.moveInches(Direction.FORWARD, 43, 0.3);
-        drive.rotateDegrees(Direction.RIGHT, 90, 0.25);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
         drive.moveInches(Direction.FORWARD, 20, 0.3);
     }
 
