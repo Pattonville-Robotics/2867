@@ -20,14 +20,14 @@ public class ButtonPresser {
      * This method extends the button presser at position 0.
      */
     public void presserLeft(){
-        setPosition(0);
+        setPosition(0.2);
     }
 
     /**
      * This method returns the button presser at position 1.
      */
     public void presserRight(){
-        setPosition(1);
+        setPosition(0.75);
     }
 
     /**
