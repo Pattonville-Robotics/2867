@@ -135,9 +135,9 @@ public class CommonAutonomous {
 
     public static void wallPos1ToBeacon1(){
         drive.moveInches(Direction.FORWARD, 6, 0.3);
-        drive.rotateDegrees(turnDirection, 45, 0.25);
+        drive.rotateDegrees(turnDirection, 43, 0.25);
         drive.moveInches(Direction.FORWARD, 51, 0.3);
-        drive.rotateDegrees(turnDirection, 45, 0.25);
+        drive.rotateDegrees(turnDirection, 47, 0.25);
         drive.moveInches(Direction.FORWARD, 20, 0.3);
     }
     
@@ -151,8 +151,8 @@ public class CommonAutonomous {
         //43 inches forward
         //RIGHT_ANGLE turn
         //20 inches forward
-        drive.moveInches(Direction.FORWARD, 24, 0.3);
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
+        drive.moveInches(Direction.BACKWARD, 20, 0.3);
+        drive.rotateDegrees(turnDirection, -RIGHT_ANGLE, 0.25);
         drive.moveInches(Direction.FORWARD, 43, 0.3);
         drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
         drive.moveInches(Direction.FORWARD, 20, 0.3);
