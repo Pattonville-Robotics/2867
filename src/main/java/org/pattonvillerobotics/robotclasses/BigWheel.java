@@ -33,6 +33,7 @@ public class BigWheel {
     public BigWheel(HardwareMap hardwaremap, LinearOpMode linearOpMode){
         bigWheel = hardwaremap.dcMotor.get("big_wheel");
         bigWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        bigWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.linearOpMode = linearOpMode;
     }
 
@@ -40,14 +41,14 @@ public class BigWheel {
      * Moves the wheel forward at 0.5 motor speed.
      */
     public void moveForward(){
-        bigWheel.setPower(.5);
+        bigWheel.setPower(1.0);
     }
 
     /**
      * Moves the wheel backward at -0.5 motor speed.
      */
     public void moveBackward(){
-        bigWheel.setPower(-.5);
+        bigWheel.setPower(1.0);
     }
 
     /**
