@@ -24,6 +24,8 @@ public class TeleOp extends LinearOpMode {
     private BigWheel wheel;
     private GuideRail guideRail;
 
+    private boolean turboMode;
+
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
@@ -63,14 +65,27 @@ public class TeleOp extends LinearOpMode {
      */
     public void doLoop() {
 
-        double guideRailCurrentPosition = guideRail.guideRail.getPosition();
+        //**************** DRIVE TRAIN CONTROLS ****************\\
+        if(gamepad1.guide){
+            turboMode = !turboMode;
+        }
 
-        drive.moveFreely(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+        if(turboMode){
+            drive.moveFreely(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+        }else{
+            drive.moveFreely(-gamepad1.left_stick_y/2, -gamepad1.right_stick_y/2);
+        }
 
+        //**************** BUTTON PRESSER CONTROLS ****************\\
         if (gamepad1.x) {
             buttonPresser.presserLeft();
-        } else if (gamepad1.b) {
+        }else if (gamepad1.b) {
             buttonPresser.presserRight();
+        }
+
+        //**************** BIG WHEEL CONTROLS ****************\\
+        if(gamepad1.a){
+            wheel.primeToShoot();
         }
 
         if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
@@ -81,13 +96,30 @@ public class TeleOp extends LinearOpMode {
             wheel.stop();
         }
 
+        //**************** GUIDE RAIL CONTROLS ****************\\
+        double guideRailCurrentPosition = guideRail.guideRail.getPosition();
+
         if(gamepad1.dpad_up){
             guideRail.setPosition(guideRailCurrentPosition + 0.01);
         }else if(gamepad1.dpad_down){
             guideRail.setPosition(guideRailCurrentPosition - 0.01);
         }
 
+        //**************** EXTRANEOUS CONTROLS ****************\\
+        if(gamepad1.start){
+            killAll();
+        }
+
         telemetry.update();
 
+    }
+
+    private void killAll(){
+        drive.stop();
+        wheel.stop();
+        buttonPresser.setPosition(0.5);
+        guideRail.setPosition(1.0);
+
+        turboMode = false;
     }
 }
