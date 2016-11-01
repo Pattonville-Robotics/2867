@@ -71,9 +71,9 @@ public class TeleOp extends LinearOpMode {
         }
 
         if(turboMode){
-            drive.moveFreely(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+            drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         }else{
-            drive.moveFreely(-gamepad1.left_stick_y/2, -gamepad1.right_stick_y/2);
+            drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);
         }
 
         //**************** BUTTON PRESSER CONTROLS ****************\\
