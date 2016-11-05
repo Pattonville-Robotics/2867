@@ -68,6 +68,7 @@ public class TeleOp extends LinearOpMode {
         //**************** DRIVE TRAIN CONTROLS ****************\\
         if(gamepad1.guide){
             turboMode = !turboMode;
+            telemetry.addData("Turbo:", turboMode);
         }
 
         if(turboMode){

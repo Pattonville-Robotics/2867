@@ -7,6 +7,7 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomRobotParameters;
 import org.pattonvillerobotics.robotclasses.CommonAutonomous;
+import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
 
 /**
  * Created by mostafay on 10/4/16.
@@ -27,10 +28,11 @@ public class FirstBeacon_1_R extends LinearOpMode {
         //10 inches forward
         //Press beacon
 
-        CommonAutonomous.setUp(AllianceColor.RED, hardwareMap, new EncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS));
+        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this, new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS));
 
-        CommonAutonomous.wallPos1ToBeacon1();
-        CommonAutonomous.beacon1ToBeacon2();
+        commonAutonomous.wallPos1ToBeacon1();
+        commonAutonomous.pressBeacon();
+        //commonAutonomous.beacon1ToBeacon2();
         //CommonAutonomous.pressBeacon();
 
     }
