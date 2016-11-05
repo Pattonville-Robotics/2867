@@ -27,7 +27,7 @@ public class ButtonPresser {
      * This method returns the button presser at position 1.
      */
     public void presserRight(){
-        setPosition(0.75);
+        setPosition(0.8);
     }
 
     /**

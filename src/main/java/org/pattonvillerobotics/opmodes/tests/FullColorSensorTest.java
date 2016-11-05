@@ -28,9 +28,13 @@ public class FullColorSensorTest extends LinearOpMode {
         initialize();
         waitForStart();
 
-        drive.moveInches(Direction.FORWARD, 18, 0.25);
+        drive.moveInches(Direction.FORWARD, 21, 0.25);
 
         pressButton();
+
+        drive.moveInches(Direction.FORWARD, 3, 0.25);
+
+        drive.stop();
 
     }
 
@@ -39,8 +43,6 @@ public class FullColorSensorTest extends LinearOpMode {
 
         ColorSensor cs = hardwareMap.colorSensor.get("color_sensor");
         beaconColorSensor = new BeaconColorSensor(cs);
-
-        beaconColorSensor.colorSensor.enableLed(true);
 
         buttonPresser = new ButtonPresser(hardwareMap);
 
@@ -53,15 +55,9 @@ public class FullColorSensorTest extends LinearOpMode {
         telemetry.addData("Blue:", beaconColorSensor.blue());
 
         telemetry.update();
-
-       /* beaconColorSensor.colorSensor.enableLed(false);
+        beaconColorSensor.colorSensor.enableLed(false);
 
         beaconColorSensor.determineColor(AllianceColor.BLUE, new Runnable() {
-            @Override
-            public void run() {
-                buttonPresser.presserLeft();
-            }
-        }, new Runnable() {
             @Override
             public void run() {
                 buttonPresser.presserRight();
@@ -69,10 +65,15 @@ public class FullColorSensorTest extends LinearOpMode {
         }, new Runnable() {
             @Override
             public void run() {
+                buttonPresser.presserLeft();
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
                 drive.moveInches(Direction.FORWARD, 1, 0.2);
                 pressButton();
             }
-        });*/
+        });
 
     }
 

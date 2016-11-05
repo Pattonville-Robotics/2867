@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.robotclasses;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -7,6 +8,7 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.opmodes.CustomRobotParameters;
 
 /**
  * Created by developer on 10/4/16.
@@ -15,88 +17,106 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 public class CommonAutonomous {
 
     //Distance Constants (inches)
-    private static int ONE_TILE                         =   24;
-    private static int ROBOT_LENGTH                     =   18;
+    private int ONE_TILE                         =   24;
+    private int ROBOT_LENGTH                     =   18;
 
-    private static int WALL_1_TO_BALL_DISTANCE          =   60;
-    private static int WALL_1_TO_TILE_3_CENTER          =   12;
-    private static int BALL_TO_TAPE_2                   =   60;
-    private static int TILE_3_CENTER_TO_TAPE_1          =   60;
-    private static int TILE_3_CENTER_TO_TAPE_2          =   92;
-    private static int TAPE_1_TO_TAPE_2                 =   48;
-    private static int TAPE_TO_BEACON                   =   24;
+    private int WALL_1_TO_BALL_DISTANCE          =   60;
+    private int WALL_1_TO_TILE_3_CENTER          =   12;
+    private int BALL_TO_TAPE_2                   =   60;
+    private int TILE_3_CENTER_TO_TAPE_1          =   60;
+    private int TILE_3_CENTER_TO_TAPE_2          =   92;
+    private int TAPE_1_TO_TAPE_2                 =   48;
+    private int TAPE_TO_BEACON                   =   24;
 
-    private static int BEACON_DISTANCE_BUFFER           =    5;
-    private static int BALL_DISPLACEMENT_BUFFER         =    2;
+    private int BEACON_DISTANCE_BUFFER           =    5;
+    private int BALL_DISPLACEMENT_BUFFER         =    2;
 
     //Angle Constants (degrees)
-    private static int RIGHT_ANGLE                      =   90; //Right Angle
-    private static int WALL_POS_1_TO_BEACON_ANGLE       =   45;
-   /* private static int WALL_1_CENTER_TO_TAPE_1_ANGLE    =   37; //Tile #3 -> Tape 1
-    private static int BALL_TO_TAPE_2_ANGLE             =   53; //Ball -> Tape 2
-    private static int TAPE_1__TO_STRAIGHT_ANGLE        =   53; //Tile #3 -> Tape 1 Straighten
-    private static int TAPE_2_TO_BALL_ANGLE             =   37; //Tape 2 -> Ball
-    private static int WALL_1_CENTER_TO_TAPE_2_ANGLE    =   67; //Tile #3 -> Tape 2*/
-    private static int TAPE_2_TO_STRAIGHT_ANGLE         =   23; //Tile #3 -> Tape 2 Straighten
+    private int RIGHT_ANGLE                      =   90; //Right Angle
+    private int WALL_POS_1_TO_BEACON_ANGLE       =   45;
+   /* private int WALL_1_CENTER_TO_TAPE_1_ANGLE    =   37; //Tile #3 -> Tape 1
+    private int BALL_TO_TAPE_2_ANGLE             =   53; //Ball -> Tape 2
+    private int TAPE_1__TO_STRAIGHT_ANGLE        =   53; //Tile #3 -> Tape 1 Straighten
+    private int TAPE_2_TO_BALL_ANGLE             =   37; //Tape 2 -> Ball
+    private int WALL_1_CENTER_TO_TAPE_2_ANGLE    =   67; //Tile #3 -> Tape 2*/
+    private int TAPE_2_TO_STRAIGHT_ANGLE         =   23; //Tile #3 -> Tape 2 Straighten
 
-    public static Direction turnDirection;
-    public static EncoderDrive drive;
-    public static HardwareMap hardware;
+    public Direction turnDirection;
+    public LineFollowerDrive drive;
+    public LineFollowerDrive lineDrive;
+    public HardwareMap hardware;
+    public BeaconColorSensor beaconColorSensor;
+    public ButtonPresser buttonPresser;
+    public AllianceColor allianceColor;
+    
+    public CommonAutonomous(AllianceColor allianceColor, HardwareMap hardware, LinearOpMode linearOpMode, LineFollowerDrive drive){
+        this.drive = drive;
+        this.hardware = hardware;
+        this.allianceColor = allianceColor;
+        
+        if(allianceColor == AllianceColor.BLUE){
+            turnDirection = Direction.LEFT;
+        }else{
+            turnDirection = Direction.RIGHT;
+        }
 
-    public static void setUp(AllianceColor allianceColor, HardwareMap hardware, EncoderDrive drive){
-        setAllianceColor(allianceColor);
-        setHardwareMap(hardware);
-        setDrive(drive);
+        ColorSensor cs = hardware.colorSensor.get("color_sensor");
+        beaconColorSensor = new BeaconColorSensor(cs);
+        beaconColorSensor.colorSensor.enableLed(false);
+
+        buttonPresser = new ButtonPresser(hardware);
+
+        buttonPresser.setPosition(0.5);
+
+        
     }
 
-    private static void setAllianceColor(AllianceColor allianceColor){
+    /*public void setUp(AllianceColor allianceColor, HardwareMap hardware, EncoderDrive drive){
+        setAllianceColor(allianceColor);
+        setHardwareMap(hardware);
+        setDrive(drive, new LineFollowerDrive(drive.hardwareMap, drive.linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS));
+    }
+
+    private void setAllianceColor(AllianceColor allianceColor){
         if(allianceColor == AllianceColor.BLUE){
-            turnDirection = Direction.RIGHT;
-        }else{
             turnDirection = Direction.LEFT;
+        }else{
+            turnDirection = Direction.RIGHT;
         }
     }
 
-    private static void setDrive(EncoderDrive encoderDrive){
+    private void setDrive(EncoderDrive encoderDrive, LineFollowerDrive lineFollowerDrive){
         drive = encoderDrive;
+        lineDrive = lineFollowerDrive;
     }
 
-    private static void setHardwareMap(HardwareMap hardwareMap){
+    private void setHardwareMap(HardwareMap hardwareMap){
         hardware = hardwareMap;
-    }
+    }*/
 
     //Autonomous Modules
-    public static void wallPos1ToBall() {
+    public void wallPos1ToBall() {
         //Forward 60 inches
         //Hit Ball
         drive.moveInches(Direction.FORWARD, 60, 0.3);
        // hitBall();
     }
 
-    public static void pressBeacon() {
+    public void pressBeacon() {
         //20 inches forward
         //read beacon color
         //rotate pressed mech
         //4 inches forward
 
-        BeaconColorSensor beaconColorSensor;
-        final ButtonPresser buttonPresser;
-
-        ColorSensor cs = hardware.colorSensor.get("color_sensor");
-        beaconColorSensor = new BeaconColorSensor(cs);
-        buttonPresser = new ButtonPresser(hardware);
-
-        drive.moveInches(Direction.FORWARD, 20, 0.3);
-
-        beaconColorSensor.determineColor(AllianceColor.BLUE, new Runnable() {
+        beaconColorSensor.determineColor(allianceColor, new Runnable() {
             @Override
             public void run() {
-                buttonPresser.presserLeft();
+                buttonPresser.presserRight();
             }
         }, new Runnable() {
             @Override
             public void run() {
-                buttonPresser.presserRight();
+                buttonPresser.presserLeft();
             }
         }, new Runnable() {
             @Override
@@ -105,9 +125,11 @@ public class CommonAutonomous {
                 pressBeacon();
             }
         });
+
+        drive.moveInches(Direction.FORWARD, 15, 0.3);
     }
 
-    /*public static void wallPos1ToBeacon1() {
+    /*public void wallPos1ToBeacon1() {
         //12 inches forward
         //53 degrees turn
         //60 inches forward
@@ -120,7 +142,7 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, 28, 0.3);
     }
 
-    public static void wallPos1ToBeacon1_Blue() {
+    public void wallPos1ToBeacon1_Blue() {
         //12 inches forward
         //53 degrees turn
         //60 inches forward
@@ -133,19 +155,28 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, 23, 0.3);
     }*/
 
-    public static void wallPos1ToBeacon1(){
+    public void wallPos1ToBeacon1(){
         drive.moveInches(Direction.FORWARD, 6, 0.3);
-        drive.rotateDegrees(turnDirection, 43, 0.25);
-        drive.moveInches(Direction.FORWARD, 51, 0.3);
-        drive.rotateDegrees(turnDirection, 47, 0.25);
-        drive.moveInches(Direction.FORWARD, 20, 0.3);
+        drive.rotateDegrees(turnDirection, 45, 0.25);
+        drive.moveInches(Direction.FORWARD, 54, 0.3);
+        drive.rotateDegrees(turnDirection, 45, 0.25);
+        drive.moveInches(Direction.FORWARD, 10, 0.3);
+    }
+
+    public void wallToBeacon1WithLine(){
+        drive.moveInches(Direction.FORWARD, 6, 0.3);
+        drive.rotateDegrees(turnDirection, 55, 0.25);
+
+        drive.driveUntilLine();
+        drive.align(turnDirection, 55);
+
     }
     
-    public static void wallPos1ToBeacon2() {
+    public void wallPos1ToBeacon2() {
         
     }
 
-    public static void beacon1ToBeacon2() {
+    public void beacon1ToBeacon2() {
         //24 inches forward
         //RIGHT_ANGLE turn
         //43 inches forward
@@ -158,12 +189,12 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, 20, 0.3);
     }
 
-    public static void tape1ToBall() {
+    public void tape1ToBall() {
         //60 inches back
         drive.moveInches(Direction.BACKWARD, 60, 0.3);
     }
     
-    public static void tape2ToBall() {
+    public void tape2ToBall() {
         
     }
 
