@@ -1,10 +1,13 @@
 package org.pattonvillerobotics.robotclasses;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorMRRangeSensor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.AbstractDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
@@ -22,8 +25,10 @@ public class LineFollowerDrive extends EncoderDrive {
      */
     private static final double WHITE_TAPE_REFLECTIVITY_MIN = 0.2;
     private static final double WHITE_TAPE_REFLECTIVITY_MAX = 0.3;
+    private static final double DISTANCE_OFFSET = 2;
 
     private OpticalDistanceSensor ods;
+    private ModernRoboticsI2cRangeSensor range;
 
     /**
      * expands upon the EncoderDrive functionality by adding
@@ -35,16 +40,19 @@ public class LineFollowerDrive extends EncoderDrive {
      * @param hardwareMap     robot's current hardwareMap
      * @param linearOpMode    a linearOpMode object
      * @param robotParameters our custom RobotParameters Class
+     *
      * @see EncoderDrive
      * @see org.pattonvillerobotics.opmodes.CustomRobotParameters
      * @see HardwareMap
      * @see LinearOpMode
      * @see OpticalDistanceSensor
+     * @see ModernRoboticsI2cRangeSensor
      */
     public LineFollowerDrive(HardwareMap hardwareMap, LinearOpMode linearOpMode, RobotParameters robotParameters) {
         super(hardwareMap, linearOpMode, robotParameters);
 
         ods = hardwareMap.opticalDistanceSensor.get("ods");
+        //range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
 
     }
 
@@ -59,13 +67,30 @@ public class LineFollowerDrive extends EncoderDrive {
         move(Direction.FORWARD, 0.3);
         Telemetry.Item item = telemetry("");
         linearOpMode.sleep(1000);
-        /*while (!foundLine() && linearOpMode.opModeIsActive()) {
+        while (!foundLine() && linearOpMode.opModeIsActive()) {
             item.setValue("PowerL: " + leftDriveMotor.getPower() + " PowerR: " + rightDriveMotor.getPower());
             linearOpMode.telemetry.update();
-        }*/
+        }
         stop();
 
     }
+
+    /**
+     * drive robot forwards until it is a defined distance
+     * from an object (usually the wall). Used in autonomous
+     * to stop robot before it crashes into wall when hitting
+     * the beacon.
+     *
+     * @param distance the distance we want to be from a certain object
+     *
+     * @see LineFollowerDrive#DISTANCE_OFFSET
+     */
+    /*public void driveUntilDistanceFrom(double distance){
+        while(range.getDistance(DistanceUnit.INCH) > DISTANCE_OFFSET && linearOpMode.opModeIsActive()){
+            move(Direction.FORWARD, 0.3);
+        }
+        stop();
+    }*/
 
     /**
      * aligns the robot with the white line so that the robot
@@ -92,6 +117,7 @@ public class LineFollowerDrive extends EncoderDrive {
      * @return boolean dictating whether or not the sensor is
      * detecting the white line
      * @see LineFollowerDrive#WHITE_TAPE_REFLECTIVITY_MIN
+     * @see LineFollowerDrive#WHITE_TAPE_REFLECTIVITY_MAX
      */
     private boolean foundLine() {
         telemetry("ODS: ", String.valueOf(ods.getRawLightDetected()));
