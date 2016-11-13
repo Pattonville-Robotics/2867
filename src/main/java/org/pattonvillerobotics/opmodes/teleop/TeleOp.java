@@ -66,13 +66,9 @@ public class TeleOp extends LinearOpMode {
     public void doLoop() {
 
         //**************** DRIVE TRAIN CONTROLS ****************\\
-        if(gamepad1.guide){
-            turboMode = !turboMode;
-            telemetry.addData("Turbo:", turboMode);
-        }
 
-        if(turboMode){
-            drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
+        if(gamepad1.left_stick_y > 0.5 && gamepad1.right_stick_y > 0.5){
+            drive.moveFreely(gamepad1.left_stick_y - 0.25, gamepad1.right_stick_y - 0.25);
         }else{
             drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);
         }
@@ -85,9 +81,9 @@ public class TeleOp extends LinearOpMode {
         }
 
         //**************** BIG WHEEL CONTROLS ****************\\
-        if(gamepad1.a){
+        /*if(gamepad1.a){
             wheel.primeToShoot();
-        }
+        }*/
 
         if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
             wheel.move(-gamepad1.left_trigger);

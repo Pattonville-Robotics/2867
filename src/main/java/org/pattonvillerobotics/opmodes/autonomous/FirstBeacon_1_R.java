@@ -30,10 +30,11 @@ public class FirstBeacon_1_R extends LinearOpMode {
 
         CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this, new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS));
 
+        waitForStart();
         commonAutonomous.wallPos1ToBeacon1();
         commonAutonomous.pressBeacon();
         //commonAutonomous.beacon1ToBeacon2();
-        //CommonAutonomous.pressBeacon();
+        //commonAutonomous.pressBeacon();
 
     }
 }

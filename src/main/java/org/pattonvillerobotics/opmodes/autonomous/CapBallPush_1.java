@@ -3,17 +3,19 @@ package org.pattonvillerobotics.opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
+import org.pattonvillerobotics.opmodes.CustomRobotParameters;
+import org.pattonvillerobotics.robotclasses.CommonAutonomous;
+import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
 
 /**
  * Created by mostafay on 10/4/16.
  */
 
-@Autonomous(name = "FiveSeconds", group = "None")
+@Autonomous(name = "CapBall", group = "None")
 public class CapBallPush_1 extends LinearOpMode {
-
-    private SimpleDrive drive;
 
     /**
      * <p>
@@ -29,23 +31,13 @@ public class CapBallPush_1 extends LinearOpMode {
         //5 inches forward
         //Park on center vortex
 
-        initialize();
+        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this, new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS));
+
         waitForStart();
 
-        drive.move(Direction.FORWARD, 0.5);
-        sleep(5000);
+        commonAutonomous.wallPos1ToBall();
 
     }
 
-    /**
-     * <p>
-     *     Initalizes and defines drive.
-     * </p>
-     */
-    private void initialize(){
-
-        drive = new SimpleDrive(this, hardwareMap);
-
-    }
 
 }
