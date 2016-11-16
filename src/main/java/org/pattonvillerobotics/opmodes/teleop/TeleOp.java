@@ -81,14 +81,15 @@ public class TeleOp extends LinearOpMode {
         }
 
         //**************** BIG WHEEL CONTROLS ****************\\
-        /*if(gamepad1.a){
-            wheel.primeToShoot();
-        }*/
+        if(gamepad1.a){
+            wheel.bigWheel.setPower(1.0);
+            sleep(600);
+        }
 
         if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
-            wheel.move(-gamepad1.left_trigger);
+            wheel.move(-gamepad1.left_trigger/3);
         }else if(gamepad1.right_trigger > 0 && gamepad1.left_trigger == 0){
-            wheel.move(gamepad1.right_trigger);
+            wheel.move(gamepad1.right_trigger/3);
         }else{
             wheel.stop();
         }

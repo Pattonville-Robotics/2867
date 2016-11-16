@@ -41,7 +41,7 @@ public class BigWheel {
      * Moves the wheel forward at 0.5 motor speed.
      */
     public void moveForward(){
-        bigWheel.setPower(1.0);
+        bigWheel.setPower(0.33);
     }
 
     /**

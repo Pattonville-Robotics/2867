@@ -30,6 +30,8 @@ import org.pattonvillerobotics.opmodes.CustomRobotParameters;
  */
 public class CommonAutonomous {
 
+    private static double SPEED = 0.4;
+
     //Distance Constants (inches)
     private int ONE_TILE                         =   24;
     private int ROBOT_LENGTH                     =   18;
@@ -57,7 +59,6 @@ public class CommonAutonomous {
 
     public Direction turnDirection;
     public LineFollowerDrive drive;
-    //public LineFollowerDrive lineDrive;
     public HardwareMap hardware;
     public BeaconColorSensor beaconColorSensor;
     public ButtonPresser buttonPresser;
@@ -155,11 +156,12 @@ public class CommonAutonomous {
      * first beacon.
      */
     public void wallPos1ToBeacon1(){
-        drive.moveInches(Direction.FORWARD, 6, 0.3);
+        drive.moveInches(Direction.FORWARD, 6, SPEED);
+        buttonPresser.setPosition(0.5);
         drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
-        drive.moveInches(Direction.FORWARD, 56, 0.3);
+        drive.moveInches(Direction.FORWARD, 56, SPEED);
         drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
-        drive.moveInches(Direction.FORWARD, 10, 0.3);
+        drive.moveInches(Direction.FORWARD, 10, SPEED);
     }
 
     /**
@@ -197,16 +199,16 @@ public class CommonAutonomous {
         //43 inches forward
         //RIGHT_ANGLE turn
         //20 inches forward
-        drive.moveInches(Direction.BACKWARD, 20, 0.3);
+        drive.moveInches(Direction.BACKWARD, 20, SPEED);
         drive.rotateDegrees(turnDirection, -RIGHT_ANGLE - 3, 0.25);
-        drive.moveInches(Direction.FORWARD, 48, 0.5);
+        drive.moveInches(Direction.FORWARD, 48, SPEED);
         drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
-        drive.moveInches(Direction.FORWARD, 15, 0.3);
+        drive.moveInches(Direction.FORWARD, 15, SPEED);
     }
 
     /**
      * Drives robot from the first beacon to the cap ball and
-     * pushes teh cap ball to the floor
+     * pushes the cap ball to the floor
      */
     public void tape1ToBall() {
         //60 inches back
@@ -215,16 +217,16 @@ public class CommonAutonomous {
 
     /**
      * Drives robot from the second beacon to the cap ball and
-     * pushed the cap ball to teh floor.
+     * pushed the cap ball to the floor.
      */
     public void tape2ToBall() {
-        drive.moveInches(Direction.BACKWARD, 6, 0.3);
+        drive.moveInches(Direction.BACKWARD, 10, 0.3);
         if(turnDirection == Direction.RIGHT){
             turnDirection = Direction.LEFT;
         }else{
             turnDirection = Direction.RIGHT;
         }
-        drive.rotateDegrees(turnDirection, 37, 0.25);
+        drive.rotateDegrees(turnDirection, 45, 0.25);
         drive.moveInches(Direction.BACKWARD, 65, 0.8);
     }
 
