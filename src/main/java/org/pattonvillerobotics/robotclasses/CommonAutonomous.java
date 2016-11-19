@@ -159,9 +159,9 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, 6, SPEED);
         buttonPresser.setPosition(0.5);
         drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
-        drive.moveInches(Direction.FORWARD, 56, SPEED);
+        drive.moveInches(Direction.FORWARD, 52, SPEED);
         drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
-        drive.moveInches(Direction.FORWARD, 10, SPEED);
+        drive.moveInches(Direction.FORWARD, 12, SPEED);
     }
 
     /**
@@ -200,7 +200,12 @@ public class CommonAutonomous {
         //RIGHT_ANGLE turn
         //20 inches forward
         drive.moveInches(Direction.BACKWARD, 20, SPEED);
-        drive.rotateDegrees(turnDirection, -RIGHT_ANGLE - 3, 0.25);
+        if(turnDirection == Direction.LEFT){
+            drive.rotateDegrees(turnDirection, -RIGHT_ANGLE + 3, 0.25);
+        }else{
+            drive.rotateDegrees(turnDirection, -RIGHT_ANGLE - 3, 0.25);
+        }
+
         drive.moveInches(Direction.FORWARD, 48, SPEED);
         drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
         drive.moveInches(Direction.FORWARD, 15, SPEED);
