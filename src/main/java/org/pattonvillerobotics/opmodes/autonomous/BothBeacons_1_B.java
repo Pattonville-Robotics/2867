@@ -24,7 +24,7 @@ public class BothBeacons_1_B extends LinearOpMode {
         commonAutonomous.pressBeacon();
         commonAutonomous.beacon1ToBeacon2();
         commonAutonomous.pressBeacon();
-        commonAutonomous.tape2ToBall();
+        //commonAutonomous.tape2ToBall();
     }
 
 }
