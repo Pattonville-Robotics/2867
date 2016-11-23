@@ -74,6 +74,7 @@ public class TeleOp extends LinearOpMode {
         }
 
         //**************** BUTTON PRESSER CONTROLS ****************\\
+
         if (gamepad1.x) {
             buttonPresser.presserLeft();
         }else if (gamepad1.b) {
@@ -81,20 +82,22 @@ public class TeleOp extends LinearOpMode {
         }
 
         //**************** BIG WHEEL CONTROLS ****************\\
+
         if(gamepad1.y){
             wheel.bigWheel.setPower(1.0);
-            sleep(600);
+            sleep(300);
         }
 
         if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
-            wheel.move(-gamepad1.left_trigger/3);
+            wheel.move(-gamepad1.left_trigger/5);
         }else if(gamepad1.right_trigger > 0 && gamepad1.left_trigger == 0){
-            wheel.move(gamepad1.right_trigger/3);
+            wheel.move(gamepad1.right_trigger/5);
         }else{
             wheel.stop();
         }
 
         //**************** GUIDE RAIL CONTROLS ****************\\
+
         double guideRailCurrentPosition = guideRail.guideRail.getPosition();
 
         if(gamepad1.dpad_up){

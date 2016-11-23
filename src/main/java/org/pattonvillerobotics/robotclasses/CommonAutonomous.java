@@ -157,11 +157,26 @@ public class CommonAutonomous {
      */
     public void wallPos1ToBeacon1(){
         drive.moveInches(Direction.FORWARD, 6, SPEED);
+        drive.stop();
+        linearOpMode.sleep(200);
+
         buttonPresser.setPosition(0.5);
         drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
+        drive.stop();
+        linearOpMode.sleep(200);
+
         drive.moveInches(Direction.FORWARD, 53, SPEED);
+        drive.stop();
+        linearOpMode.sleep(200);
+
         drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
+        drive.stop();
+        linearOpMode.sleep(200);
+
         drive.moveInches(Direction.FORWARD, 10, SPEED);
+        drive.stop();
+        linearOpMode.sleep(200);
+
     }
 
     /**
