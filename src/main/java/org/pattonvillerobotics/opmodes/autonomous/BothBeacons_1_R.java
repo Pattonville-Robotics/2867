@@ -39,9 +39,13 @@ public class BothBeacons_1_R extends LinearOpMode {
         waitForStart();
 
         commonAutonomous.wallPos1ToBeacon1();
+
         commonAutonomous.pressBeacon();
+
         commonAutonomous.beacon1ToBeacon2();
+
         commonAutonomous.pressBeacon();
+
         commonAutonomous.tape2ToBall();
 
     }
