@@ -20,6 +20,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class BigWheel {
 
     public DcMotor bigWheel;
+    public DcMotor secondWheelMotor;
     public LinearOpMode linearOpMode;
 
     /**
@@ -32,8 +33,11 @@ public class BigWheel {
 
     public BigWheel(HardwareMap hardwaremap, LinearOpMode linearOpMode){
         bigWheel = hardwaremap.dcMotor.get("big_wheel");
+        secondWheelMotor = hardwaremap.dcMotor.get("second_wheel_motor");
         bigWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        secondWheelMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         bigWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        secondWheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.linearOpMode = linearOpMode;
     }
 
@@ -56,17 +60,11 @@ public class BigWheel {
      */
     public void stop(){
         bigWheel.setPower(0);
+        secondWheelMotor.setPower(0);
     }
 
-    /**
-     * Primes the wheel to shoot. This allows for the driver
-     * to capture a ball and move to a good position to fire
-     * it into the center vortex.
-     */
-    public void primeToShoot(){
-        moveForward();
-        linearOpMode.sleep(250);
-        stop();
+    public void fire(){
+        move(1.0);
     }
 
     /**
@@ -78,6 +76,7 @@ public class BigWheel {
      */
     public void move(double power){
         bigWheel.setPower(power);
+        secondWheelMotor.setPower(power);
     }
 
 }

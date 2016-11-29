@@ -84,7 +84,7 @@ public class TeleOp extends LinearOpMode {
         //**************** BIG WHEEL CONTROLS ****************\\
 
         if(gamepad1.y){
-            wheel.bigWheel.setPower(1.0);
+            wheel.fire();
             sleep(300);
         }
 
