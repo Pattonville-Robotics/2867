@@ -64,6 +64,7 @@ public class CommonAutonomous {
     public ButtonPresser buttonPresser;
     public AllianceColor allianceColor;
     public LinearOpMode linearOpMode;
+    public BigWheel bigWheel;
 
     /**
      * sets up an instance of CommonAutonomous, which establishes connectes to a drive class, and sets the
@@ -97,8 +98,9 @@ public class CommonAutonomous {
         beaconColorSensor.colorSensor.enableLed(false);
 
         buttonPresser = new ButtonPresser(hardware);
-
         buttonPresser.setPosition(0.5);
+
+        bigWheel = new BigWheel(hardware, linearOpMode);
         
     }
 
@@ -160,12 +162,11 @@ public class CommonAutonomous {
         drive.stop();
         linearOpMode.sleep(200);
 
-        buttonPresser.setPosition(0.5);
         drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
         drive.stop();
         linearOpMode.sleep(200);
 
-        drive.moveInches(Direction.FORWARD, 53, SPEED);
+        drive.moveInches(Direction.FORWARD, 55, SPEED);
         drive.stop();
         linearOpMode.sleep(200);
 
@@ -216,10 +217,16 @@ public class CommonAutonomous {
         //20 inches forward
         drive.moveInches(Direction.BACKWARD, 20, SPEED);
         if(turnDirection == Direction.LEFT){
-            drive.rotateDegrees(turnDirection, -RIGHT_ANGLE + 3, 0.25);
+            drive.rotateDegrees(turnDirection, -RIGHT_ANGLE + 2, 0.25);
         }else{
-            drive.rotateDegrees(turnDirection, -RIGHT_ANGLE - 3, 0.25);
+            drive.rotateDegrees(turnDirection, -RIGHT_ANGLE - 2, 0.25);
         }
+        buttonPresser.setPosition(0.5);
+        bigWheel.fire();
+        linearOpMode.sleep(300);
+
+        drive.stop();
+        linearOpMode.sleep(100);
 
         drive.moveInches(Direction.FORWARD, 49, SPEED);
         drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
@@ -240,14 +247,14 @@ public class CommonAutonomous {
      * pushed the cap ball to the floor.
      */
     public void tape2ToBall() {
-        drive.moveInches(Direction.BACKWARD, 10, 0.3);
+        drive.moveInches(Direction.BACKWARD, 10, 1.0);
         if(turnDirection == Direction.RIGHT){
             turnDirection = Direction.LEFT;
         }else{
             turnDirection = Direction.RIGHT;
         }
         drive.rotateDegrees(turnDirection, 45, 0.25);
-        drive.moveInches(Direction.BACKWARD, 65, 0.8);
+        drive.moveInches(Direction.BACKWARD, 65, 1.0);
     }
 
 }
