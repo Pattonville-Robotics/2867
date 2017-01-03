@@ -50,11 +50,11 @@ public class CommonAutonomous {
     //Angle Constants (degrees)
     private int RIGHT_ANGLE                      =   90; //Right Angle
     private int WALL_POS_1_TO_BEACON_ANGLE       =   45;
-    /*private int WALL_1_CENTER_TO_TAPE_1_ANGLE    =   37; //Tile #3 -> Tape 1
+    private int WALL_1_CENTER_TO_TAPE_1_ANGLE    =   37; //Tile #3 -> Tape 1
     private int BALL_TO_TAPE_2_ANGLE             =   53; //Ball -> Tape 2
     private int TAPE_1__TO_STRAIGHT_ANGLE        =   53; //Tile #3 -> Tape 1 Straighten
     private int TAPE_2_TO_BALL_ANGLE             =   37; //Tape 2 -> Ball
-    private int WALL_1_CENTER_TO_TAPE_2_ANGLE    =   67; //Tile #3 -> Tape 2*/
+    private int WALL_1_CENTER_TO_TAPE_2_ANGLE    =   67; //Tile #3 -> Tape 2
     private int TAPE_2_TO_STRAIGHT_ANGLE         =   23; //Tile #3 -> Tape 2 Straighten
 
     public Direction turnDirection;
@@ -65,6 +65,7 @@ public class CommonAutonomous {
     public AllianceColor allianceColor;
     public LinearOpMode linearOpMode;
     public BigWheel bigWheel;
+    public GuideRail guideRail;
 
     /**
      * sets up an instance of CommonAutonomous, which establishes connectes to a drive class, and sets the
@@ -101,7 +102,8 @@ public class CommonAutonomous {
         buttonPresser.setPosition(0.5);
 
         bigWheel = new BigWheel(hardware, linearOpMode);
-        
+
+        guideRail = new GuideRail(hardware, linearOpMode);
     }
 
 
@@ -166,7 +168,8 @@ public class CommonAutonomous {
         drive.stop();
         linearOpMode.sleep(200);
 
-        drive.moveInches(Direction.FORWARD, 55, SPEED);
+        guideRail.setPosition(0.08);
+        drive.moveInches(Direction.FORWARD, 54, 0.6);
         drive.stop();
         linearOpMode.sleep(200);
 
@@ -210,27 +213,38 @@ public class CommonAutonomous {
      * front of the second beacon
      */
     public void beacon1ToBeacon2() {
-        //24 inches forward
-        //RIGHT_ANGLE turn
-        //43 inches forward
-        //RIGHT_ANGLE turn
-        //20 inches forward
+
+        //MOVE TO END OF WHITE TAPE LINE
         drive.moveInches(Direction.BACKWARD, 20, SPEED);
+        drive.stop();
+        linearOpMode.sleep(200);
+
+        //FIRE LOADED PARTICLE
+        bigWheel.fire();
+        linearOpMode.sleep(300);
+        bigWheel.stop();
+
+        //TURN TOWARDS SECOND BEACON
+        drive.moveInches(Direction.BACKWARD, 5, SPEED);
         if(turnDirection == Direction.LEFT){
             drive.rotateDegrees(turnDirection, -RIGHT_ANGLE + 2, 0.25);
         }else{
             drive.rotateDegrees(turnDirection, -RIGHT_ANGLE - 2, 0.25);
         }
-        buttonPresser.setPosition(0.5);
-        bigWheel.fire();
-        linearOpMode.sleep(300);
 
+        //RESET BUTTON PRESSER OUT OF WAY OF COLOR SENSOR
+        buttonPresser.setPosition(0.5);
         drive.stop();
         linearOpMode.sleep(100);
 
-        drive.moveInches(Direction.FORWARD, 49, SPEED);
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
-        drive.moveInches(Direction.FORWARD, 15, SPEED);
+        //DRIVE TO WHITE TAPE LINE
+        drive.moveInches(Direction.FORWARD, 48, 0.6);
+        if(turnDirection == Direction.LEFT){
+            drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
+        }else{
+            drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
+        }
+        drive.moveInches(Direction.FORWARD, 10, SPEED);
     }
 
     /**
@@ -256,5 +270,20 @@ public class CommonAutonomous {
         drive.rotateDegrees(turnDirection, 45, 0.25);
         drive.moveInches(Direction.BACKWARD, 65, 1.0);
     }
+    public void judgeCode () {
 
+        drive.moveInches(Direction.FORWARD, 5, 0.6);
+        drive.moveInches(Direction.BACKWARD, 5, 0.6);
+        drive.rotateDegrees(Direction.LEFT, 45, 0.5);
+        drive.rotateDegrees(Direction.RIGHT, 45, 0.5);
+        drive.stop();
+        linearOpMode.sleep(1000);
+        buttonPresser.presserLeft();
+        buttonPresser.presserRight();
+        linearOpMode.sleep(1000);
+        guideRail.setPosition(0.8);
+        bigWheel.fire();
+        linearOpMode.sleep(300);
+
+    }
 }

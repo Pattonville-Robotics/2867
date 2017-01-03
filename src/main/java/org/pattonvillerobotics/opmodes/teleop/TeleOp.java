@@ -67,7 +67,7 @@ public class TeleOp extends LinearOpMode {
 
         //**************** DRIVE TRAIN CONTROLS ****************\\
 
-        if(gamepad1.left_stick_y > 0.5 && gamepad1.right_stick_y > 0.5){
+        if(gamepad1.left_stick_y > 0.75 && gamepad1.right_stick_y > 0.75){
             drive.moveFreely(gamepad1.left_stick_y - 0.25, gamepad1.right_stick_y - 0.25);
         }else{
             drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);
@@ -89,9 +89,9 @@ public class TeleOp extends LinearOpMode {
         }
 
         if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
-            wheel.move(-gamepad1.left_trigger/5);
+            wheel.move(-gamepad1.left_trigger/8);
         }else if(gamepad1.right_trigger > 0 && gamepad1.left_trigger == 0){
-            wheel.move(gamepad1.right_trigger/5);
+            wheel.move(gamepad1.right_trigger/8);
         }else{
             wheel.stop();
         }
