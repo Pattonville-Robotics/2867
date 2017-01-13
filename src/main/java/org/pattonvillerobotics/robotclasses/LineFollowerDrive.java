@@ -28,7 +28,7 @@ public class LineFollowerDrive extends EncoderDrive {
     private static final double DISTANCE_OFFSET = 2;
 
     private OpticalDistanceSensor ods;
-    private ModernRoboticsI2cRangeSensor range;
+    private ModernRoboticsI2cRangeSensor range_sensor;
 
     /**
      * expands upon the EncoderDrive functionality by adding
@@ -52,7 +52,8 @@ public class LineFollowerDrive extends EncoderDrive {
         super(hardwareMap, linearOpMode, robotParameters);
 
         ods = hardwareMap.opticalDistanceSensor.get("ods");
-        //range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
+
+        range_sensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range_sensor");
 
     }
 
@@ -75,6 +76,13 @@ public class LineFollowerDrive extends EncoderDrive {
 
     }
 
+    public void driveUntilDistance(double distance) {
+        double buffer = 0.5;
+        while ((range_sensor.getDistance(DistanceUnit.INCH) != distance + buffer || range_sensor.getDistance(DistanceUnit.INCH) != distance - buffer) && linearOpMode.opModeIsActive()) {
+            move(Direction.FORWARD, 0.4);
+        }
+        stop();
+    }
     /**
      * drive robot forwards until it is a defined distance
      * from an object (usually the wall). Used in autonomous

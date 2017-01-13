@@ -138,11 +138,13 @@ public class CommonAutonomous {
             @Override
             public void run() {
                 buttonPresser.presserRight();
+                linearOpMode.sleep(250);
             }
         }, new Runnable() {
             @Override
             public void run() {
                 buttonPresser.presserLeft();
+                linearOpMode.sleep(250);
             }
         }, new Runnable() {
             @Override
@@ -152,7 +154,7 @@ public class CommonAutonomous {
             }
         });
 
-        drive.moveInches(Direction.FORWARD, 10, 0.3);
+        drive.moveInches(Direction.FORWARD, 12, 0.3);
     }
 
     /**
@@ -168,8 +170,8 @@ public class CommonAutonomous {
         drive.stop();
         linearOpMode.sleep(200);
 
-        guideRail.setPosition(0.08);
-        drive.moveInches(Direction.FORWARD, 54, 0.6);
+        guideRail.setPosition(0.1);
+        drive.moveInches(Direction.FORWARD, 52, 0.6);
         drive.stop();
         linearOpMode.sleep(200);
 
@@ -215,7 +217,7 @@ public class CommonAutonomous {
     public void beacon1ToBeacon2() {
 
         //MOVE TO END OF WHITE TAPE LINE
-        drive.moveInches(Direction.BACKWARD, 20, SPEED);
+        drive.moveInches(Direction.BACKWARD, 10, SPEED);
         drive.stop();
         linearOpMode.sleep(200);
 
@@ -225,7 +227,8 @@ public class CommonAutonomous {
         bigWheel.stop();
 
         //TURN TOWARDS SECOND BEACON
-        drive.moveInches(Direction.BACKWARD, 5, SPEED);
+        //drive.moveInches(Direction.BACKWARD, 5, SPEED);
+
         if(turnDirection == Direction.LEFT){
             drive.rotateDegrees(turnDirection, -RIGHT_ANGLE + 2, 0.25);
         }else{
@@ -239,12 +242,9 @@ public class CommonAutonomous {
 
         //DRIVE TO WHITE TAPE LINE
         drive.moveInches(Direction.FORWARD, 48, 0.6);
-        if(turnDirection == Direction.LEFT){
-            drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
-        }else{
-            drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
-        }
-        drive.moveInches(Direction.FORWARD, 10, SPEED);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
+
+        //drive.moveInches(Direction.FORWARD, 10, SPEED);
     }
 
     /**
