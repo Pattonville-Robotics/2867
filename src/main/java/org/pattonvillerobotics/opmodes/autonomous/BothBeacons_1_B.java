@@ -11,7 +11,7 @@ import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
 /**
  * Created by developer on 11/18/16.
  */
-@Autonomous(name = "BorhBeacons_B", group = "Autonomous")
+@Autonomous(name = "BothBeacons_B", group = "Autonomous")
 public class BothBeacons_1_B extends LinearOpMode {
 
     @Override
