@@ -138,13 +138,11 @@ public class CommonAutonomous {
             @Override
             public void run() {
                 buttonPresser.presserRight();
-                linearOpMode.sleep(250);
             }
         }, new Runnable() {
             @Override
             public void run() {
                 buttonPresser.presserLeft();
-                linearOpMode.sleep(250);
             }
         }, new Runnable() {
             @Override
@@ -170,7 +168,7 @@ public class CommonAutonomous {
         drive.stop();
         linearOpMode.sleep(200);
 
-        guideRail.setPosition(0.1);
+        guideRail.setPosition(0.05);
         drive.moveInches(Direction.FORWARD, 52, 0.6);
         drive.stop();
         linearOpMode.sleep(200);
@@ -241,10 +239,10 @@ public class CommonAutonomous {
         linearOpMode.sleep(100);
 
         //DRIVE TO WHITE TAPE LINE
-        drive.moveInches(Direction.FORWARD, 48, 0.6);
+        drive.moveInches(Direction.FORWARD, 48.5, 0.6);
         drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
 
-        //drive.moveInches(Direction.FORWARD, 10, SPEED);
+        drive.moveInches(Direction.FORWARD, 3, SPEED);
     }
 
     /**
