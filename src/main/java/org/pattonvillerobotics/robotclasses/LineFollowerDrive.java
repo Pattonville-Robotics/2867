@@ -24,8 +24,8 @@ public class LineFollowerDrive extends EncoderDrive {
      * the reflectivity value of the white tape as determined
      * in testing.
      */
-    private static final double WHITE_TAPE_REFLECTIVITY_MIN = 0.2;
-    private static final double WHITE_TAPE_REFLECTIVITY_MAX = 0.3;
+    private static final double WHITE_TAPE_REFLECTIVITY_MIN = 0.01;
+    private static final double WHITE_TAPE_REFLECTIVITY_MAX = 0.02;
     private static final double DISTANCE_OFFSET = 2;
 
     private OpticalDistanceSensor ods;
@@ -70,7 +70,7 @@ public class LineFollowerDrive extends EncoderDrive {
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        move(Direction.FORWARD, 0.3);
+        move(Direction.FORWARD, 0.5);
         Telemetry.Item item = telemetry("");
         linearOpMode.sleep(1000);
         while (!foundLine() && linearOpMode.opModeIsActive() && !linearOpMode.isStopRequested()) {
@@ -79,6 +79,8 @@ public class LineFollowerDrive extends EncoderDrive {
             linearOpMode.telemetry.update();
         }
         stop();
+        linearOpMode.sleep(500);
+        moveInches(Direction.BACKWARD, 3, 0.3);
 
     }
 
@@ -88,12 +90,12 @@ public class LineFollowerDrive extends EncoderDrive {
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         double buffer = 0.5;
-        while (!inRange(range_sensor.getDistance(DistanceUnit.INCH), distance + buffer, distance - buffer)
+        while (!inRange(range_sensor.getDistance(DistanceUnit.INCH), (distance+2) + buffer, (distance+2) - buffer)
                 && linearOpMode.opModeIsActive()  && !linearOpMode.isStopRequested()) {
             Thread.yield();
             linearOpMode.telemetry.addData("Status:", "Not In Range");
             linearOpMode.telemetry.addData("Range Sensor:", range_sensor.getDistance(DistanceUnit.INCH));
-            move(Direction.FORWARD, 0.4);
+            move(Direction.FORWARD, 0.3);
 
 
         }
@@ -131,7 +133,7 @@ public class LineFollowerDrive extends EncoderDrive {
      * @see Direction
      */
     public void align(Direction direction, double currentHeading) {
-        rotateDegrees(direction, 90 - currentHeading, 0.2);
+        rotateDegrees(direction, 90 - currentHeading, 0.3);
         stop();
     }
 
