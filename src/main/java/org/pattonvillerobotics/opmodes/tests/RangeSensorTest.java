@@ -22,7 +22,7 @@ public class RangeSensorTest extends LinearOpMode {
 
         waitForStart();
 
-        drive.driveUntilDistance(3);
+        drive.driveUntilDistance(15);
 
     }
 

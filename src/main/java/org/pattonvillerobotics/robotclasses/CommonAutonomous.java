@@ -192,11 +192,11 @@ public class CommonAutonomous {
      * @see LineFollowerDrive#align(Direction, double)
      */
     public void wallToBeacon1WithLine(){
-        drive.moveInches(Direction.FORWARD, 6, 0.3);
-        drive.rotateDegrees(turnDirection, 55, 0.25);
+        drive.moveInches(Direction.FORWARD, 6, 0.5);
+        drive.rotateDegrees(turnDirection, 50, 0.3);
 
         drive.driveUntilLine();
-        drive.align(turnDirection, 55);
+        drive.align(turnDirection, 50);
 
     }
 
@@ -208,12 +208,7 @@ public class CommonAutonomous {
         
     }
 
-    /**
-     * Drives robot from in front of the first beacon to in
-     * front of the second beacon
-     */
-    public void beacon1ToBeacon2() {
-
+    public void backUpFromBeacon1(){
         //MOVE TO END OF WHITE TAPE LINE
         drive.moveInches(Direction.BACKWARD, 10, SPEED);
         drive.stop();
@@ -225,7 +220,6 @@ public class CommonAutonomous {
         bigWheel.stop();
 
         //TURN TOWARDS SECOND BEACON
-        //drive.moveInches(Direction.BACKWARD, 5, SPEED);
 
         if(turnDirection == Direction.LEFT){
             drive.rotateDegrees(turnDirection, -RIGHT_ANGLE + 2, 0.25);
@@ -237,11 +231,30 @@ public class CommonAutonomous {
         buttonPresser.setPosition(0.5);
         drive.stop();
         linearOpMode.sleep(100);
+    }
+
+    /**
+     * Drives robot from in front of the first beacon to in
+     * front of the second beacon
+     */
+    public void beacon1ToBeacon2() {
+
+       backUpFromBeacon1();
 
         //DRIVE TO WHITE TAPE LINE
         drive.moveInches(Direction.FORWARD, 48.5, 0.6);
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
+        linearOpMode.sleep(200);
 
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
+        linearOpMode.sleep(200);
+
+        drive.moveInches(Direction.FORWARD, 3, SPEED);
+    }
+
+    public void beacon1ToBeacon2WithLine(){
+        backUpFromBeacon1();
+        drive.driveUntilLine();
+        drive.align(turnDirection, 0);
         drive.moveInches(Direction.FORWARD, 3, SPEED);
     }
 
