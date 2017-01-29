@@ -14,7 +14,7 @@ import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
  * Created by mostafay on 10/4/16.
  */
 
-@Autonomous(name = "CapBall", group = "None")
+@Autonomous(name = "Capball Push", group = "Autonomous")
 public class CapBallPush_1 extends LinearOpMode {
 
     /**
@@ -31,11 +31,11 @@ public class CapBallPush_1 extends LinearOpMode {
         //5 inches forward
         //Park on center vortex
 
-        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this, new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS));
+        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this);
 
         waitForStart();
 
-        commonAutonomous.wallPos1ToBall();
+        commonAutonomous.wallToBall();
 
     }
 

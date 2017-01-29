@@ -16,11 +16,10 @@ public class GuideRail {
     public LinearOpMode linearOpMode;
 /**
  * <p>
- *     Defines what the GuideRail is,
- *     defines the Servo that controls it,
- *     and sets the starting position
+ *     sets up GuideRail object with servo and sets the servo
+ *     to a starting position of 1.0
  * </p>
-    */
+ */
     public GuideRail(HardwareMap hardwareMap, LinearOpMode linearOpMode){
         this.linearOpMode = linearOpMode;
         guideRail = hardwareMap.servo.get("rail");
@@ -28,37 +27,13 @@ public class GuideRail {
     }
 
     /**
-     * <p>
-     *     Sets the position of the guide rail
-     * </p>
-     */
-    public void setToAngle(double angle){
-        guideRail.setPosition(degreesToPosition(angle));
-    }
-
-    /**
-     * <p>
-     *     Translates degree into servo position
-     * </p>
-     */
-    private double degreesToPosition(double degrees){
-        return (degrees * 3)/360;
-    }
-
-
-    /**
-     * <p>Explicitly sets the position of the guide rail servo and
-     * calcaulates the angular degrees of the guide rail.<p/>\
+     * <p>Explicitly sets the position of the guide rail servo<p/>
      *
-     * @param position servo position to set servo to
+     * @param position position to set servo to
      */
     public void setPosition(double position){
         guideRail.setPosition(position);
-
-        double degrees = (360 * position)/3;
         linearOpMode.telemetry.addData("Position", position);
-        linearOpMode.telemetry.addData("Degrees", degrees);
-
     }
 
 }

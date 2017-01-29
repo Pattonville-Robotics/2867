@@ -9,39 +9,41 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class ButtonPresser {
 
+    private static final double LEFT_POSITION = 0.2;
+    private static final double MIDDLE_POSITION = 0.5;
+    private static final double RIGHT_POSITION = 0.8;
+
     public Servo buttonPresser;
 
     public ButtonPresser(HardwareMap hardwaremap){
         buttonPresser = hardwaremap.servo.get("button_presser");
-        setPosition(0.5);
+        setPosition(MIDDLE_POSITION);
     }
 
     /**
-     * This method extends the button presser at position 0.
+     * extends the button presser to its left position of 0.2
+     * @see 'LEFT_POSITION'.
      */
     public void presserLeft(){
-        setPosition(0.2);
+        setPosition(LEFT_POSITION);
     }
 
     /**
-     * This method returns the button presser at position 1.
+     * extends the button presser to its right position of 0.8
+     * @see 'RIGHT_POSITION'.
      */
     public void presserRight(){
-        setPosition(0.8);
+        setPosition(RIGHT_POSITION);
     }
 
     /**
-     * This method creates a new position for the button presser.
+     * sets the position for the button presser servo.
+     *
+     * @param position the position to set the servo too
      */
     public void setPosition(double position){
         buttonPresser.setPosition(position);
     }
-
-    @Override
-    public String toString(){
-        return "Servo";
-    }
-
 
 }
 

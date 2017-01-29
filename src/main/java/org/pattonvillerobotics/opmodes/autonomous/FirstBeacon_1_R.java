@@ -13,7 +13,7 @@ import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
  * Created by mostafay on 10/4/16.
  */
 
-@Autonomous(name = "ToBeaconOne_R", group = "Autonomous")
+@Autonomous(name = "Beacon One RED", group = "Autonomous")
 public class FirstBeacon_1_R extends LinearOpMode {
 
     @Override
@@ -28,7 +28,7 @@ public class FirstBeacon_1_R extends LinearOpMode {
         //10 inches forward
         //Press beacon
 
-        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this, new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS));
+        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this);
 
         waitForStart();
         commonAutonomous.wallPos1ToBeacon1();
