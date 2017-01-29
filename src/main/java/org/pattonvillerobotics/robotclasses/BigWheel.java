@@ -19,52 +19,34 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class BigWheel {
 
-    public DcMotor bigWheel;
-    public DcMotor secondWheelMotor;
-    public LinearOpMode linearOpMode;
+    private DcMotor bigWheel;
+    private DcMotor secondWheelMotor;
+    private LinearOpMode linearOpMode;
 
     /**
      *
-     * @param hardwaremap the hardwareMap associated with the robot
-     * @param linearOpMode the linearOpMode in which the object is
-     *                     instantiated. This allows us to effectively
-     *                     stop the wheel.
+     * @param hardwaremap   the hardwareMap associated with the robot
+     * @param linearOpMode  the linearOpMode in which the object is
+     *                      instantiated. This allows us to effectively
+     *                      stop the wheel.
      */
 
     public BigWheel(HardwareMap hardwaremap, LinearOpMode linearOpMode){
+
+        this.linearOpMode = linearOpMode;
+
+        //Maps variables to motors
         bigWheel = hardwaremap.dcMotor.get("big_wheel");
         secondWheelMotor = hardwaremap.dcMotor.get("second_wheel_motor");
+
+        //Sets motor directions (on left side so need to be reversed)
         bigWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         secondWheelMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //Sets motors to float to a stop
         bigWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         secondWheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        this.linearOpMode = linearOpMode;
-    }
 
-    /**
-     * Moves the wheel forward at 0.5 motor speed.
-     */
-    public void moveForward(){
-        bigWheel.setPower(0.33);
-    }
-
-    /**
-     * Moves the wheel backward at -0.5 motor speed.
-     */
-    public void moveBackward(){
-        bigWheel.setPower(1.0);
-    }
-
-    /**
-     * Stops the wheel.
-     */
-    public void stop(){
-        bigWheel.setPower(0);
-        secondWheelMotor.setPower(0);
-    }
-
-    public void fire(){
-        move(1.0);
     }
 
     /**
@@ -78,5 +60,19 @@ public class BigWheel {
         bigWheel.setPower(power);
         secondWheelMotor.setPower(power);
     }
+
+    /**
+     * Stops the wheel.
+     */
+    public void stop(){
+        move(0);
+    }
+
+    public void fire(){
+        move(1.0);
+        linearOpMode.sleep(300);
+        stop();
+    }
+
 
 }

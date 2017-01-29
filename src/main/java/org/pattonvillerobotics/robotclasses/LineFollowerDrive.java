@@ -65,41 +65,19 @@ public class LineFollowerDrive extends EncoderDrive {
      *
      * @see LineFollowerDrive#foundLine()
      */
-    public void driveUntilLine() {
+    public void driveUntilLine(double power) {
 
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        move(Direction.FORWARD, 0.5);
-        Telemetry.Item item = telemetry("");
-        linearOpMode.sleep(1000);
-        while (!foundLine() && linearOpMode.opModeIsActive() && !linearOpMode.isStopRequested()) {
+        move(Direction.FORWARD, power);
+        while (!foundLine() && opmodeReady()) {
             Thread.yield();
-            item.setValue("PowerL: " + leftDriveMotor.getPower() + " PowerR: " + rightDriveMotor.getPower());
-            linearOpMode.telemetry.update();
         }
         stop();
-        linearOpMode.sleep(500);
+        linearOpMode.sleep(200);
         moveInches(Direction.BACKWARD, 3, 0.3);
 
-    }
-
-    public void driveUntilDistance(double distance) {
-
-        leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        double buffer = 0.5;
-        while (!inRange(range_sensor.getDistance(DistanceUnit.INCH), (distance+2) + buffer, (distance+2) - buffer)
-                && linearOpMode.opModeIsActive()  && !linearOpMode.isStopRequested()) {
-            Thread.yield();
-            linearOpMode.telemetry.addData("Status:", "Not In Range");
-            linearOpMode.telemetry.addData("Range Sensor:", range_sensor.getDistance(DistanceUnit.INCH));
-            move(Direction.FORWARD, 0.3);
-
-
-        }
-        stop();
     }
 
     /**
@@ -112,12 +90,20 @@ public class LineFollowerDrive extends EncoderDrive {
      *
      * @see LineFollowerDrive#DISTANCE_OFFSET
      */
-    /*public void driveUntilDistanceFrom(double distance){
-        while(range.getDistance(DistanceUnit.INCH) > DISTANCE_OFFSET && linearOpMode.opModeIsActive()){
-            move(Direction.FORWARD, 0.3);
+    public void driveUntilDistance(double distance, double power) {
+
+        double buffer = 0.5;
+
+        leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        move(Direction.FORWARD, power);
+        while (!inRange(range_sensor.getDistance(DistanceUnit.INCH), (distance+DISTANCE_OFFSET) + buffer, (distance+DISTANCE_OFFSET) - buffer)
+                && opmodeReady()) {
+            Thread.yield();
         }
         stop();
-    }*/
+    }
 
     /**
      * aligns the robot with the white line so that the robot
@@ -125,11 +111,11 @@ public class LineFollowerDrive extends EncoderDrive {
      * the beacon. Utilizes the EncoderDrive.rotateDegrees()
      * method to turn 90 - current heading towards the beacon.
      *
-     * @param direction      direction in which to turn
-     * @param currentHeading the current heading of
-     *                       the robot relative to
-     *                       perpendicular to the field
-     *                       wall
+     * @param direction         direction in which to turn
+     * @param currentHeading    the current heading of
+     *                          the robot relative to
+     *                          perpendicular to the field
+     *                          wall
      * @see Direction
      */
     public void align(Direction direction, double currentHeading) {
@@ -163,6 +149,10 @@ public class LineFollowerDrive extends EncoderDrive {
      */
     private boolean inRange(double value, double upperBound, double lowerBound){
         return value <= upperBound && value >= lowerBound;
+    }
+
+    private boolean opmodeReady(){
+        return linearOpMode.opModeIsActive()  && !linearOpMode.isStopRequested();
     }
 
 }

@@ -15,7 +15,7 @@ import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
 public class JudgeCode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this, new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS));
+        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this);
         waitForStart();
         commonAutonomous.judgeCode();
     }

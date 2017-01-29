@@ -24,8 +24,6 @@ public class TeleOp extends LinearOpMode {
     private BigWheel wheel;
     private GuideRail guideRail;
 
-    private boolean turboMode;
-
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
@@ -85,7 +83,6 @@ public class TeleOp extends LinearOpMode {
 
         if(gamepad1.y){
             wheel.fire();
-            sleep(300);
         }
 
         if(gamepad1.left_trigger > 0 && gamepad1.right_trigger == 0){
@@ -120,7 +117,5 @@ public class TeleOp extends LinearOpMode {
         wheel.stop();
         buttonPresser.setPosition(0.5);
         guideRail.setPosition(1.0);
-
-        turboMode = false;
     }
 }
