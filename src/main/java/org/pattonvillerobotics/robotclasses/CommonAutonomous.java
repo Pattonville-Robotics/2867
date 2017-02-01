@@ -36,26 +36,16 @@ public class CommonAutonomous {
 
     private static int START_DISTANCE                   =   6;
 
-    private static int WALL_1_TO_BALL_DISTANCE          =   60;
-    private static int WALL_1_TO_TILE_3_CENTER          =   12;
     private static int BALL_TO_TAPE_2                   =   60;
-    private static int TILE_3_CENTER_TO_TAPE_1          =   60;
-    private static int TILE_3_CENTER_TO_TAPE_2          =   92;
-    private static int TAPE_1_TO_TAPE_2                 =   48;
-    private static int TAPE_TO_BEACON                   =   24;
+    private static int START_POS_1_TO_TAPE_1            =   52;
+    private static int TAPE_1_TO_TAPE_2                 =   49;
 
-    private static int BEACON_DISTANCE_BUFFER           =    5;
-    private static int BALL_DISPLACEMENT_BUFFER         =    2;
+    private static int BEACON_DISTANCE_BUFFER           =    8;
 
     //Angle Constants (degrees)
     private static int RIGHT_ANGLE                      =   90; //Right Angle
     private static int WALL_POS_1_TO_BEACON_ANGLE       =   45;
-    private static int WALL_1_CENTER_TO_TAPE_1_ANGLE    =   37; //Tile #3 -> Tape 1
-    private static int BALL_TO_TAPE_2_ANGLE             =   53; //Ball -> Tape 2
-    private static int TAPE_1__TO_STRAIGHT_ANGLE        =   53; //Tile #3 -> Tape 1 Straighten
-    private static int TAPE_2_TO_BALL_ANGLE             =   37; //Tape 2 -> Ball
-    private static int WALL_1_CENTER_TO_TAPE_2_ANGLE    =   67; //Tile #3 -> Tape 2
-    private static int TAPE_2_TO_STRAIGHT_ANGLE         =   23; //Tile #3 -> Tape 2 Straighten
+    private static int TAPE_2_TO_BALL_ANGLE             =   53; //Tape 2 -> Ball
 
     public Direction turnDirection;
     public LineFollowerDrive drive;
@@ -96,12 +86,12 @@ public class CommonAutonomous {
             turnDirection = Direction.RIGHT;
         }
 
-        //Sets up color sensor
+        //Setup color sensor
         ColorSensor cs = hardware.colorSensor.get("color_sensor");
         beaconColorSensor = new BeaconColorSensor(cs);
         beaconColorSensor.colorSensor.enableLed(false);
 
-        //Sets up remaining mechanisms
+        //Setup remaining mechanisms
         buttonPresser = new ButtonPresser(hardware);
         bigWheel = new BigWheel(hardware, linearOpMode);
         guideRail = new GuideRail(hardware, linearOpMode);
@@ -109,27 +99,25 @@ public class CommonAutonomous {
     }
 
 
-    //Autonomous Modules
+    //******************* AUTONOMOUS MODULES *******************\\
 
     /**
      * Drives robot from wall position 1 to the cap ball and knocks
      * the cap ball to the floor.
      */
     public void wallToBall(){
-
+        drive.moveInches(Direction.BACKWARD, 60, 0.8);
+        drive.stop();
     }
 
     /**
      * Determines the color of the right side of the beacon
-     * and sets drives forward to press the correct button.
+     * and sets the button presser to teh correct position
+     * and drives forward to press the correct button.
      *
      * @see BeaconColorSensor#determineColor(AllianceColor, Runnable, Runnable, Runnable)
      */
     public void pressBeacon() {
-        //20 inches forward
-        //read beacon color
-        //rotate pressed mech
-        //4 inches forward
 
         beaconColorSensor.determineColor(allianceColor, new Runnable() {
             @Override
@@ -166,7 +154,7 @@ public class CommonAutonomous {
         wait_between_move();
 
         guideRail.setPosition(0.05);
-        drive.moveInches(Direction.FORWARD, 52, 0.6);
+        drive.moveInches(Direction.FORWARD, START_POS_1_TO_TAPE_1, 0.6);
         drive.stop();
         wait_between_move();
 
@@ -174,9 +162,10 @@ public class CommonAutonomous {
         drive.stop();
         wait_between_move();
 
-        drive.moveInches(Direction.FORWARD, 10, SPEED);
+        driveToBeacon();
+        /*drive.moveInches(Direction.FORWARD, 10, SPEED);
         drive.stop();
-        wait_between_move();
+        wait_between_move();*/
 
     }
 
@@ -201,6 +190,8 @@ public class CommonAutonomous {
         drive.align(turnDirection, 50);
         wait_between_move();
 
+        driveToBeacon();
+
     }
 
 
@@ -223,11 +214,14 @@ public class CommonAutonomous {
         }
 
         drive.rotateDegrees(turnDirection, angle, 0.25);
+        wait_between_move();
+
+        drive.stop();
+        wait_between_move();
 
         //RESET BUTTON PRESSER OUT OF WAY OF COLOR SENSOR
         buttonPresser.setPosition(0.5);
-        drive.stop();
-        wait_between_move();
+
     }
 
     /**
@@ -239,14 +233,15 @@ public class CommonAutonomous {
         backUpFromBeacon1();
 
         //DRIVE TO WHITE TAPE LINE
-        drive.moveInches(Direction.FORWARD, 48.5, 0.6);
+        drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, 0.6);
         wait_between_move();
 
         drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
         wait_between_move();
 
-        drive.moveInches(Direction.FORWARD, 3, SPEED);
-        wait_between_move();
+        driveToBeacon();
+        /*drive.moveInches(Direction.FORWARD, 3, SPEED);
+        wait_between_move();*/
     }
 
     public void beacon1ToBeacon2WithLine(){
@@ -258,8 +253,9 @@ public class CommonAutonomous {
         drive.align(turnDirection, 0);
         wait_between_move();
 
-        drive.moveInches(Direction.FORWARD, 3, SPEED);
-        wait_between_move();
+        driveToBeacon();
+        /*drive.moveInches(Direction.FORWARD, 3, SPEED);
+        wait_between_move();*/
     }
 
     /**
@@ -275,10 +271,10 @@ public class CommonAutonomous {
         }else{
             turnDirection = Direction.RIGHT;
         }
-        drive.rotateDegrees(turnDirection, 55, 0.25);
+        drive.rotateDegrees(turnDirection, TAPE_2_TO_BALL_ANGLE, 0.25);
         wait_between_move();
 
-        drive.moveInches(Direction.BACKWARD, 65, 1.0);
+        drive.moveInches(Direction.BACKWARD, BALL_TO_TAPE_2, 1.0);
         wait_between_move();
     }
 
@@ -307,6 +303,12 @@ public class CommonAutonomous {
 
     private void wait_between_move(){
         linearOpMode.sleep(WAIT_TIME);
+    }
+
+    private void driveToBeacon(){
+        drive.driveUntilDistance(BEACON_DISTANCE_BUFFER, 0.3);
+        drive.stop();
+        wait_between_move();
     }
 
 }

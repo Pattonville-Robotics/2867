@@ -42,8 +42,6 @@ public class ServoValueFinder extends LinearOpMode {
                 position = 0;
             } else if (gamepad1.y) {
                 position = 1;
-            } else {
-                position = SERVO_DEFAULT_POSITION;
             }
 
             servo.setPosition(position);
