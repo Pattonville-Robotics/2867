@@ -38,7 +38,7 @@ public class LineFollowerDrive extends EncoderDrive {
      * beneath it and allows for certain actions to be taken
      * under such conditions.
      *
-     * @param hardwareMap     robot's current hardwareMap
+     * @param hardwareMap     the robot's current hardwareMap
      * @param linearOpMode    a linearOpMode object
      * @param robotParameters our custom RobotParameters Class
      *
@@ -92,16 +92,25 @@ public class LineFollowerDrive extends EncoderDrive {
      */
     public void driveUntilDistance(double distance, double power) {
 
+        Direction driveDirection;
         double buffer = 0.5;
 
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        move(Direction.FORWARD, power);
-        while (!inRange(range_sensor.getDistance(DistanceUnit.INCH), (distance+DISTANCE_OFFSET) + buffer, (distance+DISTANCE_OFFSET) - buffer)
-                && opmodeReady()) {
+        double currentDistance = range_sensor.getDistance(DistanceUnit.INCH);
+
+        if(currentDistance > distance){
+            driveDirection = Direction.FORWARD;
+        }else{
+            driveDirection = Direction.BACKWARD;
+        }
+
+        move(driveDirection, power);
+        while (!rangeSensorInRange(distance, buffer) && opmodeReady()) {
             Thread.yield();
         }
+
         stop();
     }
 
@@ -129,12 +138,27 @@ public class LineFollowerDrive extends EncoderDrive {
      *
      * @return boolean dictating whether or not the sensor is
      * detecting the white line
+     *
      * @see LineFollowerDrive#WHITE_TAPE_REFLECTIVITY_MIN
      * @see LineFollowerDrive#WHITE_TAPE_REFLECTIVITY_MAX
      */
     private boolean foundLine() {
         telemetry("ODS: ", String.valueOf(ods.getRawLightDetected()));
         return ods.getRawLightDetected() >= WHITE_TAPE_REFLECTIVITY_MIN && ods.getRawLightDetected() <= WHITE_TAPE_REFLECTIVITY_MAX;
+    }
+
+    /**
+     * checks if the range sensor distance reading is within the specified bounds
+     *
+     * @param distance the distance we want to be away from an object
+     * @param buffer the size of our buffer zone
+     * @return whether or not the sensor is within the given range
+     *
+     * @see LineFollowerDrive#inRange(double, double, double)
+     * @see ModernRoboticsI2cRangeSensor#getDistance(DistanceUnit)
+     */
+    private boolean rangeSensorInRange(double distance, double buffer){
+        return inRange(range_sensor.getDistance(DistanceUnit.INCH), (distance + DISTANCE_OFFSET) + buffer, (distance + DISTANCE_OFFSET) - buffer);
     }
 
     /**
@@ -151,6 +175,14 @@ public class LineFollowerDrive extends EncoderDrive {
         return value <= upperBound && value >= lowerBound;
     }
 
+    /**
+     * determines if the opmode is both active and not requesting to stop
+     * @return whether ot not the opmode is active and not requesting stop
+     *
+     * @see LinearOpMode
+     * @see LinearOpMode#opModeIsActive()
+     * @see LinearOpMode#isStopRequested()
+     */
     private boolean opmodeReady(){
         return linearOpMode.opModeIsActive()  && !linearOpMode.isStopRequested();
     }

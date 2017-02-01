@@ -14,12 +14,12 @@ public class GuideRail {
 
     public Servo guideRail;
     public LinearOpMode linearOpMode;
-/**
- * <p>
- *     sets up GuideRail object with servo and sets the servo
- *     to a starting position of 1.0
- * </p>
- */
+
+    /**
+     * sets up a GuideRail object
+     * @param hardwareMap the robot's hardwaremap
+     * @param linearOpMode a lineaopmode object (for telemetry only)
+     */
     public GuideRail(HardwareMap hardwareMap, LinearOpMode linearOpMode){
         this.linearOpMode = linearOpMode;
         guideRail = hardwareMap.servo.get("rail");
@@ -27,7 +27,7 @@ public class GuideRail {
     }
 
     /**
-     * <p>Explicitly sets the position of the guide rail servo<p/>
+     * Explicitly sets the position of the guide rail servo
      *
      * @param position position to set servo to
      */
