@@ -20,7 +20,7 @@ public class LineDetectorTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         LineFollowerDrive drive = new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
-        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this, drive);
+        CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this);
 
         waitForStart();
 

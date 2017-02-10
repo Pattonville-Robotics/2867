@@ -29,22 +29,22 @@ import org.pattonvillerobotics.opmodes.CustomRobotParameters;
  */
 public class CommonAutonomous {
 
-    private static double SPEED = 0.4;                  // Motor Power
-    private static long WAIT_TIME = 200;                // Milliseconds
+    private static double SPEED = 1.0;                  // Motor Power
+    private static long WAIT_TIME = 20;                // Milliseconds
 
     //Distance Constants (inches)
 
     private static int START_DISTANCE                   =   6;
 
     private static int BALL_TO_TAPE_2                   =   60;
-    private static int START_POS_1_TO_TAPE_1            =   52;
-    private static int TAPE_1_TO_TAPE_2                 =   49;
+    private static int START_POS_1_TO_TAPE_1            =   56;
+    private static int TAPE_1_TO_TAPE_2                 =   48;
 
     private static int BEACON_DISTANCE_BUFFER           =    8;
 
     //Angle Constants (degrees)
     private static int RIGHT_ANGLE                      =   90; //Right Angle
-    private static int WALL_POS_1_TO_BEACON_ANGLE       =   45;
+    private static int WALL_POS_1_TO_BEACON_ANGLE       =   40;
     private static int TAPE_2_TO_BALL_ANGLE             =   53; //Tape 2 -> Ball
 
     public Direction turnDirection;
@@ -132,7 +132,7 @@ public class CommonAutonomous {
         }, new Runnable() {
             @Override
             public void run() {
-                drive.moveInches(Direction.FORWARD, 3, 0.2);
+                drive.moveInches(Direction.FORWARD, 3, 1.0);
                 pressBeacon();
             }
         });
@@ -149,16 +149,16 @@ public class CommonAutonomous {
         drive.stop();
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
+        drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.75);
         drive.stop();
         wait_between_move();
 
         guideRail.setPosition(0.05);
-        drive.moveInches(Direction.FORWARD, START_POS_1_TO_TAPE_1, 0.6);
+        drive.moveInches(Direction.FORWARD, START_POS_1_TO_TAPE_1, SPEED);
         drive.stop();
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.25);
+        drive.rotateDegrees(turnDirection, 47 , 0.75);
         drive.stop();
         wait_between_move();
 
@@ -208,12 +208,12 @@ public class CommonAutonomous {
 
         double angle = -RIGHT_ANGLE;
         if(turnDirection == Direction.LEFT){
-            angle += 2;
+            angle += 5;
         }else{
-            angle -= 2;
+            angle -= -5;
         }
 
-        drive.rotateDegrees(turnDirection, angle, 0.25);
+        drive.rotateDegrees(turnDirection, angle, 0.75);
         wait_between_move();
 
         drive.stop();
@@ -233,10 +233,10 @@ public class CommonAutonomous {
         backUpFromBeacon1();
 
         //DRIVE TO WHITE TAPE LINE
-        drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, 0.6);
+        drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, SPEED);
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.25);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.5);
         wait_between_move();
 
         driveToBeacon();
