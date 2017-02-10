@@ -55,7 +55,7 @@ public class TeleOp extends LinearOpMode {
 
     /**
      * This method allows the driver to control the robot with the gamepad.
-     *<p>
+     *
      * If the driver presses x, the button presser will extend. If the driver
      * presses b, the button presser will return to the default position.
      * Using the left and right sticks allow the driver to turn the robot
@@ -65,11 +65,13 @@ public class TeleOp extends LinearOpMode {
 
         //**************** DRIVE TRAIN CONTROLS ****************\\
 
-        if(gamepad1.left_stick_y > 0.75 && gamepad1.right_stick_y > 0.75){
+        /*if(gamepad1.left_stick_y > 0.75 && gamepad1.right_stick_y > 0.75){
             drive.moveFreely(gamepad1.left_stick_y - 0.25, gamepad1.right_stick_y - 0.25);
         }else{
             drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);
-        }
+        }*/
+
+        drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
 
         //**************** BUTTON PRESSER CONTROLS ****************\\
 
@@ -102,6 +104,11 @@ public class TeleOp extends LinearOpMode {
         }else if(gamepad1.dpad_down){
             guideRail.setPosition(guideRailCurrentPosition - 0.01);
         }
+
+        //**************** LINEAR SLIDES CONTROLS ****************\\
+
+
+
 
         //**************** EXTRANEOUS CONTROLS ****************\\
         if(gamepad1.start){

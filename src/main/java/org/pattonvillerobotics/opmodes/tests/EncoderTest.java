@@ -11,7 +11,7 @@ import org.pattonvillerobotics.opmodes.CustomRobotParameters;
  * Created by developer on 10/15/16.
  */
 
-@Autonomous(name = "EndoerTest", group = "Tests")
+@Autonomous(name = "EncoderTest", group = "Tests")
 public class EncoderTest extends LinearOpMode {
 
     private EncoderDrive drive;
@@ -25,9 +25,9 @@ public class EncoderTest extends LinearOpMode {
         /*drive.moveInches(Direction.FORWARD, 50, 0.3);
         sleep(5000);*/
 
-        drive.moveInches(Direction.FORWARD, 50, 0.25);
+        /*drive.moveInches(Direction.FORWARD, 50, 0.25);
         drive.stop();
-        /*sleep(1000);
+        sleep(1000);
         drive.moveInches(Direction.BACKWARD, 25, 0.25);
         drive.stop();
         sleep(1000);
@@ -40,9 +40,9 @@ public class EncoderTest extends LinearOpMode {
 
         //drive.rotateDegrees(Direction.LEFT, 45, 0.25);
 
-        /*drive.rotateDegrees(Direction.LEFT, 90, 0.25);
+        drive.rotateDegrees(Direction.LEFT, 90, 0.25);
         sleep(5000);
-        drive.rotateDegrees(Direction.RIGHT, 90, 0.25);
+        /*drive.rotateDegrees(Direction.RIGHT, 90, 0.25);
         sleep(5000);
         drive.rotateDegrees(Direction.LEFT, 180, 0.25);
         sleep(5000);
