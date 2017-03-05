@@ -17,8 +17,8 @@ import org.pattonvillerobotics.robotclasses.GuideRail;
  * gamepad: A, B, X, Y, right trigger, left trigger,
  * start, up d-pad, down d-pad, left stick, and right stick.
  */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "Teleop")
-public class TeleOp extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "FastTeleOp", group = "Teleop")
+public class FastTeleOp extends LinearOpMode {
 
     private SimpleDrive drive;
     private ButtonPresser buttonPresser;
@@ -43,6 +43,8 @@ public class TeleOp extends LinearOpMode {
      */
     public void initialize() {
         drive = new SimpleDrive(this, hardwareMap);
+        drive.leftDriveMotor.setMaxSpeed((int) (1440 * 1.5));
+        drive.rightDriveMotor.setMaxSpeed((int) (1440 * 1.5));
 
         buttonPresser = new ButtonPresser(hardwareMap);
 

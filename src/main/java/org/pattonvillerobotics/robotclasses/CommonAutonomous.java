@@ -29,22 +29,23 @@ import org.pattonvillerobotics.opmodes.CustomRobotParameters;
  */
 public class CommonAutonomous {
 
-    private static double SPEED = 1.0;                  // Motor Power
-    private static long WAIT_TIME = 20;                // Milliseconds
+    private static double DRIVE_SPEED = 0.7;            // Motor Power
+    private static double TURN_SPEED  = 0.7;           // Motor Power
+    private static long WAIT_TIME = 20;                 // Milliseconds
 
     //Distance Constants (inches)
 
     private static int START_DISTANCE                   =   6;
 
     private static int BALL_TO_TAPE_2                   =   60;
-    private static int START_POS_1_TO_TAPE_1            =   56;
-    private static int TAPE_1_TO_TAPE_2                 =   48;
+    private static double START_POS_1_TO_TAPE_1         =   60;
+    private static int TAPE_1_TO_TAPE_2                 =   46;
 
-    private static int BEACON_DISTANCE_BUFFER           =    8;
+    private static int BEACON_DISTANCE_BUFFER           =    5;
 
     //Angle Constants (degrees)
     private static int RIGHT_ANGLE                      =   90; //Right Angle
-    private static int WALL_POS_1_TO_BEACON_ANGLE       =   40;
+    private static int WALL_POS_1_TO_BEACON_ANGLE       =   43;
     private static int TAPE_2_TO_BALL_ANGLE             =   53; //Tape 2 -> Ball
 
     public Direction turnDirection;
@@ -56,6 +57,7 @@ public class CommonAutonomous {
     public LinearOpMode linearOpMode;
     public BigWheel bigWheel;
     public GuideRail guideRail;
+    public ForkLift lift;
 
     /**
      * sets up an instance of CommonAutonomous, which establishes connectes to a drive class, and sets the
@@ -95,6 +97,10 @@ public class CommonAutonomous {
         buttonPresser = new ButtonPresser(hardware);
         bigWheel = new BigWheel(hardware, linearOpMode);
         guideRail = new GuideRail(hardware, linearOpMode);
+        lift = new ForkLift(hardware, linearOpMode);
+
+        /*lift.raiseSlides();
+        linearOpMode.sleep(500);*/
 
     }
 
@@ -132,37 +138,40 @@ public class CommonAutonomous {
         }, new Runnable() {
             @Override
             public void run() {
-                drive.moveInches(Direction.FORWARD, 3, 1.0);
+                linearOpMode.telemetry.addData("Blue", beaconColorSensor.blue());
+                linearOpMode.telemetry.addData("Red", beaconColorSensor.red());
+                drive.moveInches(Direction.FORWARD, 3, DRIVE_SPEED);
                 pressBeacon();
             }
         });
 
-        drive.moveInches(Direction.FORWARD, 12, SPEED);
+        drive.moveInches(Direction.FORWARD, 8, DRIVE_SPEED);
+        wait_between_move();
     }
 
     /**
      * Drives robot from wall position 1 to in front of the
-     * first beacon.
+     * first beacon
      */
     public void wallPos1ToBeacon1(){
-        drive.moveInches(Direction.FORWARD, START_DISTANCE, SPEED);
+        drive.moveInches(Direction.FORWARD, START_DISTANCE, DRIVE_SPEED);
         drive.stop();
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , 0.75);
+        drive.rotateDegrees(turnDirection, WALL_POS_1_TO_BEACON_ANGLE , TURN_SPEED);
         drive.stop();
         wait_between_move();
 
-        guideRail.setPosition(0.05);
-        drive.moveInches(Direction.FORWARD, START_POS_1_TO_TAPE_1, SPEED);
+        guideRail.setPosition(0.3);
+        drive.moveInches(Direction.FORWARD, START_POS_1_TO_TAPE_1, DRIVE_SPEED);
         drive.stop();
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, 47 , 0.75);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE-START_POS_1_TO_TAPE_1+10, TURN_SPEED);
         drive.stop();
         wait_between_move();
 
-        driveToBeacon();
+        //driveToBeacon();
         /*drive.moveInches(Direction.FORWARD, 10, SPEED);
         drive.stop();
         wait_between_move();*/
@@ -178,13 +187,13 @@ public class CommonAutonomous {
      * @see LineFollowerDrive#align(Direction, double)
      */
     public void wallToBeacon1WithLine(){
-        drive.moveInches(Direction.FORWARD, START_DISTANCE, 0.5);
+        drive.moveInches(Direction.FORWARD, START_DISTANCE, DRIVE_SPEED);
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, 50, 0.3);
+        drive.rotateDegrees(turnDirection, 50, TURN_SPEED);
         wait_between_move();
 
-        drive.driveUntilLine(SPEED);
+        drive.driveUntilLine(DRIVE_SPEED);
         wait_between_move();
 
         drive.align(turnDirection, 50);
@@ -197,7 +206,7 @@ public class CommonAutonomous {
 
     private void backUpFromBeacon1(){
         //MOVE TO END OF WHITE TAPE LINE
-        drive.moveInches(Direction.BACKWARD, 10, SPEED);
+        drive.moveInches(Direction.BACKWARD, 8, DRIVE_SPEED);
         drive.stop();
         wait_between_move();
 
@@ -206,14 +215,9 @@ public class CommonAutonomous {
 
         //TURN TOWARDS SECOND BEACON
 
-        double angle = -RIGHT_ANGLE;
-        if(turnDirection == Direction.LEFT){
-            angle += 5;
-        }else{
-            angle -= -5;
-        }
+        double angle = -RIGHT_ANGLE + 5;
 
-        drive.rotateDegrees(turnDirection, angle, 0.75);
+        drive.rotateDegrees(turnDirection, angle, TURN_SPEED);
         wait_between_move();
 
         drive.stop();
@@ -233,10 +237,10 @@ public class CommonAutonomous {
         backUpFromBeacon1();
 
         //DRIVE TO WHITE TAPE LINE
-        drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, SPEED);
+        drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, DRIVE_SPEED);
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, 0.5);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE - 2, TURN_SPEED);
         wait_between_move();
 
         driveToBeacon();
@@ -247,7 +251,7 @@ public class CommonAutonomous {
     public void beacon1ToBeacon2WithLine(){
         backUpFromBeacon1();
 
-        drive.driveUntilLine(SPEED);
+        drive.driveUntilLine(DRIVE_SPEED);
         wait_between_move();
 
         drive.align(turnDirection, 0);
@@ -284,18 +288,32 @@ public class CommonAutonomous {
      */
     public void judgeCode () {
 
-        drive.moveInches(Direction.FORWARD, 5, 0.6);
-        drive.moveInches(Direction.BACKWARD, 5, 0.6);
-        drive.rotateDegrees(Direction.LEFT, 45, 0.5);
-        drive.rotateDegrees(Direction.RIGHT, 45, 0.5);
+        drive.moveInches(Direction.FORWARD, 5, 1.0);
+        drive.moveInches(Direction.BACKWARD, 5, 1.0);
+        drive.rotateDegrees(Direction.LEFT, 45, 1.0);
+        drive.rotateDegrees(Direction.RIGHT, 45, 1.0);
         drive.stop();
         linearOpMode.sleep(1000);
+
         buttonPresser.presserLeft();
         buttonPresser.presserRight();
         linearOpMode.sleep(1000);
+
         guideRail.setPosition(0.8);
         bigWheel.fire();
         linearOpMode.sleep(300);
+
+    }
+
+    public void fireParticle(){
+        drive.moveInches(Direction.BACKWARD, 10, 1.0);
+        guideRail.setPosition(0.2);
+
+        linearOpMode.sleep(1000);
+
+        bigWheel.fire();
+
+        drive.moveInches(Direction.BACKWARD, 45, 1.0);
 
     }
 
@@ -306,7 +324,7 @@ public class CommonAutonomous {
     }
 
     private void driveToBeacon(){
-        drive.driveUntilDistance(BEACON_DISTANCE_BUFFER, 0.3);
+        drive.moveInches(Direction.FORWARD, 5, DRIVE_SPEED);
         drive.stop();
         wait_between_move();
     }
