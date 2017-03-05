@@ -2,7 +2,9 @@ package org.pattonvillerobotics.robotclasses;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by joshua on 1/31/17.
@@ -10,8 +12,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ForkLift {
 
-    private DcMotor leftWinch;
-    private DcMotor rightWinch;
+    public DcMotor leftWinch;
+    public DcMotor rightWinch;
+
+    private Servo leftForkStop;
+    private Servo rightForkStop;
 
     private HardwareMap hardwareMap;
     private LinearOpMode linearOpMode;
@@ -23,6 +28,15 @@ public class ForkLift {
 
         leftWinch = hardwareMap.dcMotor.get("left_winch");
         rightWinch = hardwareMap.dcMotor.get("right_winch");
+
+        leftForkStop = hardwareMap.servo.get("left_fork_stop");
+        rightForkStop = hardwareMap.servo.get("right_fork_stop");
+
+        leftForkStop.setPosition(0.0);
+        rightForkStop.setPosition(1.0);
+
+        leftWinch.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightWinch.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
@@ -39,14 +53,11 @@ public class ForkLift {
         linearOpMode.sleep(100);
     }
 
-    public void extendForks(){
-        raiseSlides();
-        linearOpMode.sleep(2000);
+    public void releaseForks(){
 
-        stopSlides();
+        leftForkStop.setPosition(0.35);
+        rightForkStop.setPosition(0.5);
 
-        lowerSlides();
-        linearOpMode.sleep(2000);
     }
 
 

@@ -76,7 +76,7 @@ public class LineFollowerDrive extends EncoderDrive {
         }
         stop();
         linearOpMode.sleep(200);
-        moveInches(Direction.BACKWARD, 3, 0.3);
+        moveInches(Direction.FORWARD, 5, 1.0);
 
     }
 
@@ -92,21 +92,12 @@ public class LineFollowerDrive extends EncoderDrive {
      */
     public void driveUntilDistance(double distance, double power) {
 
-        Direction driveDirection;
         double buffer = 0.5;
 
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        double currentDistance = range_sensor.getDistance(DistanceUnit.INCH);
-
-        if(currentDistance > distance){
-            driveDirection = Direction.FORWARD;
-        }else{
-            driveDirection = Direction.BACKWARD;
-        }
-
-        move(driveDirection, power);
+        move(Direction.FORWARD, power);
         while (!rangeSensorInRange(distance, buffer) && opmodeReady()) {
             Thread.yield();
         }
