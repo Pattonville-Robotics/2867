@@ -19,15 +19,15 @@ public class LineDetectorTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        LineFollowerDrive drive = new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
+        LineFollowerDrive drive = new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.AUTONOMOUS_ROBOT_PARAMETERS);
         CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.RED, hardwareMap, this);
 
         waitForStart();
 
-        commonAutonomous.wallToBeacon1WithLine();
+        /*commonAutonomous.wallToBeacon1WithLine();
         commonAutonomous.pressBeacon();
         commonAutonomous.beacon1ToBeacon2WithLine();
-        commonAutonomous.pressBeacon();
+        commonAutonomous.pressBeacon();*/
 
 
     }

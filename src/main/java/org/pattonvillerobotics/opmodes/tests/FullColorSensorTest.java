@@ -46,7 +46,7 @@ public class FullColorSensorTest extends LinearOpMode {
 
         buttonPresser = new ButtonPresser(hardwareMap);
 
-        drive = new EncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
+        drive = new EncoderDrive(hardwareMap, this, CustomRobotParameters.AUTONOMOUS_ROBOT_PARAMETERS);
 
     }
 

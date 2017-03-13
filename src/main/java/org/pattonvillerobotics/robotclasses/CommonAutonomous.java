@@ -29,23 +29,26 @@ import org.pattonvillerobotics.opmodes.CustomRobotParameters;
  */
 public class CommonAutonomous {
 
-    private static double DRIVE_SPEED = 0.7;            // Motor Power
-    private static double TURN_SPEED  = 0.7;           // Motor Power
-    private static long WAIT_TIME = 20;                 // Milliseconds
+    private static final double ODS_DISTANCE_OFFSET = 6;    // Inches
+    private static final double ODS_TURN_OFFSET = 3;        // Degrees
+
+    private static double DRIVE_SPEED = 1.0;                // Motor Power
+    private static double TURN_SPEED  = 0.7;                // Motor Power
+    private static long WAIT_TIME = 100;                    // Milliseconds
 
     //Distance Constants (inches)
 
     private static int START_DISTANCE                   =   6;
 
     private static int BALL_TO_TAPE_2                   =   60;
-    private static double START_POS_1_TO_TAPE_1         =   60;
+    private static double START_POS_1_TO_TAPE_1         =   54.5;
     private static int TAPE_1_TO_TAPE_2                 =   46;
 
     private static int BEACON_DISTANCE_BUFFER           =    5;
 
     //Angle Constants (degrees)
     private static int RIGHT_ANGLE                      =   90; //Right Angle
-    private static int WALL_POS_1_TO_BEACON_ANGLE       =   43;
+    private static int WALL_POS_1_TO_BEACON_ANGLE       =   36;
     private static int TAPE_2_TO_BALL_ANGLE             =   53; //Tape 2 -> Ball
 
     public Direction turnDirection;
@@ -79,7 +82,7 @@ public class CommonAutonomous {
         this.allianceColor = allianceColor;
         this.hardware = hardware;
         this.linearOpMode = linearOpMode;
-        this.drive = new LineFollowerDrive(hardware, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
+        this.drive = new LineFollowerDrive(hardware, linearOpMode, CustomRobotParameters.AUTONOMOUS_ROBOT_PARAMETERS);
 
         //Set turn direction based on alliance color
         if(allianceColor == AllianceColor.BLUE){
@@ -105,16 +108,7 @@ public class CommonAutonomous {
     }
 
 
-    //******************* AUTONOMOUS MODULES *******************\\
-
-    /**
-     * Drives robot from wall position 1 to the cap ball and knocks
-     * the cap ball to the floor.
-     */
-    public void wallToBall(){
-        drive.moveInches(Direction.BACKWARD, 60, 0.8);
-        drive.stop();
-    }
+    //******************************** AUTONOMOUS MODULES ********************************\\
 
     /**
      * Determines the color of the right side of the beacon
@@ -138,8 +132,6 @@ public class CommonAutonomous {
         }, new Runnable() {
             @Override
             public void run() {
-                linearOpMode.telemetry.addData("Blue", beaconColorSensor.blue());
-                linearOpMode.telemetry.addData("Red", beaconColorSensor.red());
                 drive.moveInches(Direction.FORWARD, 3, DRIVE_SPEED);
                 pressBeacon();
             }
@@ -148,6 +140,11 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, 8, DRIVE_SPEED);
         wait_between_move();
     }
+
+
+
+
+    //******************************** AUTONOMOUS MODULES WITH ENCODERS ********************************\\
 
     /**
      * Drives robot from wall position 1 to in front of the
@@ -179,56 +176,6 @@ public class CommonAutonomous {
     }
 
     /**
-     * Drives robot from wall position1 to in front of the
-     * first beacon using the ODS sensor to track the
-     * white line.
-     *
-     * @see LineFollowerDrive#driveUntilLine(double)
-     * @see LineFollowerDrive#align(Direction, double)
-     */
-    public void wallToBeacon1WithLine(){
-        drive.moveInches(Direction.FORWARD, START_DISTANCE, DRIVE_SPEED);
-        wait_between_move();
-
-        drive.rotateDegrees(turnDirection, 50, TURN_SPEED);
-        wait_between_move();
-
-        drive.driveUntilLine(DRIVE_SPEED);
-        wait_between_move();
-
-        drive.align(turnDirection, 50);
-        wait_between_move();
-
-        driveToBeacon();
-
-    }
-
-
-    private void backUpFromBeacon1(){
-        //MOVE TO END OF WHITE TAPE LINE
-        drive.moveInches(Direction.BACKWARD, 8, DRIVE_SPEED);
-        drive.stop();
-        wait_between_move();
-
-        //FIRE LOADED PARTICLE
-        bigWheel.fire();
-
-        //TURN TOWARDS SECOND BEACON
-
-        double angle = -RIGHT_ANGLE + 5;
-
-        drive.rotateDegrees(turnDirection, angle, TURN_SPEED);
-        wait_between_move();
-
-        drive.stop();
-        wait_between_move();
-
-        //RESET BUTTON PRESSER OUT OF WAY OF COLOR SENSOR
-        buttonPresser.setPosition(0.5);
-
-    }
-
-    /**
      * Drives robot from in front of the first beacon to in
      * front of the second beacon
      */
@@ -240,21 +187,7 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, DRIVE_SPEED);
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE - 2, TURN_SPEED);
-        wait_between_move();
-
-        driveToBeacon();
-        /*drive.moveInches(Direction.FORWARD, 3, SPEED);
-        wait_between_move();*/
-    }
-
-    public void beacon1ToBeacon2WithLine(){
-        backUpFromBeacon1();
-
-        drive.driveUntilLine(DRIVE_SPEED);
-        wait_between_move();
-
-        drive.align(turnDirection, 0);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, TURN_SPEED);
         wait_between_move();
 
         driveToBeacon();
@@ -282,6 +215,69 @@ public class CommonAutonomous {
         wait_between_move();
     }
 
+    private void backUpFromBeacon1(){
+        //MOVE TO END OF WHITE TAPE LINE
+        drive.moveInches(Direction.BACKWARD, 8, DRIVE_SPEED);
+        drive.stop();
+        wait_between_move();
+
+        //FIRE LOADED PARTICLE
+        //bigWheel.fire();
+
+        //TURN TOWARDS SECOND BEACON
+
+        double angle = -RIGHT_ANGLE + 10;
+
+        drive.rotateDegrees(turnDirection, angle, TURN_SPEED);
+        wait_between_move();
+
+        drive.stop();
+        wait_between_move();
+
+        //RESET BUTTON PRESSER OUT OF WAY OF COLOR SENSOR
+        buttonPresser.setPosition(0.5);
+
+    }
+
+
+
+    //******************************** AUTONOMOUS MODULES WITH ODS ********************************\\
+
+    public void driveToBeaconOne(){
+        driveToBeacon();
+    }
+
+    public void driveToBeaconTwo(){
+
+        backUpFromBeacon1();
+
+        driveToBeacon();
+
+    }
+
+    private void driveToBeacon(){
+        drive.driveUntilLine(Direction.FORWARD, DRIVE_SPEED);
+        wait_between_move();
+
+        drive.adjustDistance(Direction.FORWARD, ODS_DISTANCE_OFFSET, DRIVE_SPEED/2);
+        wait_between_move();
+
+        drive.turnUntilLine(turnDirection, TURN_SPEED);
+        wait_between_move();
+
+        drive.adjustTurn(turnDirection, ODS_TURN_OFFSET, TURN_SPEED);
+        wait_between_move();
+
+        drive.driveUntilDistance(3, DRIVE_SPEED);
+
+    }
+
+
+
+
+
+    //******************************** OTHER AUTONOMOUS MODULES ********************************\\
+
     /**
      * An autonomous routine to run during judging to show off our
      * robot's abilities to the judges.
@@ -306,7 +302,7 @@ public class CommonAutonomous {
     }
 
     public void fireParticle(){
-        drive.moveInches(Direction.BACKWARD, 10, 1.0);
+        drive.moveInches(Direction.BACKWARD, 18, 1.0);
         guideRail.setPosition(0.2);
 
         linearOpMode.sleep(1000);
@@ -323,10 +319,23 @@ public class CommonAutonomous {
         linearOpMode.sleep(WAIT_TIME);
     }
 
-    private void driveToBeacon(){
+    /**
+     * aligns the robot with the beacon bu driving forward until the robot
+     * is in range for the color sensor to work as expected.
+     */
+    private void alignToBeacon(){
         drive.moveInches(Direction.FORWARD, 5, DRIVE_SPEED);
         drive.stop();
         wait_between_move();
+    }
+
+    /**
+     * Drives robot from wall position 1 to the cap ball and knocks
+     * the cap ball to the floor.
+     */
+    public void wallToBall(){
+        drive.moveInches(Direction.BACKWARD, 60, 0.8);
+        drive.stop();
     }
 
 }

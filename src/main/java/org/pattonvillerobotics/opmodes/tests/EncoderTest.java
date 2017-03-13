@@ -57,7 +57,7 @@ public class EncoderTest extends LinearOpMode {
 
     private void initialize(){
 
-        drive = new EncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
+        drive = new EncoderDrive(hardwareMap, this, CustomRobotParameters.AUTONOMOUS_ROBOT_PARAMETERS);
 
     }
 

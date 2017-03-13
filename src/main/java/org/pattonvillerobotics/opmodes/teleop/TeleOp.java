@@ -1,12 +1,15 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
+import org.pattonvillerobotics.opmodes.CustomRobotParameters;
 import org.pattonvillerobotics.robotclasses.BigWheel;
 import org.pattonvillerobotics.robotclasses.ButtonPresser;
 import org.pattonvillerobotics.robotclasses.ForkLift;
 import org.pattonvillerobotics.robotclasses.GuideRail;
+import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
 
 /**
  * Created by Joshua Zahner on 10/11/16.
@@ -20,7 +23,8 @@ import org.pattonvillerobotics.robotclasses.GuideRail;
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "Teleop")
 public class TeleOp extends LinearOpMode {
 
-    private SimpleDrive drive;
+    //private SimpleDrive drive;
+    private LineFollowerDrive drive;
     private ButtonPresser buttonPresser;
     private BigWheel wheel;
     private GuideRail guideRail;
@@ -42,7 +46,11 @@ public class TeleOp extends LinearOpMode {
      * and defines the gamepad controls that are sticky.
      */
     public void initialize() {
-        drive = new SimpleDrive(this, hardwareMap);
+        //drive = new SimpleDrive(this, hardwareMap);
+
+        drive = new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.TELEOP_ROBOT_PARAMETERS);
+        drive.leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        drive.rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         buttonPresser = new ButtonPresser(hardwareMap);
 
@@ -68,12 +76,6 @@ public class TeleOp extends LinearOpMode {
     public void doLoop() {
 
         //**************** DRIVE TRAIN CONTROLS ****************\\
-
-        /*if(gamepad1.left_stick_y > 0.75 && gamepad1.right_stick_y > 0.75){
-            drive.moveFreely(gamepad1.left_stick_y - 0.25, gamepad1.right_stick_y - 0.25);
-        }else{
-            drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);
-        }*/
 
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
 
@@ -111,34 +113,34 @@ public class TeleOp extends LinearOpMode {
 
         //**************** LINEAR SLIDES CONTROLS ****************\\
 
-        if(gamepad1.left_bumper){
-            lift.lowerSlides();
-        }else if(gamepad1.right_bumper){
-            lift.raiseSlides();
+        if(!gamepad1.atRest() && gamepad2.atRest()){
+
+            if(gamepad1.left_bumper){
+                lift.lowerSlides();
+            }else if(gamepad1.right_bumper){
+                lift.raiseSlides();
+            }else{
+                lift.stopSlides();
+            }
+
+            if(gamepad1.guide){
+                lift.releaseForks();
+            }
+
+        }else if(!gamepad2.atRest() && gamepad1.atRest()){
+
+            double rightStickValue = gamepad2.right_stick_y;
+            double leftStickValue = gamepad2.left_stick_y;
+
+            lift.rightWinch.setPower(rightStickValue);
+            lift.leftWinch.setPower(leftStickValue);
+
+            if(gamepad2.guide){
+                lift.releaseForks();
+            }
+
         }else{
             lift.stopSlides();
-        }
-
-        if(gamepad1.guide){
-            lift.releaseForks();
-        }
-
-
-
-        if(gamepad2.left_bumper){
-            lift.leftWinch.setPower(1.0);
-        }else if(gamepad2.right_bumper){
-            lift.rightWinch.setPower(1.0);
-        }
-
-        if(gamepad2.left_trigger > 0.5){
-            lift.leftWinch.setPower(-1.0);
-        }else if(gamepad2.right_trigger > 0.5){
-            lift.rightWinch.setPower(-1.0);
-        }
-
-        if(gamepad2.guide){
-            lift.releaseForks();
         }
 
 
@@ -154,7 +156,8 @@ public class TeleOp extends LinearOpMode {
     private void killAll(){
         drive.stop();
         wheel.stop();
+        lift.stopSlides();
         buttonPresser.setPosition(0.5);
-        guideRail.setPosition(0.9);
+        guideRail.setPosition(1.0);
     }
 }
