@@ -63,20 +63,22 @@ public class LineFollowerDrive extends EncoderDrive {
      * the white tape line that signifies the center
      * of the beacon
      *
+     * @param direction the direction to travel
+     * @param power the motor power to drive at
+     *
      * @see LineFollowerDrive#foundLine()
+     * @see Direction
      */
-    public void driveUntilLine(double power) {
+    public void driveUntilLine(Direction direction, double power) {
 
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        move(Direction.FORWARD, power);
+        move(direction, power);
         while (!foundLine() && opmodeReady()) {
             Thread.yield();
         }
         stop();
-        linearOpMode.sleep(200);
-        moveInches(Direction.FORWARD, 5, 1.0);
 
     }
 
@@ -92,12 +94,20 @@ public class LineFollowerDrive extends EncoderDrive {
      */
     public void driveUntilDistance(double distance, double power) {
 
+        Direction direction;
         double buffer = 0.5;
+        double currentDistance = range_sensor.getDistance(DistanceUnit.INCH);
 
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        move(Direction.FORWARD, power);
+        if(currentDistance < distance){
+            direction = Direction.BACKWARD;
+        }else{
+            direction = Direction.FORWARD;
+        }
+
+        move(direction, power);
         while (!rangeSensorInRange(distance, buffer) && opmodeReady()) {
             Thread.yield();
         }
@@ -106,20 +116,49 @@ public class LineFollowerDrive extends EncoderDrive {
     }
 
     /**
-     * aligns the robot with the white line so that the robot
-     * is directly perpendicular to the field wall and facing
-     * the beacon. Utilizes the EncoderDrive.rotateDegrees()
-     * method to turn 90 - current heading towards the beacon.
+     * turns until the ODS sensor detects the white line, signifying
+     * that the robot is perpendicular (or very near so) to the field
+     * wall
      *
-     * @param direction         direction in which to turn
-     * @param currentHeading    the current heading of
-     *                          the robot relative to
-     *                          perpendicular to the field
-     *                          wall
-     * @see Direction
+     * @param direction the direction to turn
+     * @param power the power to turn with
      */
-    public void align(Direction direction, double currentHeading) {
-        rotateDegrees(direction, 90 - currentHeading, 0.3);
+    public void turnUntilLine(Direction direction, double power){
+
+        leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        turn(direction, power);
+        while(!foundLine() && opmodeReady()){
+            Thread.yield();
+        }
+        stop();
+
+    }
+
+    /**
+     * adjusts the robot's position on field manually to account for the
+     * position of the ODS sensor versus the turning axis of the robot
+     *
+     * @param direction the direction to drive
+     * @param distance the distance to drive
+     * @param power the power to drive with
+     */
+    public void adjustDistance(Direction direction, double distance, double power){
+        moveInches(direction, distance, power);
+        stop();
+    }
+
+    /**
+     * adjusts the robot's position on the field manually to account for the
+     * the width of the tape line versus the turning axis of teh robot
+     *
+     * @param direction the direction to turn
+     * @param angle the angle to turn at
+     * @param power the power to turn with
+     */
+    public void adjustTurn(Direction direction, double angle, double power){
+        rotateDegrees(direction, angle, power);
         stop();
     }
 
@@ -135,7 +174,7 @@ public class LineFollowerDrive extends EncoderDrive {
      */
     private boolean foundLine() {
         telemetry("ODS: ", String.valueOf(ods.getRawLightDetected()));
-        return ods.getRawLightDetected() >= WHITE_TAPE_REFLECTIVITY_MIN && ods.getRawLightDetected() <= WHITE_TAPE_REFLECTIVITY_MAX;
+        return inRange(ods.getRawLightDetected(), WHITE_TAPE_REFLECTIVITY_MAX, WHITE_TAPE_REFLECTIVITY_MIN);
     }
 
     /**
@@ -149,7 +188,7 @@ public class LineFollowerDrive extends EncoderDrive {
      * @see ModernRoboticsI2cRangeSensor#getDistance(DistanceUnit)
      */
     private boolean rangeSensorInRange(double distance, double buffer){
-        return inRange(range_sensor.getDistance(DistanceUnit.INCH), (distance + DISTANCE_OFFSET) + buffer, (distance + DISTANCE_OFFSET) - buffer);
+        return inRange(range_sensor.getDistance(DistanceUnit.INCH), (distance - DISTANCE_OFFSET) + buffer, (distance - DISTANCE_OFFSET) - buffer);
     }
 
     /**

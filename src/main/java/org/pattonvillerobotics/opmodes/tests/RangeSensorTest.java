@@ -18,7 +18,7 @@ public class RangeSensorTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        LineFollowerDrive drive = new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
+        LineFollowerDrive drive = new LineFollowerDrive(hardwareMap, this, CustomRobotParameters.AUTONOMOUS_ROBOT_PARAMETERS);
 
         waitForStart();
 

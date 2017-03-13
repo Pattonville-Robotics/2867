@@ -29,6 +29,8 @@ public class FirstBeacon_1_B extends LinearOpMode {
         //press beacon
         CommonAutonomous commonAutonomous = new CommonAutonomous(AllianceColor.BLUE, hardwareMap, this);
 
+        waitForStart();
+
         commonAutonomous.wallPos1ToBeacon1();
         commonAutonomous.pressBeacon();
     }
