@@ -33,7 +33,7 @@ public class CommonAutonomous {
     private static final double ODS_TURN_OFFSET = 3;        // Degrees
 
     private static double DRIVE_SPEED = 1.0;                // Motor Power
-    private static double TURN_SPEED  = 0.7;                // Motor Power
+    private static double TURN_SPEED  = 0.5;                // Motor Power
     private static long WAIT_TIME = 100;                    // Milliseconds
 
     //Distance Constants (inches)
@@ -41,8 +41,8 @@ public class CommonAutonomous {
     private static int START_DISTANCE                   =   6;
 
     private static int BALL_TO_TAPE_2                   =   60;
-    private static double START_POS_1_TO_TAPE_1         =   54.5;
-    private static int TAPE_1_TO_TAPE_2                 =   46;
+    private static double START_POS_1_TO_TAPE_1         =   54;
+    private static int TAPE_1_TO_TAPE_2                 =   47;
 
     private static int BEACON_DISTANCE_BUFFER           =    5;
 
@@ -226,7 +226,7 @@ public class CommonAutonomous {
 
         //TURN TOWARDS SECOND BEACON
 
-        double angle = -RIGHT_ANGLE + 10;
+        double angle = -RIGHT_ANGLE + 5;
 
         drive.rotateDegrees(turnDirection, angle, TURN_SPEED);
         wait_between_move();

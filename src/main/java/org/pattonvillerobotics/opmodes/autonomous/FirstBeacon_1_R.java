@@ -17,7 +17,7 @@ import org.pattonvillerobotics.robotclasses.LineFollowerDrive;
 public class FirstBeacon_1_R extends LinearOpMode {
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode(){
         //drive 60 in forward
         //push cap ball
         //turn 90 left

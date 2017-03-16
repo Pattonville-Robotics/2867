@@ -31,7 +31,7 @@ public class CustomRobotParameters {
         TELEOP_ROBOT_PARAMETERS = new RobotParameters.Builder()
                 .leftDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
                 .rightDriveMotorDirection(DcMotorSimple.Direction.REVERSE)
-                .encodersEnabled(false)
+                .encodersEnabled(true)
                 .gyroEnabled(false)
                 .driveGearRatio(3) //Needs Edit
                 .wheelBaseRadius(8.25 * 180 / 170) //Needs Edit
