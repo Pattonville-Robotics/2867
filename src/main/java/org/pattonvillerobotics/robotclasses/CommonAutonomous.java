@@ -42,7 +42,7 @@ public class CommonAutonomous {
 
     private static int BALL_TO_TAPE_2                   =   60;
     private static double START_POS_1_TO_TAPE_1         =   54;
-    private static int TAPE_1_TO_TAPE_2                 =   47;
+    private static int TAPE_1_TO_TAPE_2                 =   45;
 
     private static int BEACON_DISTANCE_BUFFER           =    5;
 
@@ -137,7 +137,7 @@ public class CommonAutonomous {
             }
         });
 
-        drive.moveInches(Direction.FORWARD, 8, DRIVE_SPEED);
+        drive.moveInches(Direction.FORWARD, 10, DRIVE_SPEED);
         wait_between_move();
     }
 
@@ -187,12 +187,12 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, DRIVE_SPEED);
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE, TURN_SPEED);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE - 5, TURN_SPEED);
         wait_between_move();
 
-        driveToBeacon();
-        /*drive.moveInches(Direction.FORWARD, 3, SPEED);
-        wait_between_move();*/
+        //driveToBeacon();
+        drive.moveInches(Direction.FORWARD, 3, DRIVE_SPEED);
+        wait_between_move();
     }
 
     /**
@@ -222,7 +222,7 @@ public class CommonAutonomous {
         wait_between_move();
 
         //FIRE LOADED PARTICLE
-        //bigWheel.fire();
+        bigWheel.fire();
 
         //TURN TOWARDS SECOND BEACON
 
