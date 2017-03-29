@@ -3,6 +3,7 @@ package org.pattonvillerobotics.robotclasses;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
@@ -61,6 +62,7 @@ public class CommonAutonomous {
     public BigWheel bigWheel;
     public GuideRail guideRail;
     public ForkLift lift;
+    public Servo crServo;
 
     /**
      * sets up an instance of CommonAutonomous, which establishes connectes to a drive class, and sets the
@@ -101,6 +103,9 @@ public class CommonAutonomous {
         bigWheel = new BigWheel(hardware, linearOpMode);
         guideRail = new GuideRail(hardware, linearOpMode);
         lift = new ForkLift(hardware, linearOpMode);
+
+        crServo = hardware.servo.get("sweeper");
+        crServo.setPosition(0.5);
 
         /*lift.raiseSlides();
         linearOpMode.sleep(500);*/
