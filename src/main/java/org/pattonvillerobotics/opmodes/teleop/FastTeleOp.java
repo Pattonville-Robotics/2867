@@ -1,6 +1,8 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 import org.pattonvillerobotics.robotclasses.BigWheel;
@@ -25,6 +27,7 @@ public class FastTeleOp extends LinearOpMode {
     private BigWheel wheel;
     private GuideRail guideRail;
     private ForkLift lift;
+    private Servo crServo;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -53,6 +56,10 @@ public class FastTeleOp extends LinearOpMode {
         guideRail = new GuideRail(hardwareMap, this);
 
         lift = new ForkLift(hardwareMap, this);
+
+        crServo = hardwareMap.servo.get("sweeper");
+
+        crServo.setPosition(0.5);
 
         gamepad1.left_stick_y = 0;
         gamepad1.right_stick_y = 0;
@@ -148,6 +155,17 @@ public class FastTeleOp extends LinearOpMode {
         if(gamepad1.start){
             killAll();
         }
+
+        if(gamepad1.dpad_left){
+            crServo.setPosition(0);
+            sleep(3000);
+        }else if(gamepad1.dpad_right){
+            crServo.setPosition(1.0);
+            sleep(3000);
+        }else{
+            crServo.setPosition(0.5);
+        }
+
 
         telemetry.update();
 
