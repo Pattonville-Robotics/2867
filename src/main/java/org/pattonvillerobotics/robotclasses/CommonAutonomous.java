@@ -42,8 +42,8 @@ public class CommonAutonomous {
     private static int START_DISTANCE                   =   6;
 
     private static int BALL_TO_TAPE_2                   =   60;
-    private static double START_POS_1_TO_TAPE_1         =   54;
-    private static int TAPE_1_TO_TAPE_2                 =   45;
+    private static double START_POS_1_TO_TAPE_1         =   53.65;
+    private static double TAPE_1_TO_TAPE_2              =   45.5;
 
     private static int BEACON_DISTANCE_BUFFER           =    5;
 
@@ -142,7 +142,8 @@ public class CommonAutonomous {
             }
         });
 
-        drive.moveInches(Direction.FORWARD, 10, DRIVE_SPEED);
+        linearOpMode.sleep(250);
+        drive.moveInches(Direction.FORWARD, 6, DRIVE_SPEED);
         wait_between_move();
     }
 
@@ -164,12 +165,16 @@ public class CommonAutonomous {
         drive.stop();
         wait_between_move();
 
-        guideRail.setPosition(0.3);
+        guideRail.setPosition(0.15);
         drive.moveInches(Direction.FORWARD, START_POS_1_TO_TAPE_1, DRIVE_SPEED);
         drive.stop();
         wait_between_move();
 
         drive.rotateDegrees(turnDirection, RIGHT_ANGLE-START_POS_1_TO_TAPE_1+10, TURN_SPEED);
+        drive.stop();
+        wait_between_move();
+
+        drive.moveInches(Direction.FORWARD, 5, DRIVE_SPEED);
         drive.stop();
         wait_between_move();
 
@@ -192,7 +197,7 @@ public class CommonAutonomous {
         drive.moveInches(Direction.FORWARD, TAPE_1_TO_TAPE_2, DRIVE_SPEED);
         wait_between_move();
 
-        drive.rotateDegrees(turnDirection, RIGHT_ANGLE - 5, TURN_SPEED);
+        drive.rotateDegrees(turnDirection, RIGHT_ANGLE - 3, TURN_SPEED);
         wait_between_move();
 
         //driveToBeacon();
@@ -307,14 +312,12 @@ public class CommonAutonomous {
     }
 
     public void fireParticle(){
-        drive.moveInches(Direction.BACKWARD, 18, 1.0);
-        guideRail.setPosition(0.2);
+        drive.moveInches(Direction.BACKWARD, 12, 1.0);
+        guideRail.setPosition(0.15);
 
         linearOpMode.sleep(1000);
 
         bigWheel.fire();
-
-        drive.moveInches(Direction.BACKWARD, 45, 1.0);
 
     }
 

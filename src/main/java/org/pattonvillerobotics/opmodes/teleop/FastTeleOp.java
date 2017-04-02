@@ -158,10 +158,8 @@ public class FastTeleOp extends LinearOpMode {
 
         if(gamepad1.dpad_left){
             crServo.setPosition(0);
-            sleep(3000);
         }else if(gamepad1.dpad_right){
             crServo.setPosition(1.0);
-            sleep(3000);
         }else{
             crServo.setPosition(0.5);
         }

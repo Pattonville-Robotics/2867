@@ -23,7 +23,7 @@ public class GuideRail {
     public GuideRail(HardwareMap hardwareMap, LinearOpMode linearOpMode){
         this.linearOpMode = linearOpMode;
         guideRail = hardwareMap.servo.get("rail");
-        guideRail.setPosition(0.9);
+        guideRail.setPosition(0.7);
     }
 
     /**

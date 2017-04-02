@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class ButtonPresser {
 
-    private static final double LEFT_POSITION = 0.2;
+    private static final double LEFT_POSITION = 0.25;
     private static final double MIDDLE_POSITION = 0.5;
     private static final double RIGHT_POSITION = 0.8;
 
