@@ -11,7 +11,7 @@ import org.pattonvillerobotics.robotclasses.CommonAutonomous;
  */
 
 @Autonomous(name="FireParticle", group="Autonomous")
-public class CenterParticle extends LinearOpMode {
+public class FireParticle extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
