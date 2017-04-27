@@ -41,11 +41,11 @@ public class ForkLift {
     }
 
     public void raiseSlides(){
-        runMotors(0.75);
+        runMotors(1.0, 0.9);
     }
 
     public void lowerSlides(){
-        runMotors(-0.75);
+        runMotors(-1.0, -0.9);
     }
 
     public void stopSlides(){
@@ -60,10 +60,14 @@ public class ForkLift {
 
     }
 
+    private void runMotors(double leftPower, double rightPower){
+        leftWinch.setPower(leftPower);
+        rightWinch.setPower(rightPower);
+    }
+
 
     private void runMotors(double power){
-        leftWinch.setPower(power);
-        rightWinch.setPower(power);
+        runMotors(power, power);
     }
 
 }
