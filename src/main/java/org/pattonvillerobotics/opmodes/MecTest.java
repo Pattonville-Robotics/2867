@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
@@ -23,7 +24,10 @@ public class MecTest extends LinearOpMode {
         RR = hardwareMap.dcMotor.get("RR");
         RF = hardwareMap.dcMotor.get("RF");
 
-        double cos135 = FastMath.cos(45);
+        RR.setDirection(DcMotorSimple.Direction.REVERSE);
+        LR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        double cos135 = FastMath.cos((3*FastMath.PI)/4);
         double sin135 = -cos135;
         double controllertheta;
         double controllerangle;
@@ -32,18 +36,24 @@ public class MecTest extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            controllertheta = FastMath.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x);
-            controllerradius = FastMath.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            controllertheta = FastMath.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
+            controllerradius = FastMath.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
             controllerangle = controllertheta > 0 ? controllertheta : (2*FastMath.PI)-(-1*controllertheta);
 
-            LR.setPower((controllerradius*(cos135*FastMath.cos(controllerangle + (FastMath.PI / 4))))+gamepad1.right_stick_x);
+            LR.setPower((controllerradius*(cos135*FastMath.cos(controllerangle + (FastMath.PI / 4))))-gamepad1.right_stick_x);
             LF.setPower((controllerradius*(sin135*FastMath.sin(controllerangle + (FastMath.PI / 4))))+gamepad1.right_stick_x);
-            RR.setPower((controllerradius*(sin135*FastMath.sin(controllerangle + (FastMath.PI / 4))))-gamepad1.left_stick_x);
-            RF.setPower((controllerradius*(cos135*FastMath.cos(controllerangle + (FastMath.PI / 4))))-gamepad1.left_stick_x);
+            RR.setPower((controllerradius*(sin135*FastMath.sin(controllerangle + (FastMath.PI / 4))))-gamepad1.right_stick_x);
+            RF.setPower((controllerradius*(cos135*FastMath.cos(controllerangle + (FastMath.PI / 4))))+gamepad1.right_stick_x);
 
             telemetry.addData("Left Stick Radius", controllerradius);
             telemetry.addData("Left Stick Angle", FastMath.toDegrees(controllerangle));
             telemetry.addData("Right Stick X", gamepad1.right_stick_x);
+            telemetry.addData("LeftX", gamepad1.left_stick_x);
+            telemetry.addData("LeftY", gamepad1.left_stick_y);
+            telemetry.addData("LR", LR.getPower());
+            telemetry.addData("LF", LF.getPower());
+            telemetry.addData("RR", RR.getPower());
+            telemetry.addData("RF", RF.getPower());
 
             telemetry.update();
             idle();
