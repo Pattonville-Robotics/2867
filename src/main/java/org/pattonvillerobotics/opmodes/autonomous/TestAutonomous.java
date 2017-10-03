@@ -1,4 +1,4 @@
-package org.pattonvillerobotics.opmodes;
+package org.pattonvillerobotics.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
  * Created by gregbahr on 9/30/17.
