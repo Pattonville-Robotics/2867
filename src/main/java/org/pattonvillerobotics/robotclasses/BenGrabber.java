@@ -16,7 +16,7 @@ public class BenGrabber {
 
     //Constructor
     public BenGrabber(HardwareMap hardwareMap, LinearOpMode opMode) {
-        motor = hardwareMap.dcMotor.get("motor");
+        motor = hardwareMap.dcMotor.get("grabber");
         this.opMode = opMode;
     }
 
