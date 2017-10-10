@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -16,8 +17,9 @@ public class MainTeleOp extends LinearOpMode {
 
     private SimpleMecanumDrive drive;
     private ListenableGamepad gamepad;
-    //private BenGrabber grabber;
-    //private boolean grabberOpen;
+
+    private BNO055IMU imu;
+    //private BenClaw claw;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -48,6 +50,9 @@ public class MainTeleOp extends LinearOpMode {
     }
 
     public void initialize() {
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
         drive = new SimpleMecanumDrive(this, hardwareMap);
         gamepad = new ListenableGamepad();
 
@@ -55,19 +60,18 @@ public class MainTeleOp extends LinearOpMode {
         drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        //grabber = new BenGrabber(hardwareMap,this);
+
+        //claw = new BenClaw(hardwareMap ,this);
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                //grabber.open();
-
-            }
-        });
-        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                //grabber.close();
+                // open and close
+//                if (claw.isOpen()) {
+//                    claw.close();
+//                } else {
+//                    claw.open();
+//                }
             }
         });
     }

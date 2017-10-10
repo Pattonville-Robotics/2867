@@ -8,47 +8,58 @@ import org.apache.commons.math3.util.FastMath;
 
 import static org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive.TARGET_REACHED_THRESHOLD;
 
-public class BenGrabber {
+public class BenClaw {
 
     //Fields
     private DcMotor motor;
     private LinearOpMode opMode;
+    private boolean isOpen;
 
     //Constructor
-    public BenGrabber(HardwareMap hardwareMap, LinearOpMode opMode) {
+    public BenClaw(HardwareMap hardwareMap, LinearOpMode opMode) {
         motor = hardwareMap.dcMotor.get("grabber");
         this.opMode = opMode;
     }
 
     //Methods
 
-    public void open() {
+    public void close() {
 
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setTargetPosition(0);
-        motor.setPower(0.2);
+        motor.setPower(0.5);
 
         while ((!reachedTarget(motor.getCurrentPosition(), motor.getTargetPosition()) || motor.isBusy()) && !opMode.isStopRequested() && opMode.opModeIsActive()) {
             opMode.idle();
         }
 
         motor.setPower(0);
+        isOpen = false;
     }
 
-    public void close() {
+    public void open() {
 
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setTargetPosition(120);
-        motor.setPower(0.2);
+        motor.setTargetPosition(2000);
+        motor.setPower(0.5);
 
-        while (!reachedTarget(motor.getCurrentPosition(), motor.getTargetPosition()) && !opMode.isStopRequested() && opMode.opModeIsActive()) {
+        while (approachingTarget(motor.getCurrentPosition(), motor.getTargetPosition()) && !opMode.isStopRequested() && opMode.opModeIsActive()) {
             opMode.idle();
         }
 
         motor.setPower(0);
+        isOpen = true;
     }
 
-    protected boolean reachedTarget(int currentPositionLeft, int targetPositionLeft) {
-        return FastMath.abs(currentPositionLeft - targetPositionLeft) < TARGET_REACHED_THRESHOLD;
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    protected boolean reachedTarget(int currentPosition, int targetPosition) {
+        return FastMath.abs(currentPosition - targetPosition) < TARGET_REACHED_THRESHOLD;
+    }
+
+    private boolean approachingTarget(int currentPosition, int targetPosition) {
+        return !reachedTarget(currentPosition, targetPosition) && motor.isBusy();
     }
 }
