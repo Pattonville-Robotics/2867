@@ -45,16 +45,13 @@ public class MainTeleOp extends LinearOpMode {
 
             drive.moveFreely(polarCoords[1] - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords[0], gamepad1.right_stick_x);
 
+            telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
+
             telemetry.addData("Left Stick Radius", polarCoords[0]);
             telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords[1] + (fieldOrientedDriveMode ? angles.firstAngle : 0)));
             telemetry.addData("Right Stick X", gamepad1.right_stick_x);
-            telemetry.addData("LeftX", gamepad1.left_stick_x);
-            telemetry.addData("LeftY", gamepad1.left_stick_y);
-            telemetry.addData("LR", drive.leftRearMotor.getPower());
-            telemetry.addData("LF", drive.leftDriveMotor.getPower());
-            telemetry.addData("RR", drive.rightRearMotor.getPower());
-            telemetry.addData("RF", drive.rightDriveMotor.getPower());
             telemetry.addData("Angles", angles.toString());
+
 
             telemetry.update();
             idle();
