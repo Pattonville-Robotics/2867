@@ -6,6 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.apache.commons.math3.util.FastMath;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
@@ -17,6 +23,7 @@ public class MainTeleOp extends LinearOpMode {
 
     private SimpleMecanumDrive drive;
     private ListenableGamepad gamepad;
+    private boolean fieldOrientedDriveMode;
 
     private BNO055IMU imu;
     //private BenClaw claw;
@@ -25,17 +32,21 @@ public class MainTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initialize();
         double[] polarCoords;
+        Orientation angles;
 
         waitForStart();
 
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
         while(opModeIsActive()) {
             polarCoords = SimpleMecanumDrive.toPolar(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+            angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             gamepad.update(new GamepadData(gamepad1));
 
-            drive.moveFreely(polarCoords[1], polarCoords[0], gamepad1.right_stick_x);
+            drive.moveFreely(polarCoords[1] + (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords[0], gamepad1.right_stick_x);
 
             telemetry.addData("Left Stick Radius", polarCoords[0]);
-            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords[1]));
+            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords[1] + (fieldOrientedDriveMode ? angles.firstAngle : 0)));
             telemetry.addData("Right Stick X", gamepad1.right_stick_x);
             telemetry.addData("LeftX", gamepad1.left_stick_x);
             telemetry.addData("LeftY", gamepad1.left_stick_y);
@@ -72,6 +83,13 @@ public class MainTeleOp extends LinearOpMode {
 //                } else {
 //                    claw.open();
 //                }
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                fieldOrientedDriveMode = !fieldOrientedDriveMode;
             }
         });
     }
