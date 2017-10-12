@@ -1,9 +1,9 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -43,7 +43,7 @@ public class MainTeleOp extends LinearOpMode {
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             gamepad.update(new GamepadData(gamepad1));
 
-            drive.moveFreely(polarCoords[1] + (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords[0], gamepad1.right_stick_x);
+            drive.moveFreely(polarCoords[1] - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords[0], gamepad1.right_stick_x);
 
             telemetry.addData("Left Stick Radius", polarCoords[0]);
             telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords[1] + (fieldOrientedDriveMode ? angles.firstAngle : 0)));
@@ -63,15 +63,19 @@ public class MainTeleOp extends LinearOpMode {
 
     public void initialize() {
 
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
         imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
 
         drive = new SimpleMecanumDrive(this, hardwareMap);
         gamepad = new ListenableGamepad();
-
-        drive.leftRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //claw = new BenClaw(hardwareMap ,this);
 
