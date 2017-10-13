@@ -1,2 +1,2 @@
-# 2866
-Team 2866's repository during the 2016 - 2017 FTC season.
+# 2867
+Team 2867's repository during the 2017 - 2018 FTC season.
