@@ -14,6 +14,7 @@ public class BenClaw {
     private DcMotor motor;
     private LinearOpMode opMode;
     private boolean isOpen;
+    public int increment;
 
     //Constructor
     public BenClaw(HardwareMap hardwareMap, LinearOpMode opMode) {
@@ -40,7 +41,7 @@ public class BenClaw {
     public void open() {
 
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setTargetPosition(2000);
+        motor.setTargetPosition(-increment);
         motor.setPower(0.5);
 
         while (approachingTarget(motor.getCurrentPosition(), motor.getTargetPosition()) && !opMode.isStopRequested() && opMode.opModeIsActive()) {
@@ -50,6 +51,12 @@ public class BenClaw {
         motor.setPower(0);
         isOpen = true;
     }
+
+    public int getMotorPosition() {
+        return motor.getCurrentPosition();
+    }
+
+
 
     public boolean isOpen() {
         return isOpen;
