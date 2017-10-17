@@ -30,7 +30,7 @@ public class ServoArm {
     }
 
     public void retractArm() {
-        servo.setPosition(0.4);
+        servo.setPosition(0.15);
     }
 
     public double getServoPosition() {
@@ -38,6 +38,10 @@ public class ServoArm {
     }
 
     public void senseBallColor() {
-        ballColor = sensorColor.red() > sensorColor.blue() ? ColorSensorColor.RED : ColorSensorColor.BLUE;
+        if(sensorColor.red()*SCALE_FACTOR > 20 || sensorColor.blue()*SCALE_FACTOR > 20) {
+            ballColor = sensorColor.red() > sensorColor.blue() ? ColorSensorColor.RED : ColorSensorColor.BLUE;
+        } else {
+            ballColor = ColorSensorColor.GREEN;
+        }
     }
 }
