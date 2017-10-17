@@ -5,16 +5,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.apache.commons.math3.util.FastMath;
-
-import static org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive.TARGET_REACHED_THRESHOLD;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 
 public class BenClaw {
 
+    public int increment;
     //Fields
     private DcMotor motor;
     private LinearOpMode opMode;
     private boolean isOpen;
-    public int increment;
 
     //Constructor
     public BenClaw(HardwareMap hardwareMap, LinearOpMode opMode) {
@@ -63,7 +62,7 @@ public class BenClaw {
     }
 
     protected boolean reachedTarget(int currentPosition, int targetPosition) {
-        return FastMath.abs(currentPosition - targetPosition) < TARGET_REACHED_THRESHOLD;
+        return FastMath.abs(currentPosition - targetPosition) < EncoderDrive.TARGET_REACHED_THRESHOLD;
     }
 
     private boolean approachingTarget(int currentPosition, int targetPosition) {
