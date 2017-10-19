@@ -37,11 +37,17 @@ public class ServoArm {
         return servo.getPosition();
     }
 
-    public void senseBallColor() {
+    public ColorSensorColor senseBallColor() {
         if(sensorColor.red()*SCALE_FACTOR > 20 || sensorColor.blue()*SCALE_FACTOR > 20) {
             ballColor = sensorColor.red() > sensorColor.blue() ? ColorSensorColor.RED : ColorSensorColor.BLUE;
         } else {
             ballColor = ColorSensorColor.GREEN;
         }
+
+        return ballColor;
+    }
+
+    public ColorSensorColor getBallColor() {
+        return ballColor;
     }
 }
