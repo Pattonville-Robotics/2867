@@ -12,12 +12,13 @@ public class BenClaw {
     public int increment;
     //Fields
     private DcMotor motor;
+    private final int TURN_POSITION = 3600;
     private LinearOpMode opMode;
     private boolean isOpen;
 
     //Constructor
     public BenClaw(HardwareMap hardwareMap, LinearOpMode opMode) {
-        motor = hardwareMap.dcMotor.get("grabber");
+        motor = hardwareMap.dcMotor.get("grabber_motor");
         this.opMode = opMode;
     }
 
@@ -54,8 +55,6 @@ public class BenClaw {
     public int getMotorPosition() {
         return motor.getCurrentPosition();
     }
-
-
 
     public boolean isOpen() {
         return isOpen;
