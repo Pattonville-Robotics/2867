@@ -12,7 +12,6 @@ public class BenClaw {
     public int increment;
     //Fields
     private DcMotor motor;
-    private DcMotor slideMotor;
     private final int TURN_POSITION = 3600;
     private LinearOpMode opMode;
     private boolean isOpen;
@@ -20,7 +19,6 @@ public class BenClaw {
     //Constructor
     public BenClaw(HardwareMap hardwareMap, LinearOpMode opMode) {
         motor = hardwareMap.dcMotor.get("grabber_motor");
-        slideMotor = hardwareMap.dcMotor.get("slide_motor");
         this.opMode = opMode;
     }
 
@@ -52,30 +50,6 @@ public class BenClaw {
 
         motor.setPower(0);
         isOpen = true;
-    }
-
-    public void raise() {
-        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideMotor.setTargetPosition(TURN_POSITION);
-        slideMotor.setPower(0.5);
-
-        while (approachingTarget(motor.getCurrentPosition(), motor.getTargetPosition()) && !opMode.isStopRequested() && opMode.opModeIsActive()) {
-            opMode.idle();
-        }
-
-        motor.setPower(0);
-    }
-
-    public void lower() {
-        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideMotor.setTargetPosition(0);
-        slideMotor.setPower(-0.5);
-
-        while (approachingTarget(motor.getCurrentPosition(), motor.getTargetPosition()) && !opMode.isStopRequested() && opMode.opModeIsActive()) {
-            opMode.idle();
-        }
-
-        motor.setPower(0);
     }
 
     public int getMotorPosition() {
