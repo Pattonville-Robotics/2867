@@ -37,29 +37,13 @@ public class GrabberTest extends LinearOpMode {
             }
         });
 
-        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                grabber.increment += 100;
-            }
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                grabber.increment -= 100;
-            }
-        });
-
-
-
         waitForStart();
 
         while(opModeIsActive()) {
             gamepad.update(new GamepadData(gamepad1));
-            telemetry.addData("Motor Position: ", grabber.getMotorPosition());
-            telemetry.addData("Increment: ", grabber.increment);
-            slideMotor.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+            telemetry.addData("Servo Position: ", grabber.getServoPosition());
+            grabber.servo.setPosition(gamepad1.right_trigger);
+            //slideMotor.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
             telemetry.update();
         }
     }
