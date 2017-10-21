@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class BenClaw {
 
-    public Servo servo;
+    public Servo claw;
     private final int TURN_POSITION = 3600;
     private boolean isOpen;
 
@@ -13,29 +13,29 @@ public class BenClaw {
      * @param hardwareMap
      */
     public BenClaw(HardwareMap hardwareMap) {
-        servo = hardwareMap.servo.get("grabber_servo");
+        claw = hardwareMap.servo.get("claw");
+        claw.setPosition(1);
     }
 
     /**
-     * Closes the claw
+     * Toggles the claw between open and close positions
+     * Negates isOpen
      */
-    public void close() {
-        //servo.setPosition();
+    public void opencloseToggle() {
+        if(isOpen) {
+            claw.setPosition(0.1);
+        } else {
+            claw.setPosition(1);
+        }
+        isOpen = !isOpen;
     }
 
     /**
-     * Opens the claw
-     */
-    public void open() {
-        //servo.setPosition();
-    }
-
-    /**
-     * Returns the servo's current position
-     * @return position of the servo
+     * Returns the claw's current position
+     * @return position of the claw
      */
     public double getServoPosition() {
-        return servo.getPosition();
+        return claw.getPosition();
     }
 
     /**

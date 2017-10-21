@@ -19,7 +19,7 @@ public class ServoArm {
     private ColorSensor sensorColor;
 
     /**
-     * @param hardwareMap a hardwaremap to setup the servo and sensor
+     * @param hardwareMap a hardwaremap to setup the claw and sensor
      */
     public ServoArm(HardwareMap hardwareMap) {
         servo = hardwareMap.servo.get("servo_arm");
@@ -28,22 +28,22 @@ public class ServoArm {
     }
 
     /**
-     * Extends the servo arm
+     * Extends the claw arm
      */
     public void extendArm() {
         servo.setPosition(1);
     }
 
     /**
-     * Retracts the servo arm
+     * Retracts the claw arm
      */
     public void retractArm() {
         servo.setPosition(0.15);
     }
 
     /**
-     * Returns the servo's current position
-     * @return position of the servo
+     * Returns the claw's current position
+     * @return position of the claw
      */
     public double getServoPosition() {
         return servo.getPosition();

@@ -13,7 +13,7 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 public class ServoTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        Servo servo = hardwareMap.servo.get("servo");
+        Servo servo = hardwareMap.servo.get("claw");
 
         waitForStart();
 
