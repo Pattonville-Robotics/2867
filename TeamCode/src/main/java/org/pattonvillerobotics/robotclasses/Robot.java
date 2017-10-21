@@ -10,7 +10,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 /**
  * Created by skaggsw on 10/19/17.
  * <p>
- * Collection of each of our mechanism classes, our drive class, and the linear-slide motor
+ * Collection of each of our mechanism classes, our drive class, and the linear-slide motor, used during TeleOp
  */
 
 public class Robot {

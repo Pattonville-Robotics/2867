@@ -6,8 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 /**
  * Created by skaggsw on 10/19/17.
  * <p>
- * A variation of the Robot class, changing the drive object to a SimpleMecanumDrive class, the
- * class used during TeleOp
+ * A variation of the Robot class, used for the robot when only one REV module is available
  */
 
 public class SingleModuleRobot extends Robot {

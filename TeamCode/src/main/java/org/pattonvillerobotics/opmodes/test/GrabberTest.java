@@ -19,7 +19,7 @@ public class GrabberTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        grabber = new BenClaw(hardwareMap, this);
+        grabber = new BenClaw(hardwareMap);
         slideMotor = hardwareMap.dcMotor.get("slide_motor");
         gamepad = new ListenableGamepad();
 
