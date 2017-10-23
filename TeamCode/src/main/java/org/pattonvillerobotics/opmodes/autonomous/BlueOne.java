@@ -62,15 +62,15 @@ public class BlueOne extends LinearOpMode {
         }
 
         drive.moveInches(Direction.FORWARD, 3, .2);
-        claw.open();
+        //claw.open();
         drive.moveInches(Direction.BACKWARD, 5, .2);
         drive.rotateDegrees(Direction.RIGHT, 180, .2);
     }
 
     public void initialize() {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
-        arm = new ServoArm(hardwareMap, this);
-        claw = new BenClaw(hardwareMap, this);
+        //arm = new ServoArm(hardwareMap, this);
+        //claw = new BenClaw(hardwareMap, this);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
     }
 }
