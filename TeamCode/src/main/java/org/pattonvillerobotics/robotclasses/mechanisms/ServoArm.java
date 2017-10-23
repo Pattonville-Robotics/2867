@@ -1,5 +1,6 @@
-package org.pattonvillerobotics.robotclasses;
+package org.pattonvillerobotics.robotclasses.mechanisms;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -10,7 +11,7 @@ import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
  * Created by skaggsw on 10/5/17.
  */
 
-public class ServoArm {
+public class ServoArm extends AbstractMechanism {
 
     final double SCALE_FACTOR = 255;
     //private DistanceSensor sensorDistance;
@@ -21,7 +22,8 @@ public class ServoArm {
     /**
      * @param hardwareMap a hardwaremap to setup the claw and sensor
      */
-    public ServoArm(HardwareMap hardwareMap) {
+    public ServoArm(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+        super(hardwareMap, linearOpMode);
         servo = hardwareMap.servo.get("servo_arm");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
         //sensorDistance = hardwareMap.get(DistanceSensor.class,"sensor_color_distance");
@@ -60,7 +62,6 @@ public class ServoArm {
         } else {
             ballColor = ColorSensorColor.GREEN;
         }
-
         return ballColor;
     }
 

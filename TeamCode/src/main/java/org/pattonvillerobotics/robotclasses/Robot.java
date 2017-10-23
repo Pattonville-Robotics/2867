@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.AbstractDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
+import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
+import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
 /**
  * Created by skaggsw on 10/19/17.
@@ -25,8 +27,8 @@ public class Robot {
      * @param opMode the LinearOpMode to pass to the drive class
      */
     public Robot(HardwareMap hardwareMap, LinearOpMode opMode) {
-        claw = new BenClaw(hardwareMap);
-        arm = new ServoArm(hardwareMap);
+        claw = new BenClaw(hardwareMap, opMode);
+        arm = new ServoArm(hardwareMap, opMode);
         slideMotor = hardwareMap.dcMotor.get("slide_motor");
         drive = new SimpleMecanumDrive(opMode,hardwareMap);
     }

@@ -8,7 +8,7 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
-import org.pattonvillerobotics.robotclasses.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
 /**
  * Created by skaggsw on 10/5/17.
@@ -22,7 +22,7 @@ public class ServoArmTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        servoArm = new ServoArm(hardwareMap);
+        servoArm = new ServoArm(hardwareMap, this);
         gamepad = new ListenableGamepad();
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {

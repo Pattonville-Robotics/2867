@@ -23,7 +23,7 @@ public class GrabberTest extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                robot.claw.opencloseToggle();
+                robot.claw.togglePosition();
             }
         });
 
