@@ -1,11 +1,14 @@
 package org.pattonvillerobotics.robotclasses;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
+import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
@@ -46,8 +49,32 @@ public class CommonAutonomous {
     }
 
     public void detectAndStoreVuMark() {
-        while(vuMark == null || vuMark == RelicRecoveryVuMark.UNKNOWN) {
+        while((vuMark == null || vuMark == RelicRecoveryVuMark.UNKNOWN) && linearOpMode.opModeIsActive()) {
+            vuMark = vuforia.getCurrentVisibleRelic();
+        }
+    }
 
+    public ColorSensorColor extendArmAndDetectColor() {
+        ColorSensorColor color = ColorSensorColor.GREEN;
+
+        arm.extendArm();
+
+        while(color == ColorSensorColor.GREEN && linearOpMode.opModeIsActive()) {
+            color = arm.senseBallColor();
+        }
+        return color;
+    }
+
+    public void knockOffJewel(ColorSensorColor detectedColor) {
+        //TODO: Do something once given color.
+
+        switch (allianceColor) {
+            case RED:
+                break;
+            case BLUE:
+                break;
+            default:
+                Log.wtf("CommonAutonomous", "This should never happen.");
         }
     }
 }
