@@ -9,8 +9,10 @@ import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 
 /**
  * Created by skaggsw on 10/5/17.
+ * <p>
+ * Contains the servo and sensor for the arm mechanism, as well as all the methods involved with
+ * the operation of the mechanism
  */
-
 public class ServoArm extends AbstractMechanism {
 
     final double SCALE_FACTOR = 255;
@@ -20,7 +22,10 @@ public class ServoArm extends AbstractMechanism {
     private ColorSensor sensorColor;
 
     /**
-     * @param hardwareMap a hardwaremap to setup the claw and sensor
+     * Initializes the hardwaremap and linearopmode, as well as the servo and color sensor
+     *
+     * @param hardwareMap a hardwaremap to initialize the arm's servo and sensor
+     * @param linearOpMode a linearopmode that allows for sleeping and telemetry
      */
     public ServoArm(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
