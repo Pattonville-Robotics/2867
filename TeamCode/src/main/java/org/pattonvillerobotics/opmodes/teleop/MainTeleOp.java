@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -31,7 +32,7 @@ public class MainTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
-        double[] polarCoords;
+        Vector2D polarCoords;
         Orientation angles;
 
         waitForStart();
@@ -43,12 +44,12 @@ public class MainTeleOp extends LinearOpMode {
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             gamepad.update(new GamepadData(gamepad1));
 
-            drive.moveFreely(polarCoords[1] - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords[0], gamepad1.right_stick_x);
+            drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords.getX(), gamepad1.right_stick_x);
 
             telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
 
-            telemetry.addData("Left Stick Radius", polarCoords[0]);
-            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords[1] + (fieldOrientedDriveMode ? angles.firstAngle : 0)));
+            telemetry.addData("Left Stick Radius", polarCoords.getX());
+            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords.getY() + (fieldOrientedDriveMode ? angles.firstAngle : 0)));
             telemetry.addData("Right Stick X", gamepad1.right_stick_x);
             telemetry.addData("Angles", angles.toString());
 
