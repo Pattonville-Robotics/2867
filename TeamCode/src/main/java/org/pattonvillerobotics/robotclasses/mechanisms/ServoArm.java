@@ -1,5 +1,6 @@
-package org.pattonvillerobotics.robotclasses;
+package org.pattonvillerobotics.robotclasses.mechanisms;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -8,9 +9,11 @@ import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 
 /**
  * Created by skaggsw on 10/5/17.
+ * <p>
+ * Contains the servo and sensor for the arm mechanism, as well as all the methods involved with
+ * the operation of the mechanism
  */
-
-public class ServoArm {
+public class ServoArm extends AbstractMechanism {
 
     final double SCALE_FACTOR = 255;
     //private DistanceSensor sensorDistance;
@@ -19,31 +22,35 @@ public class ServoArm {
     private ColorSensor sensorColor;
 
     /**
-     * @param hardwareMap a hardwaremap to setup the servo and sensor
+     * Initializes the hardwaremap and linearopmode, as well as the servo and color sensor
+     *
+     * @param hardwareMap a hardwaremap to initialize the arm's servo and sensor
+     * @param linearOpMode a linearopmode that allows for sleeping and telemetry
      */
-    public ServoArm(HardwareMap hardwareMap) {
+    public ServoArm(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+        super(hardwareMap, linearOpMode);
         servo = hardwareMap.servo.get("servo_arm");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
         //sensorDistance = hardwareMap.get(DistanceSensor.class,"sensor_color_distance");
     }
 
     /**
-     * Extends the servo arm
+     * Extends the claw arm
      */
     public void extendArm() {
         servo.setPosition(1);
     }
 
     /**
-     * Retracts the servo arm
+     * Retracts the claw arm
      */
     public void retractArm() {
         servo.setPosition(0.15);
     }
 
     /**
-     * Returns the servo's current position
-     * @return position of the servo
+     * Returns the claw's current position
+     * @return position of the claw
      */
     public double getServoPosition() {
         return servo.getPosition();
@@ -60,7 +67,6 @@ public class ServoArm {
         } else {
             ballColor = ColorSensorColor.GREEN;
         }
-
         return ballColor;
     }
 

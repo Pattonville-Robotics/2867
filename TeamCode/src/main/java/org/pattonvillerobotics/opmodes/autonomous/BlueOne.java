@@ -10,8 +10,8 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.BenClaw;
-import org.pattonvillerobotics.robotclasses.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
+import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
 
 @Autonomous(name = "Blue 1", group = OpModeGroups.MAIN)

@@ -8,7 +8,7 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
-import org.pattonvillerobotics.robotclasses.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
 /**
  * Created by skaggsw on 10/5/17.

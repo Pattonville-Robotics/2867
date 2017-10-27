@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.util.FastMath;
@@ -18,6 +19,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
+import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 
 @TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 public class MainTeleOp extends LinearOpMode {
@@ -27,7 +29,7 @@ public class MainTeleOp extends LinearOpMode {
     private boolean fieldOrientedDriveMode;
 
     private BNO055IMU imu;
-    //private BenClaw claw;
+    private BenClaw claw;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -44,7 +46,7 @@ public class MainTeleOp extends LinearOpMode {
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             gamepad.update(new GamepadData(gamepad1));
 
-            drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords.getX(), gamepad1.right_stick_x);
+            drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
 
             telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
 
@@ -73,19 +75,21 @@ public class MainTeleOp extends LinearOpMode {
         imu.initialize(parameters);
 
         drive = new SimpleMecanumDrive(this, hardwareMap);
+
+        drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
         gamepad = new ListenableGamepad();
 
-        //claw = new BenClaw(hardwareMap ,this);
+        claw = new BenClaw(hardwareMap ,this);
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                // open and close
-//                if (claw.isOpen()) {
-//                    claw.close();
-//                } else {
-//                    claw.open();
-//                }
+                claw.togglePosition();
             }
         });
 
