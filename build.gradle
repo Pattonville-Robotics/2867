@@ -7,8 +7,8 @@ buildscript {
     ext.ftc_version = '3.4'
 
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 
     dependencies {
