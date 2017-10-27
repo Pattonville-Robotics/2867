@@ -69,8 +69,8 @@ public class BlueOne extends LinearOpMode {
 
     public void initialize() {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
-        arm = new ServoArm(hardwareMap, this);
-        claw = new BenClaw(hardwareMap, this);
+        arm = new ServoArm(hardwareMap);
+        claw = new BenClaw(hardwareMap);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
     }
 }

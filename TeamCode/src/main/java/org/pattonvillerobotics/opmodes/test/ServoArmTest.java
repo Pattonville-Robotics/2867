@@ -22,7 +22,7 @@ public class ServoArmTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        servoArm = new ServoArm(hardwareMap, this);
+        servoArm = new ServoArm(hardwareMap);
         gamepad = new ListenableGamepad();
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
