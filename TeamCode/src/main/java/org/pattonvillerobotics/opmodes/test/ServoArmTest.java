@@ -3,7 +3,6 @@ package org.pattonvillerobotics.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
@@ -25,14 +24,16 @@ public class ServoArmTest extends LinearOpMode {
         servoArm = new ServoArm(hardwareMap, this);
         gamepad = new ListenableGamepad();
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                if (servoArm.ballColor == ColorSensorColor.BLUE) {
+        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            switch (servoArm.ballColor) {
+                case BLUE:
                     servoArm.extendArm();
-                } else if (servoArm.ballColor == ColorSensorColor.RED) {
+                    break;
+                case RED:
                     servoArm.retractArm();
-                }
+                    break;
+                case GREEN:
+                    break;
             }
         });
 

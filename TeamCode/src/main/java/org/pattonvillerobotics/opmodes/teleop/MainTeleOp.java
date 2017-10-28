@@ -84,24 +84,16 @@ public class MainTeleOp extends LinearOpMode {
 
         gamepad = new ListenableGamepad();
 
-        claw = new BenClaw(hardwareMap ,this);
+        claw = new BenClaw(hardwareMap, this);
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                claw.togglePosition();
-            }
-        });
+        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> claw.togglePosition());
 
-        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                if (gamepad1.back) {
-                    imu.stopAccelerationIntegration();
-                    imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-                }
-                fieldOrientedDriveMode = !fieldOrientedDriveMode;
+        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            if (gamepad1.back) {
+                imu.stopAccelerationIntegration();
+                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
             }
+            fieldOrientedDriveMode = !fieldOrientedDriveMode;
         });
     }
 }
