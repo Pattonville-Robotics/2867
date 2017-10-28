@@ -28,9 +28,9 @@ public class ServoArmTest extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                if(servoArm.ballColor == ColorSensorColor.BLUE) {
+                if (servoArm.ballColor == ColorSensorColor.BLUE) {
                     servoArm.extendArm();
-                } else if(servoArm.ballColor == ColorSensorColor.RED) {
+                } else if (servoArm.ballColor == ColorSensorColor.RED) {
                     servoArm.retractArm();
                 }
             }
@@ -38,7 +38,7 @@ public class ServoArmTest extends LinearOpMode {
 
         waitForStart();
 
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
             servoArm.senseBallColor();
             telemetry.addData("Ball Color:", servoArm.ballColor);
             telemetry.addData("Servo Position:", servoArm.getServoPosition());
