@@ -1,10 +1,11 @@
 include ':FtcRobotController'
 include ':TeamCode'
 
-/*
-includeBuild('../Common-Code') {
-    dependencySubstitution {
-        substitute module('com.github.Pattonville-Robotics:Common-Code') with project(':library')
+//noinspection GroovyConstantIfStatement
+if (false) {
+    includeBuild('../Common-Code') {
+        dependencySubstitution {
+            substitute module('com.github.Pattonville-Robotics:Common-Code') with project(':library')
+        }
     }
 }
-*/

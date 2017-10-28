@@ -44,7 +44,7 @@ public class MainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             polarCoords = SimpleMecanumDrive.toPolar(gamepad1.left_stick_x, -gamepad1.left_stick_y);
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-            gamepad.update(new GamepadData(gamepad1));
+            gamepad.update(gamepad1);
 
             drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
 
@@ -84,24 +84,16 @@ public class MainTeleOp extends LinearOpMode {
 
         gamepad = new ListenableGamepad();
 
-        claw = new BenClaw(hardwareMap ,this);
+        claw = new BenClaw(hardwareMap, this);
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                claw.togglePosition();
-            }
-        });
+        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> claw.togglePosition());
 
-        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                if (gamepad1.back) {
-                    imu.stopAccelerationIntegration();
-                    imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-                }
-                fieldOrientedDriveMode = !fieldOrientedDriveMode;
+        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            if (gamepad1.back) {
+                imu.stopAccelerationIntegration();
+                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
             }
+            fieldOrientedDriveMode = !fieldOrientedDriveMode;
         });
     }
 }
