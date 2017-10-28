@@ -44,7 +44,7 @@ public class ServoArmTest extends LinearOpMode {
             telemetry.addData("Ball Color:", servoArm.ballColor);
             telemetry.addData("Servo Position:", servoArm.getServoPosition());
             telemetry.update();
-            gamepad.update(new GamepadData(gamepad1));
+            gamepad.update(gamepad1);
         }
     }
 }

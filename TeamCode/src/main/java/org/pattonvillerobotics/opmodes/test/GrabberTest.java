@@ -25,7 +25,7 @@ public class GrabberTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            gamepad.update(new GamepadData(gamepad1));
+            gamepad.update(gamepad1);
             telemetry.addData("Servo Position: ", claw.getServoPosition());
             //slideMotor.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
             telemetry.update();

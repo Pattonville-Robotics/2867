@@ -44,7 +44,7 @@ public class MainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             polarCoords = SimpleMecanumDrive.toPolar(gamepad1.left_stick_x, -gamepad1.left_stick_y);
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-            gamepad.update(new GamepadData(gamepad1));
+            gamepad.update(gamepad1);
 
             drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
 
