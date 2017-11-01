@@ -46,12 +46,12 @@ public class MainTeleOp extends LinearOpMode {
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             gamepad.update(gamepad1);
 
-            drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.firstAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
+            drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.secondAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
 
             telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
 
             telemetry.addData("Left Stick Radius", polarCoords.getX());
-            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords.getY() + (fieldOrientedDriveMode ? angles.firstAngle : 0)));
+            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords.getY() + (fieldOrientedDriveMode ? angles.secondAngle : 0)));
             telemetry.addData("Right Stick X", gamepad1.right_stick_x);
             telemetry.addData("Angles", angles.toString());
 
