@@ -10,6 +10,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.enums.StartingPosition;
@@ -27,6 +30,7 @@ public class CommonAutonomous {
     private HardwareMap hardwareMap;
     private LinearOpMode linearOpMode;
     private VuforiaNavigation vuforia;
+    private JewelColorDetector jewelColorDetector;
     private RelicRecoveryVuMark vuMark;
 
     private BenClaw claw;
@@ -40,6 +44,8 @@ public class CommonAutonomous {
         this.linearOpMode = linearOpMode;
         this.startingPosition = startingPosition;
 
+        ImageProcessor.initOpenCV(hardwareMap, linearOpMode);
+        jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomizedRobotParameters.ROBOT_PARAMETERS);
 
