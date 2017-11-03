@@ -16,7 +16,7 @@ public class CustomizedRobotParameters {
 
     static {
         ROBOT_PARAMETERS = new RobotParameters.Builder()
-                .wheelBaseRadius(10)
+                .wheelBaseRadius(15)
                 .encodersEnabled(true)
                 .wheelRadius(2)
                 .gyroEnabled(true)

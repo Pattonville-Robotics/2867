@@ -25,7 +25,7 @@ public class TestAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        drive.moveInches(Direction.FORWARD, 20, .2);
-        drive.rotateDegrees(Direction.LEFT, 90, .2);
+        drive.moveInches(Direction.FORWARD, 20, .8);
+        drive.rotateDegrees(Direction.LEFT, 180, .8);
     }
 }
