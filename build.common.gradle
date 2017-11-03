@@ -21,7 +21,7 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 22
+    compileSdkVersion 26
 
     signingConfigs {
         debug {
@@ -35,8 +35,7 @@ android {
     defaultConfig {
         applicationId 'com.qualcomm.ftcrobotcontroller'
         minSdkVersion 19
-        targetSdkVersion 22
-        multiDexEnabled true
+        targetSdkVersion 19
 
         /**
          * We keep the versionCode and versionName of robot controller applications in sync with
@@ -76,8 +75,8 @@ android {
                 abiFilters "armeabi-v7a"
             }
 
-            //minifyEnabled true
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             debuggable true
@@ -85,9 +84,8 @@ android {
                 abiFilters "armeabi-v7a"
             }
 
-            //minifyEnabled true
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            useProguard false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

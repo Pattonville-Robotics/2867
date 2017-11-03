@@ -6,7 +6,19 @@
     *;
 }
 
--dontwarn com.sun.tools.javac.model.**
+-keep,includedescriptorclasses class com.vuforia.** {
+    *;
+}
+
+-keep,includedescriptorclasses class org.firstinspires.** {
+    *;
+}
+
+-keep,includedescriptorclasses class com.qualcomm.** {
+    *;
+}
+
+-dontwarn com.sun.tools.**
 -dontwarn org.pattonvillerobotics.commoncode.**
 -dontwarn com.google.gson.**
 -dontwarn com.vuforia.ar.pl.**
