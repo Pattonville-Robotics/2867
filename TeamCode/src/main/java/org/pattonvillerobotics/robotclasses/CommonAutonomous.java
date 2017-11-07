@@ -64,10 +64,6 @@ public class CommonAutonomous {
         ColorSensorColor color = ColorSensorColor.GREEN;
 
         arm.extendArm();
-
-        while(color == ColorSensorColor.GREEN && linearOpMode.opModeIsActive()) {
-            color = arm.senseBallColor();
-        }
         return color;
     }
 

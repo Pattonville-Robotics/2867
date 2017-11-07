@@ -4,30 +4,33 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
+import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
 
 @Autonomous(name = "Blue 1", group = OpModeGroups.MAIN)
 public class BlueOne extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
-    //private ServoArm arm;
+    private ServoArm arm;
     private BenClaw claw;
+    private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
 
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
+        JewelColorDetector.Analysis analysis;
         vuforia.activateTracking();
 
         RelicRecoveryVuMark columnKey;
-        ColorSensorColor jewelColor;
 
         waitForStart();
 
@@ -43,17 +46,41 @@ public class BlueOne extends LinearOpMode {
         telemetry.addData("Column Key: ", columnKey).setRetained(true);
         telemetry.update();
 
-        //arm.extendArm();
+        jewelColorDetector.process(vuforia.getImage());
+        analysis = jewelColorDetector.getAnalysis();
 
-    /*    jewelColor = arm.senseBallColor();
-
-        if (jewelColor == ColorSensorColor.BLUE) {
-            drive.moveInches(Direction.FORWARD, 2, .2);
-        } else if (jewelColor == ColorSensorColor.RED) {
-            drive.moveInches(Direction.BACKWARD, 2, .2);
+        while(analysis.leftJewelColor == null && analysis.rightJewelColor == null) {
+            jewelColorDetector.process(vuforia.getImage());
+            analysis = jewelColorDetector.getAnalysis();
         }
-*/
-        //arm.retractArm();
+
+        arm.extendArm();
+
+        switch (analysis.leftJewelColor) {
+            case RED:
+                drive.moveInches(Direction.BACKWARD,2,0.5);
+                drive.moveInches(Direction.FORWARD, 2,0.5);
+                break;
+            case BLUE:
+                drive.moveInches(Direction.FORWARD,2,0.5);
+                drive.moveInches(Direction.BACKWARD,2,0.5);
+                break;
+            default:
+                switch (analysis.rightJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.FORWARD,2,0.5);
+                        drive.moveInches(Direction.BACKWARD,2,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.BACKWARD,2,0.5);
+                        drive.moveInches(Direction.FORWARD,2,0.5);
+                        break;
+                    default:
+                        break;
+                }
+        }
+
+        arm.retractArm();
 
         drive.moveInches(Direction.FORWARD, 30, 0.5);
 
@@ -91,8 +118,9 @@ public class BlueOne extends LinearOpMode {
 
     public void initialize() {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
-        //arm = new ServoArm(hardwareMap, this);
+        arm = new ServoArm(hardwareMap, this);
         claw = new BenClaw(hardwareMap, this);
+        jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
     }
 }

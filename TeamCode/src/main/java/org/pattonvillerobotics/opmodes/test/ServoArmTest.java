@@ -24,24 +24,13 @@ public class ServoArmTest extends LinearOpMode {
         servoArm = new ServoArm(hardwareMap, this);
         gamepad = new ListenableGamepad();
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            switch (servoArm.ballColor) {
-                case BLUE:
-                    servoArm.extendArm();
-                    break;
-                case RED:
-                    servoArm.retractArm();
-                    break;
-                case GREEN:
-                    break;
-            }
-        });
+        gamepad.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.JUST_PRESSED, () -> servoArm.extendArm());
+
+        gamepad.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, () -> servoArm.retractArm());
 
         waitForStart();
 
         while (opModeIsActive()) {
-            servoArm.senseBallColor();
-            telemetry.addData("Ball Color:", servoArm.ballColor);
             telemetry.addData("Servo Position:", servoArm.getServoPosition());
             telemetry.update();
             gamepad.update(gamepad1);
