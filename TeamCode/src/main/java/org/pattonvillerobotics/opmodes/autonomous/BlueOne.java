@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
@@ -32,7 +31,6 @@ public class BlueOne extends LinearOpMode {
         vuforia.activateTracking();
 
         RelicRecoveryVuMark columnKey;
-        ColorSensorColor jewelColor;
 
         waitForStart();
 
@@ -50,42 +48,39 @@ public class BlueOne extends LinearOpMode {
 
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
+
         while(analysis.leftJewelColor == null && analysis.rightJewelColor == null) {
             jewelColorDetector.process(vuforia.getImage());
             analysis = jewelColorDetector.getAnalysis();
         }
 
+        arm.extendArm();
 
         switch (analysis.leftJewelColor) {
             case RED:
                 drive.moveInches(Direction.BACKWARD,2,0.5);
+                drive.moveInches(Direction.FORWARD,2,0.5);
                 break;
             case BLUE:
                 drive.moveInches(Direction.FORWARD,2,0.5);
+                drive.moveInches(Direction.BACKWARD,2,0.5);
                 break;
             default:
                 switch (analysis.rightJewelColor) {
                     case RED:
                         drive.moveInches(Direction.FORWARD,2,0.5);
+                        drive.moveInches(Direction.BACKWARD,2,0.5);
                         break;
                     case BLUE:
                         drive.moveInches(Direction.BACKWARD,2,0.5);
+                        drive.moveInches(Direction.FORWARD,2,0.5);
                         break;
                     default:
                         break;
                 }
         }
-        //arm.extendArm();
 
-    /*    jewelColor = arm.senseBallColor();
-
-        if (jewelColor == ColorSensorColor.BLUE) {
-            drive.moveInches(Direction.FORWARD, 2, .2);
-        } else if (jewelColor == ColorSensorColor.RED) {
-            drive.moveInches(Direction.BACKWARD, 2, .2);
-        }
-*/
-        //arm.retractArm();
+        arm.retractArm();
 
         drive.moveInches(Direction.FORWARD, 30, 0.5);
 
