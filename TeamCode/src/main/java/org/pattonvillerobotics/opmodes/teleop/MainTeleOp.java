@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -25,6 +26,7 @@ import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 public class MainTeleOp extends LinearOpMode {
 
     private SimpleMecanumDrive drive;
+    private DcMotor slides;
     private ListenableGamepad gamepad;
     private boolean fieldOrientedDriveMode;
 
@@ -47,7 +49,7 @@ public class MainTeleOp extends LinearOpMode {
             gamepad.update(gamepad1);
 
             drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.secondAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
-
+            slides.setPower((gamepad1.right_trigger - gamepad1.left_trigger) / 2);
             telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
 
             telemetry.addData("Left Stick Radius", polarCoords.getX());
@@ -57,7 +59,6 @@ public class MainTeleOp extends LinearOpMode {
 
 
             telemetry.update();
-            idle();
         }
     }
 
@@ -73,7 +74,7 @@ public class MainTeleOp extends LinearOpMode {
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-
+        slides = hardwareMap.dcMotor.get("slides");
         drive = new SimpleMecanumDrive(this, hardwareMap);
 
         drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -86,12 +87,12 @@ public class MainTeleOp extends LinearOpMode {
 
         claw = new BenClaw(hardwareMap, this);
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> claw.togglePosition());
+        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, claw::togglePosition);
 
         gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
             if (gamepad1.back) {
                 imu.stopAccelerationIntegration();
-                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+                imu.startAccelerationIntegration(new Position(), new Velocity(), 100);
             }
             fieldOrientedDriveMode = !fieldOrientedDriveMode;
         });
