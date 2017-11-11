@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
@@ -56,6 +57,8 @@ public class BlueOne extends LinearOpMode {
 
         arm.extendArm();
 
+        sleep(1000);
+
         switch (analysis.leftJewelColor) {
             case RED:
                 drive.moveInches(Direction.BACKWARD,2,0.5);
@@ -79,6 +82,7 @@ public class BlueOne extends LinearOpMode {
                         break;
                 }
         }
+
 
         arm.retractArm();
 
@@ -117,6 +121,8 @@ public class BlueOne extends LinearOpMode {
     }
 
     public void initialize() {
+        ImageProcessor.initOpenCV(hardwareMap, this);
+
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
         claw = new BenClaw(hardwareMap, this);
