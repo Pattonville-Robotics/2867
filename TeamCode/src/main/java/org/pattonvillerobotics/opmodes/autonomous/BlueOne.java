@@ -33,9 +33,15 @@ public class BlueOne extends LinearOpMode {
 
         RelicRecoveryVuMark columnKey;
 
+        telemetry.addData("Blue One", "Initialization Complete");
+        telemetry.update();
+
         waitForStart();
 
         claw.close();
+
+        drive.rotateDegrees(Direction.RIGHT, 20, .4);
+
         columnKey = vuforia.getCurrentVisibleRelic();
 
         while(columnKey == RelicRecoveryVuMark.UNKNOWN) {
@@ -47,40 +53,33 @@ public class BlueOne extends LinearOpMode {
         telemetry.addData("Column Key: ", columnKey).setRetained(true);
         telemetry.update();
 
+        drive.rotateDegrees(Direction.LEFT, 20, .4);
+
+        arm.extendArm();
+
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
 
-        while(analysis.leftJewelColor == null && analysis.rightJewelColor == null) {
+        while(analysis.leftJewelColor == null && opModeIsActive()) {
             jewelColorDetector.process(vuforia.getImage());
             analysis = jewelColorDetector.getAnalysis();
         }
 
-        arm.extendArm();
-
+        telemetry.addData("Colors", analysis.leftJewelColor).setRetained(true);
+        telemetry.update();
         sleep(1000);
 
         switch (analysis.leftJewelColor) {
             case RED:
-                drive.moveInches(Direction.BACKWARD,2,0.5);
-                drive.moveInches(Direction.FORWARD,2,0.5);
+                drive.moveInches(Direction.BACKWARD,4,0.5);
+                drive.moveInches(Direction.FORWARD,4,0.5);
                 break;
             case BLUE:
-                drive.moveInches(Direction.FORWARD,2,0.5);
-                drive.moveInches(Direction.BACKWARD,2,0.5);
+                drive.moveInches(Direction.FORWARD,4,0.5);
+                drive.moveInches(Direction.BACKWARD,4,0.5);
                 break;
             default:
-                switch (analysis.rightJewelColor) {
-                    case RED:
-                        drive.moveInches(Direction.FORWARD,2,0.5);
-                        drive.moveInches(Direction.BACKWARD,2,0.5);
-                        break;
-                    case BLUE:
-                        drive.moveInches(Direction.BACKWARD,2,0.5);
-                        drive.moveInches(Direction.FORWARD,2,0.5);
-                        break;
-                    default:
-                        break;
-                }
+
         }
 
 
@@ -88,11 +87,11 @@ public class BlueOne extends LinearOpMode {
 
         drive.moveInches(Direction.FORWARD, 30, 0.5);
 
-        sleep(3000);
+        sleep(500);
 
         drive.rotateDegrees(Direction.LEFT, 90, 0.5);
 
-        sleep(3000);
+        sleep(500);
 
         switch (columnKey) {
             case CENTER:
@@ -105,14 +104,14 @@ public class BlueOne extends LinearOpMode {
                 break;
         }
 
-        sleep(3000);
+        sleep(500);
 
         drive.moveInches(Direction.BACKWARD, 15, .5);
-        sleep(3000);
+        sleep(500);
         claw.open();
-        sleep(3000);
+        sleep(500);
         drive.moveInches(Direction.FORWARD, 17, .5);
-        sleep(3000);
+        sleep(500);
         drive.rotateDegrees(Direction.RIGHT, 180, .5);
 
         while(opModeIsActive()) {
