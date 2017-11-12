@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
-import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
+import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
@@ -32,6 +32,7 @@ public class CommonAutonomous {
     private VuforiaNavigation vuforia;
     private JewelColorDetector jewelColorDetector;
     private RelicRecoveryVuMark vuMark;
+    private JewelColorDetector.Analysis analysis;
 
     private BenClaw claw;
     private ServoArm arm;
@@ -55,28 +56,234 @@ public class CommonAutonomous {
     }
 
     public void detectAndStoreVuMark() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+            case BLUE_TWO:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+            case RED_ONE:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
+                break;
+            case RED_TWO:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
+                break;
+        }
         while((vuMark == null || vuMark == RelicRecoveryVuMark.UNKNOWN) && linearOpMode.opModeIsActive()) {
             vuMark = vuforia.getCurrentVisibleRelic();
         }
-    }
 
-    public ColorSensorColor extendArmAndDetectColor() {
-        ColorSensorColor color = ColorSensorColor.GREEN;
+        linearOpMode.sleep(1000);
 
-        arm.extendArm();
-        return color;
-    }
-
-    public void knockOffJewel(ColorSensorColor detectedColor) {
-        //TODO: Do something once given color.
-
-        switch (allianceColor) {
-            case RED:
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
                 break;
-            case BLUE:
+            case BLUE_TWO:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
+                break;
+            case RED_ONE:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+            case RED_TWO:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+        }
+    }
+
+    public void extendArmAndDetectColor() {
+        arm.extendArm();
+        jewelColorDetector.process(vuforia.getImage());
+        analysis = jewelColorDetector.getAnalysis();
+
+        while(analysis.leftJewelColor == null && linearOpMode.opModeIsActive()) {
+            jewelColorDetector.process(vuforia.getImage());
+            analysis = jewelColorDetector.getAnalysis();
+        }
+    }
+
+    public void knockOffJewel() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        break;
+                    default:
+
+                }
+                break;
+            case BLUE_TWO:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        break;
+                    default:
+
+                }
+                break;
+            case RED_ONE:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        break;
+                    default:
+
+                }
+                break;
+            case RED_TWO:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.BACKWARD,4,0.5);
+                        drive.moveInches(Direction.FORWARD,4,0.5);
+                        break;
+                    default:
+
+                }
                 break;
             default:
                 Log.wtf("CommonAutonomous", "This should never happen.");
         }
+        arm.retractArm();
+    }
+
+    public void moveToColumn() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.moveInches(Direction.FORWARD, 30, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case CENTER:
+                        drive.moveInches(Direction.RIGHT, 12, 1);
+                        break;
+                    case RIGHT:
+                        drive.moveInches(Direction.RIGHT, 23, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case BLUE_TWO:
+                drive.moveInches(Direction.FORWARD, 30, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case CENTER:
+                        drive.moveInches(Direction.RIGHT, 12, 1);
+                        break;
+                    case RIGHT:
+                        drive.moveInches(Direction.RIGHT, 23, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case RED_ONE:
+                drive.moveInches(Direction.BACKWARD, 30, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case CENTER:
+                        drive.moveInches(Direction.LEFT, 12, 1);
+                        break;
+                    case RIGHT:
+                        drive.moveInches(Direction.LEFT, 23, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case RED_TWO:
+                drive.moveInches(Direction.BACKWARD, 30, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case CENTER:
+                        drive.moveInches(Direction.LEFT, 12, 1);
+                        break;
+                    case RIGHT:
+                        drive.moveInches(Direction.LEFT, 23, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
+    public void insertBlock() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.moveInches(Direction.BACKWARD, 15, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.FORWARD, 17, .5);
+                break;
+            case BLUE_TWO:
+                drive.moveInches(Direction.BACKWARD, 15, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.FORWARD, 17, .5);
+                break;
+            case RED_ONE:
+                drive.moveInches(Direction.FORWARD, 15, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.BACKWARD, 17, .5);
+                break;
+            case RED_TWO:
+                drive.moveInches(Direction.FORWARD, 15, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.BACKWARD, 17, .5);
+                break;
+        }
+        linearOpMode.sleep(500);
+        drive.rotateDegrees(Direction.RIGHT, 180, .5);
     }
 }
