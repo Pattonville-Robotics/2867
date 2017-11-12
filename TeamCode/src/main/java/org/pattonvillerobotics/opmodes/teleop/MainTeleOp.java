@@ -21,6 +21,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
+import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
 @TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 public class MainTeleOp extends LinearOpMode {
@@ -29,6 +30,7 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor slides;
     private ListenableGamepad gamepad;
     private boolean fieldOrientedDriveMode;
+    private ServoArm servoArm;
 
     private BNO055IMU imu;
     private BenClaw claw;
@@ -49,7 +51,7 @@ public class MainTeleOp extends LinearOpMode {
             gamepad.update(gamepad1);
 
             drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.secondAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
-            slides.setPower((gamepad1.right_trigger - gamepad1.left_trigger) / 2);
+            slides.setPower((gamepad1.left_trigger - gamepad1.right_trigger) / 2);
             telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
 
             telemetry.addData("Left Stick Radius", polarCoords.getX());
@@ -76,6 +78,7 @@ public class MainTeleOp extends LinearOpMode {
         imu.initialize(parameters);
         slides = hardwareMap.dcMotor.get("slides");
         drive = new SimpleMecanumDrive(this, hardwareMap);
+        servoArm = new ServoArm(hardwareMap, this);
 
         drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -93,8 +96,12 @@ public class MainTeleOp extends LinearOpMode {
             if (gamepad1.back) {
                 imu.stopAccelerationIntegration();
                 imu.startAccelerationIntegration(new Position(), new Velocity(), 100);
+            } else {
+                fieldOrientedDriveMode = !fieldOrientedDriveMode;
             }
-            fieldOrientedDriveMode = !fieldOrientedDriveMode;
         });
+
+        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::retractArm);
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::extendArm);
     }
 }

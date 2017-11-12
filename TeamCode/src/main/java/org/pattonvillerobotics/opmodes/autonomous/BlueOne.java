@@ -2,6 +2,7 @@ package org.pattonvillerobotics.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.Direction;
@@ -24,6 +25,7 @@ public class BlueOne extends LinearOpMode {
     private BenClaw claw;
     private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
+    private DcMotor slides;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,6 +41,9 @@ public class BlueOne extends LinearOpMode {
         waitForStart();
 
         claw.close();
+        slides.setPower(-.5);
+        sleep(1000);
+        slides.setPower(0);
 
         drive.rotateDegrees(Direction.RIGHT, 20, .4);
 
@@ -71,12 +76,12 @@ public class BlueOne extends LinearOpMode {
 
         switch (analysis.leftJewelColor) {
             case RED:
-                drive.moveInches(Direction.BACKWARD,4,0.5);
-                drive.moveInches(Direction.FORWARD,4,0.5);
+                drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                drive.moveInches(Direction.FORWARD, 6, 0.5);
                 break;
             case BLUE:
-                drive.moveInches(Direction.FORWARD,4,0.5);
-                drive.moveInches(Direction.BACKWARD,4,0.5);
+                drive.moveInches(Direction.FORWARD, 6, 0.5);
+                drive.moveInches(Direction.BACKWARD, 6, 0.5);
                 break;
             default:
 
@@ -121,7 +126,7 @@ public class BlueOne extends LinearOpMode {
 
     public void initialize() {
         ImageProcessor.initOpenCV(hardwareMap, this);
-
+        slides = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
         claw = new BenClaw(hardwareMap, this);
