@@ -51,7 +51,7 @@ public class MainTeleOp extends LinearOpMode {
             gamepad.update(gamepad1);
 
             drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.secondAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
-            slides.setPower((gamepad1.left_trigger - gamepad1.right_trigger) / 2);
+            slides.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
             telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
 
             telemetry.addData("Left Stick Radius", polarCoords.getX());
