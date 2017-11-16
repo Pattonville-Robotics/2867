@@ -41,7 +41,7 @@ public class BlueOne extends LinearOpMode {
         waitForStart();
 
         claw.close();
-        slides.setPower(-.5);
+        slides.setPower(-.2);
         sleep(1000);
         slides.setPower(0);
 
@@ -79,11 +79,13 @@ public class BlueOne extends LinearOpMode {
                 case RED:
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     arm.retractArm();
+                    sleep(1000);
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     break;
                 case BLUE:
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     arm.retractArm();
+                    sleep(1000);
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     break;
                 default:
@@ -93,11 +95,13 @@ public class BlueOne extends LinearOpMode {
                 case RED:
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     arm.retractArm();
+                    sleep(1000);
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     break;
                 case BLUE:
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     arm.retractArm();
+                    sleep(1000);
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     break;
                 default:
@@ -105,7 +109,7 @@ public class BlueOne extends LinearOpMode {
         }
 
 
-        sleep(1000);
+        sleep(500);
 
         drive.moveInches(Direction.FORWARD, 30, 0.5);
 
