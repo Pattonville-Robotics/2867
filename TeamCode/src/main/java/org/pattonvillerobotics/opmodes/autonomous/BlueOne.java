@@ -78,10 +78,12 @@ public class BlueOne extends LinearOpMode {
             switch (analysis.leftJewelColor) {
                 case RED:
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     break;
                 case BLUE:
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     break;
                 default:
@@ -90,19 +92,20 @@ public class BlueOne extends LinearOpMode {
             switch (analysis.rightJewelColor) {
                 case RED:
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     break;
                 case BLUE:
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     break;
                 default:
             }
         }
 
-        arm.retractArm();
 
-        sleep(500);
+        sleep(1000);
 
         drive.moveInches(Direction.FORWARD, 30, 0.5);
 
@@ -129,7 +132,7 @@ public class BlueOne extends LinearOpMode {
         sleep(500);
         claw.open();
         sleep(500);
-        drive.moveInches(Direction.FORWARD, 17, .5);
+        drive.moveInches(Direction.FORWARD, 14, .5);
         sleep(500);
         drive.rotateDegrees(Direction.RIGHT, 180, .8);
     }

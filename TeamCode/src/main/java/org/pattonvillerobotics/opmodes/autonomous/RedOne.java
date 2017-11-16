@@ -81,10 +81,12 @@ public class RedOne extends LinearOpMode{
             switch (analysis.leftJewelColor) {
                 case RED:
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     break;
                 case BLUE:
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     break;
                 default:
@@ -93,19 +95,19 @@ public class RedOne extends LinearOpMode{
             switch (analysis.rightJewelColor) {
                 case RED:
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
                     break;
                 case BLUE:
                     drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                    arm.retractArm();
                     drive.moveInches(Direction.FORWARD, 6, 0.5);
                     break;
                 default:
             }
         }
 
-        arm.retractArm();
-
-        sleep(500);
+        sleep(1000);
 
         drive.moveInches(Direction.FORWARD, 30, 0.5);
 
@@ -117,10 +119,10 @@ public class RedOne extends LinearOpMode{
 
         switch (columnKey) {
             case CENTER:
-                drive.moveInches(Direction.LEFT, 12, 1);
+                drive.moveInches(Direction.RIGHT, 12, 1);
                 break;
             case LEFT:
-                drive.moveInches(Direction.LEFT, 23, 1);
+                drive.moveInches(Direction.RIGHT, 23, 1);
                 break;
             default:
                 break;
@@ -132,7 +134,7 @@ public class RedOne extends LinearOpMode{
         sleep(500);
         claw.open();
         sleep(500);
-        drive.moveInches(Direction.BACKWARD, 17, .5);
+        drive.moveInches(Direction.BACKWARD, 14, .5);
         sleep(500);
         drive.rotateDegrees(Direction.LEFT, 180, .8);
 
