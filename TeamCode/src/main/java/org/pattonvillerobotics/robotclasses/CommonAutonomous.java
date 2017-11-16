@@ -190,24 +190,7 @@ public class CommonAutonomous {
                 }
                 break;
             case BLUE_TWO:
-                drive.moveInches(Direction.FORWARD, 30, 0.5);
-
-                linearOpMode.sleep(500);
-
-                drive.rotateDegrees(Direction.LEFT, 90, 0.5);
-
-                linearOpMode.sleep(500);
-
-                switch (vuMark) {
-                    case CENTER:
-                        drive.moveInches(Direction.RIGHT, 12, 1);
-                        break;
-                    case RIGHT:
-                        drive.moveInches(Direction.RIGHT, 23, 1);
-                        break;
-                    default:
-                        break;
-                }
+                //TODO
                 break;
             case RED_ONE:
                 drive.moveInches(Direction.BACKWARD, 30, 0.5);
@@ -230,24 +213,7 @@ public class CommonAutonomous {
                 }
                 break;
             case RED_TWO:
-                drive.moveInches(Direction.BACKWARD, 30, 0.5);
-
-                linearOpMode.sleep(500);
-
-                drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
-
-                linearOpMode.sleep(500);
-
-                switch (vuMark) {
-                    case CENTER:
-                        drive.moveInches(Direction.LEFT, 12, 1);
-                        break;
-                    case RIGHT:
-                        drive.moveInches(Direction.LEFT, 23, 1);
-                        break;
-                    default:
-                        break;
-                }
+                //TODO
                 break;
         }
     }
@@ -262,11 +228,7 @@ public class CommonAutonomous {
                 drive.moveInches(Direction.FORWARD, 17, .5);
                 break;
             case BLUE_TWO:
-                drive.moveInches(Direction.BACKWARD, 15, .5);
-                linearOpMode.sleep(500);
-                claw.open();
-                linearOpMode.sleep(500);
-                drive.moveInches(Direction.FORWARD, 17, .5);
+                //TODO
                 break;
             case RED_ONE:
                 drive.moveInches(Direction.FORWARD, 15, .5);
@@ -276,11 +238,7 @@ public class CommonAutonomous {
                 drive.moveInches(Direction.BACKWARD, 17, .5);
                 break;
             case RED_TWO:
-                drive.moveInches(Direction.FORWARD, 15, .5);
-                linearOpMode.sleep(500);
-                claw.open();
-                linearOpMode.sleep(500);
-                drive.moveInches(Direction.BACKWARD, 17, .5);
+                //TODO
                 break;
         }
         linearOpMode.sleep(500);
