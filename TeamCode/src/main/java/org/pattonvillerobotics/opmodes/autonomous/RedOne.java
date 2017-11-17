@@ -44,7 +44,7 @@ public class RedOne extends LinearOpMode{
         waitForStart();
 
         claw.close();
-        slides.setPower(-.2);
+        slides.setPower(-.3);
         sleep(1000);
         slides.setPower(0);
 
