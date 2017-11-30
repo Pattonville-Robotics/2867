@@ -7,7 +7,7 @@ dependencies {
     implementation "org.first.ftc:analytics:$ftc_version"
     implementation "org.first.ftc:wireless-p2p:$ftc_version"
 
-    implementation "com.github.Pattonville-Robotics:Common-Code:$ftc_version.2"
+    implementation "com.github.Pattonville-Robotics:Common-Code:$ftc_version.3"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 

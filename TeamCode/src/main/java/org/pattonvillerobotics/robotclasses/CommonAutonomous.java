@@ -11,7 +11,7 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelColorDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
@@ -32,7 +32,7 @@ public class CommonAutonomous {
     private VuforiaNavigation vuforia;
     private JewelColorDetector jewelColorDetector;
     private RelicRecoveryVuMark vuMark;
-    private JewelColorDetector.Analysis analysis;
+    private JewelColorDetector.AnalysisResult analysis;
 
     private BenClaw claw;
     private ServoArm arm;
