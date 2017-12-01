@@ -10,8 +10,7 @@ import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelColorDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
@@ -33,7 +32,7 @@ public class RedOne extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
-        JewelColorDetector.Analysis analysis;
+        JewelColorDetector.AnalysisResult analysis;
         vuforia.activateTracking();
 
         RelicRecoveryVuMark columnKey;
@@ -66,7 +65,7 @@ public class RedOne extends LinearOpMode{
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
 
-        while ((analysis.leftJewelColor == null && analysis.rightJewelColor == null) && opModeIsActive()) {
+        while ((analysis.leftJewelColor == null || analysis.rightJewelColor == null) && opModeIsActive()) {
             jewelColorDetector.process(vuforia.getImage());
             analysis = jewelColorDetector.getAnalysis();
         }
@@ -153,7 +152,7 @@ public class RedOne extends LinearOpMode{
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
         claw = new BenClaw(hardwareMap, this);
-        jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE);
+        jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
 
         drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
