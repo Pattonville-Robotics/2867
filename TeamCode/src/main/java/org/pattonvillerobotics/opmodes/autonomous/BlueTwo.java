@@ -2,16 +2,18 @@ package org.pattonvillerobotics.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelColorDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
 /**
@@ -23,28 +25,28 @@ public class BlueTwo extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
     private ServoArm arm;
-    //private BenClaw claw;
+    private BenClaw claw;
     private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
-    //private DcMotor slides;
+    private DcMotor slides;
 
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
-        JewelColorDetector.Analysis analysis;
+        JewelColorDetector.AnalysisResult analysis;
         vuforia.activateTracking();
 
         RelicRecoveryVuMark columnKey;
 
-        telemetry.addData("Blue One", "Initialization Complete");
+        telemetry.addData("Blue Two", "Initialization Complete");
         telemetry.update();
 
         waitForStart();
 
-        //claw.close();
-        //slides.setPower(-.3);
+        claw.close();
+        slides.setPower(-.3);
         sleep(1000);
-        //slides.setPower(0);
+        slides.setPower(0);
 
         drive.rotateDegrees(Direction.RIGHT, 20, .4);
 
@@ -73,7 +75,6 @@ public class BlueTwo extends LinearOpMode {
         telemetry.addData("RIGHT", analysis.rightJewelColor).setRetained(true);
         telemetry.update();
 
-        sleep(500);
 
         if (analysis.leftJewelColor != null) {
             switch (analysis.leftJewelColor) {
@@ -109,47 +110,50 @@ public class BlueTwo extends LinearOpMode {
             }
         }
 
-        sleep(500);
+        drive.moveInches(Direction.FORWARD, 30, .7);
 
-        drive.moveInches(Direction.FORWARD, 28, 0.5);
-
-        sleep(500);
-
-        drive.rotateDegrees(Direction.RIGHT, 180, 0.5);
-
-        sleep(500);
+        drive.rotateDegrees(Direction.RIGHT, 180, 0.7);
 
         switch (columnKey) {
             case LEFT:
-                drive.moveInches(Direction.RIGHT, 10,1);
+                drive.moveInches(Direction.RIGHT, 11.5, 1);
                 break;
             case CENTER:
-                drive.moveInches(Direction.RIGHT, 26, 1);
+                drive.moveInches(Direction.RIGHT, 21, 1);
                 break;
             case RIGHT:
-                drive.moveInches(Direction.RIGHT, 33, 1);
+                drive.moveInches(Direction.RIGHT, 30, 1);
                 break;
             default:
                 break;
         }
 
-        sleep(500);
-
-        drive.moveInches(Direction.BACKWARD, 10, .5);
-        sleep(500);
-        //claw.open();
-        sleep(500);
-        drive.moveInches(Direction.FORWARD, 9, .5);
-        sleep(500);
-        drive.rotateDegrees(Direction.RIGHT, 180, .8);
+        drive.moveInches(Direction.BACKWARD, 15, .7);
+        claw.open();
+        drive.moveInches(Direction.FORWARD, 12, .7);
+        claw.close();
+        drive.moveInches(Direction.BACKWARD, 15, .7);
+        claw.open();
+        drive.moveInches(Direction.FORWARD, 13, .7);
+        switch (columnKey) {
+            case LEFT:
+                drive.moveInches(Direction.RIGHT, 18, 1);
+                break;
+            case CENTER:
+                drive.moveInches(Direction.RIGHT, 10, 1);
+                break;
+            default:
+                break;
+        }
+        drive.rotateDegrees(Direction.LEFT, 100, .7);
     }
 
     public void initialize() {
         ImageProcessor.initOpenCV(hardwareMap, this);
-        //slides = hardwareMap.dcMotor.get("slides");
+        slides = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
-        //claw = new BenClaw(hardwareMap, this);
+        claw = new BenClaw(hardwareMap, this);
         jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
     }

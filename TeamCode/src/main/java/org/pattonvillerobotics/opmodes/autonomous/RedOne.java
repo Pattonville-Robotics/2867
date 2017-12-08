@@ -74,8 +74,6 @@ public class RedOne extends LinearOpMode{
         telemetry.addData("RIGHT", analysis.rightJewelColor).setRetained(true);
         telemetry.update();
 
-        sleep(500);
-
         if (analysis.leftJewelColor != null) {
             switch (analysis.leftJewelColor) {
                 case RED:
@@ -110,15 +108,9 @@ public class RedOne extends LinearOpMode{
             }
         }
 
-        sleep(500);
-
         drive.moveInches(Direction.FORWARD, 30, 0.5);
 
-        sleep(500);
-
         drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
-
-        sleep(500);
 
         switch (columnKey) {
             case CENTER:
@@ -131,14 +123,13 @@ public class RedOne extends LinearOpMode{
                 break;
         }
 
-        sleep(500);
-
-        drive.moveInches(Direction.FORWARD, 15, .5);
-        sleep(500);
+        drive.moveInches(Direction.BACKWARD, 15, .5);
         claw.open();
-        sleep(500);
-        drive.moveInches(Direction.BACKWARD, 14, .5);
-        sleep(500);
+        drive.moveInches(Direction.FORWARD, 14, .5);
+        claw.close();
+        drive.moveInches(Direction.BACKWARD, 8, .5);
+        claw.open();
+        drive.moveInches(Direction.FORWARD, 8, .5);
         drive.rotateDegrees(Direction.LEFT, 180, .8);
 
         while(opModeIsActive()) {
