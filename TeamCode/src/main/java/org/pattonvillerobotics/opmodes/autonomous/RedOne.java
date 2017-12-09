@@ -123,13 +123,13 @@ public class RedOne extends LinearOpMode{
                 break;
         }
 
-        drive.moveInches(Direction.BACKWARD, 15, .5);
+        drive.moveInches(Direction.FORWARD, 15, .5);
         claw.open();
-        drive.moveInches(Direction.FORWARD, 14, .5);
+        drive.moveInches(Direction.BACKWARD, 14, .5);
         claw.close();
-        drive.moveInches(Direction.BACKWARD, 8, .5);
+        drive.moveInches(Direction.FORWARD, 14, .5);
         claw.open();
-        drive.moveInches(Direction.FORWARD, 8, .5);
+        drive.moveInches(Direction.BACKWARD, 10, .5);
         drive.rotateDegrees(Direction.LEFT, 180, .8);
 
         while(opModeIsActive()) {
@@ -143,7 +143,7 @@ public class RedOne extends LinearOpMode{
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
         claw = new BenClaw(hardwareMap, this);
-        jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
+        jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, false);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
 
         drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);

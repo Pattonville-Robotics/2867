@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 public class BenClaw extends AbstractMechanism {
 
-    private static final double OPEN_POSITION = 1;
+    private static final double OPEN_POSITION = .95;
     private static final double CLOSED_POSITION = .1;
     public Servo claw;
     private boolean isOpen;
