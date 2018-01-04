@@ -10,14 +10,18 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
+/**
+ * Created by skaggsw on 11/21/17.
+ */
 
-@Autonomous(name = "Blue 1", group = OpModeGroups.MAIN)
-public class BlueOne extends LinearOpMode {
+@Autonomous(name = "Blue 2", group = OpModeGroups.MAIN)
+public class BlueTwo extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
     private ServoArm arm;
@@ -34,7 +38,7 @@ public class BlueOne extends LinearOpMode {
 
         RelicRecoveryVuMark columnKey;
 
-        telemetry.addData("Blue One", "Initialization Complete");
+        telemetry.addData("Blue Two", "Initialization Complete");
         telemetry.update();
 
         waitForStart();
@@ -106,29 +110,42 @@ public class BlueOne extends LinearOpMode {
             }
         }
 
-        drive.moveInches(Direction.FORWARD, 30, 0.5);
+        drive.moveInches(Direction.FORWARD, 30, .7);
 
-        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+        drive.rotateDegrees(Direction.RIGHT, 180, 0.7);
 
         switch (columnKey) {
+            case LEFT:
+                drive.moveInches(Direction.RIGHT, 11.5, 1);
+                break;
             case CENTER:
-                drive.moveInches(Direction.RIGHT, 12, 1);
+                drive.moveInches(Direction.RIGHT, 21, 1);
                 break;
             case RIGHT:
-                drive.moveInches(Direction.RIGHT, 23, 1);
+                drive.moveInches(Direction.RIGHT, 30, 1);
                 break;
             default:
                 break;
         }
 
-        drive.moveInches(Direction.BACKWARD, 15, .5);
+        drive.moveInches(Direction.BACKWARD, 15, .7);
         claw.open();
-        drive.moveInches(Direction.FORWARD, 14, .5);
+        drive.moveInches(Direction.FORWARD, 12, .7);
         claw.close();
-        drive.moveInches(Direction.BACKWARD, 14, .5);
+        drive.moveInches(Direction.BACKWARD, 15, .7);
         claw.open();
-        drive.moveInches(Direction.FORWARD, 10, .5);
-        drive.rotateDegrees(Direction.RIGHT, 180, .8);
+        drive.moveInches(Direction.FORWARD, 13, .7);
+        switch (columnKey) {
+            case LEFT:
+                drive.moveInches(Direction.RIGHT, 18, 1);
+                break;
+            case CENTER:
+                drive.moveInches(Direction.RIGHT, 10, 1);
+                break;
+            default:
+                break;
+        }
+        drive.rotateDegrees(Direction.LEFT, 100, .7);
     }
 
     public void initialize() {
@@ -137,7 +154,7 @@ public class BlueOne extends LinearOpMode {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
         claw = new BenClaw(hardwareMap, this);
-        jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
+        jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
     }
 }

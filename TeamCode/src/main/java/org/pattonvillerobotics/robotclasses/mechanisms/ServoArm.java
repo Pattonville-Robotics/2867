@@ -31,14 +31,14 @@ public class ServoArm extends AbstractMechanism {
      * Extends the claw arm
      */
     public void extendArm() {
-        servo.setPosition(0);
+        servo.setPosition(0.2);
     }
 
     /**
      * Retracts the claw arm
      */
     public void retractArm() {
-        servo.setPosition(0.6);
+        servo.setPosition(.75);
     }
 
     /**

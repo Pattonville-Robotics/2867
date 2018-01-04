@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
-import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
+import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelColorDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
@@ -32,6 +32,7 @@ public class CommonAutonomous {
     private VuforiaNavigation vuforia;
     private JewelColorDetector jewelColorDetector;
     private RelicRecoveryVuMark vuMark;
+    private JewelColorDetector.AnalysisResult analysis;
 
     private BenClaw claw;
     private ServoArm arm;
@@ -55,28 +56,251 @@ public class CommonAutonomous {
     }
 
     public void detectAndStoreVuMark() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+            case BLUE_TWO:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+            case RED_ONE:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
+                break;
+            case RED_TWO:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
+                break;
+        }
         while((vuMark == null || vuMark == RelicRecoveryVuMark.UNKNOWN) && linearOpMode.opModeIsActive()) {
             vuMark = vuforia.getCurrentVisibleRelic();
         }
-    }
 
-    public ColorSensorColor extendArmAndDetectColor() {
-        ColorSensorColor color = ColorSensorColor.GREEN;
+        linearOpMode.sleep(1000);
 
-        arm.extendArm();
-        return color;
-    }
-
-    public void knockOffJewel(ColorSensorColor detectedColor) {
-        //TODO: Do something once given color.
-
-        switch (allianceColor) {
-            case RED:
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
                 break;
-            case BLUE:
+            case BLUE_TWO:
+                drive.rotateDegrees(Direction.LEFT, 20, .4);
+                break;
+            case RED_ONE:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+            case RED_TWO:
+                drive.rotateDegrees(Direction.RIGHT, 20, .4);
+                break;
+        }
+    }
+
+    public void extendArmAndDetectColor() {
+        arm.extendArm();
+        jewelColorDetector.process(vuforia.getImage());
+        analysis = jewelColorDetector.getAnalysis();
+
+        while(analysis.leftJewelColor == null && linearOpMode.opModeIsActive()) {
+            jewelColorDetector.process(vuforia.getImage());
+            analysis = jewelColorDetector.getAnalysis();
+        }
+    }
+
+    public void knockOffJewel() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        break;
+                    default:
+
+                }
+                break;
+            case BLUE_TWO:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        break;
+                    default:
+
+                }
+                break;
+            case RED_ONE:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        break;
+                    default:
+
+                }
+                break;
+            case RED_TWO:
+                switch (analysis.leftJewelColor) {
+                    case RED:
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        break;
+                    case BLUE:
+                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        break;
+                    default:
+
+                }
                 break;
             default:
                 Log.wtf("CommonAutonomous", "This should never happen.");
         }
+        arm.retractArm();
+    }
+
+    public void moveToColumn() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.moveInches(Direction.FORWARD, 30, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case CENTER:
+                        drive.moveInches(Direction.RIGHT, 12, 1);
+                        break;
+                    case RIGHT:
+                        drive.moveInches(Direction.RIGHT, 23, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case BLUE_TWO:
+                drive.moveInches(Direction.FORWARD, 28, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.RIGHT, 180, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case LEFT:
+                        drive.moveInches(Direction.RIGHT, 10,1);
+                        break;
+                    case CENTER:
+                        drive.moveInches(Direction.RIGHT, 26, 1);
+                        break;
+                    case RIGHT:
+                        drive.moveInches(Direction.RIGHT, 33, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case RED_ONE:
+                drive.moveInches(Direction.FORWARD, 30, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case CENTER:
+                        drive.moveInches(Direction.RIGHT, 12, 1);
+                        break;
+                    case LEFT:
+                        drive.moveInches(Direction.RIGHT, 23, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case RED_TWO:
+                drive.moveInches(Direction.BACKWARD, 28, 0.5);
+
+                linearOpMode.sleep(500);
+
+                drive.rotateDegrees(Direction.LEFT, 180, 0.5);
+
+                linearOpMode.sleep(500);
+
+                switch (vuMark) {
+                    case LEFT:
+                        drive.moveInches(Direction.RIGHT, 10,1);
+                        break;
+                    case CENTER:
+                        drive.moveInches(Direction.RIGHT, 26, 1);
+                        break;
+                    case RIGHT:
+                        drive.moveInches(Direction.RIGHT, 33, 1);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
+    public void insertBlock() {
+        switch (startingPosition) {
+            case BLUE_ONE:
+                drive.moveInches(Direction.BACKWARD, 15, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.FORWARD, 14, .5);
+                break;
+            case BLUE_TWO:
+                drive.moveInches(Direction.BACKWARD, 10, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.FORWARD, 9, .5);
+                break;
+            case RED_ONE:
+                drive.moveInches(Direction.FORWARD, 15, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.BACKWARD, 14, .5);
+                break;
+            case RED_TWO:
+                drive.moveInches(Direction.FORWARD, 10, .5);
+                linearOpMode.sleep(500);
+                claw.open();
+                linearOpMode.sleep(500);
+                drive.moveInches(Direction.BACKWARD, 9, .5);
+                break;
+        }
+        linearOpMode.sleep(500);
+        drive.rotateDegrees(Direction.RIGHT, 180, .5);
+    }
+
+    public void initialize() {
+        ImageProcessor.initOpenCV(hardwareMap, linearOpMode);
+        slideMotor = hardwareMap.dcMotor.get("slides");
+        drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomizedRobotParameters.ROBOT_PARAMETERS);
+        arm = new ServoArm(hardwareMap, linearOpMode);
+        claw = new BenClaw(hardwareMap, linearOpMode);
+        jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE);
+        vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        vuforia.activateTracking();
     }
 }

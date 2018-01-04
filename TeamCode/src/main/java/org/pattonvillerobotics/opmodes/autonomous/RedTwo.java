@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.commoncode.enums.Direction;
@@ -15,9 +16,12 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 
+/**
+ * Created by wingertj01 on 11/21/17.
+ */
 
-@Autonomous(name = "Blue 1", group = OpModeGroups.MAIN)
-public class BlueOne extends LinearOpMode {
+@Autonomous (name = "Red 2", group = OpModeGroups.MAIN)
+public class RedTwo extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
     private ServoArm arm;
@@ -34,7 +38,7 @@ public class BlueOne extends LinearOpMode {
 
         RelicRecoveryVuMark columnKey;
 
-        telemetry.addData("Blue One", "Initialization Complete");
+        telemetry.addData("Red Two", "Initialization Complete");
         telemetry.update();
 
         waitForStart();
@@ -44,18 +48,18 @@ public class BlueOne extends LinearOpMode {
         sleep(1000);
         slides.setPower(0);
 
-        drive.rotateDegrees(Direction.RIGHT, 20, .4);
+        drive.rotateDegrees(Direction.LEFT, 20, .4);
 
         columnKey = vuforia.getCurrentVisibleRelic();
 
-        while(columnKey == RelicRecoveryVuMark.UNKNOWN) {
+        while (columnKey == RelicRecoveryVuMark.UNKNOWN) {
             columnKey = vuforia.getCurrentVisibleRelic();
         }
 
         telemetry.addData("Column Key: ", columnKey).setRetained(true);
         telemetry.update();
 
-        drive.rotateDegrees(Direction.LEFT, 20, .4);
+        drive.rotateDegrees(Direction.RIGHT, 20, .4);
 
         arm.extendArm();
 
@@ -106,29 +110,40 @@ public class BlueOne extends LinearOpMode {
             }
         }
 
-        drive.moveInches(Direction.FORWARD, 30, 0.5);
-
-        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+        drive.moveInches(Direction.FORWARD, 30, .7);
 
         switch (columnKey) {
-            case CENTER:
-                drive.moveInches(Direction.RIGHT, 12, 1);
-                break;
             case RIGHT:
-                drive.moveInches(Direction.RIGHT, 23, 1);
+                drive.moveInches(Direction.RIGHT, 11.5, 1);
+                break;
+            case CENTER:
+                drive.moveInches(Direction.RIGHT, 19, 1);
+                break;
+            case LEFT:
+                drive.moveInches(Direction.RIGHT, 30, 1);
                 break;
             default:
                 break;
         }
 
-        drive.moveInches(Direction.BACKWARD, 15, .5);
+        drive.moveInches(Direction.FORWARD, 15, .7);
         claw.open();
-        drive.moveInches(Direction.FORWARD, 14, .5);
+        drive.moveInches(Direction.BACKWARD, 12, .7);
         claw.close();
-        drive.moveInches(Direction.BACKWARD, 14, .5);
+        drive.moveInches(Direction.FORWARD, 15, .7);
         claw.open();
-        drive.moveInches(Direction.FORWARD, 10, .5);
-        drive.rotateDegrees(Direction.RIGHT, 180, .8);
+        drive.moveInches(Direction.BACKWARD, 11, .7);
+        switch (columnKey) {
+            case RIGHT:
+                drive.moveInches(Direction.RIGHT, 18, 1);
+                break;
+            case CENTER:
+                drive.moveInches(Direction.RIGHT, 10, 1);
+                break;
+            default:
+                break;
+        }
+        drive.rotateDegrees(Direction.LEFT, 100, .7);
     }
 
     public void initialize() {
@@ -139,5 +154,10 @@ public class BlueOne extends LinearOpMode {
         claw = new BenClaw(hardwareMap, this);
         jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+
+        drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 }
