@@ -97,7 +97,7 @@ public class CommonAutonomous {
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
 
-        while(analysis.leftJewelColor == null && linearOpMode.opModeIsActive()) {
+        while (analysis.leftJewelColor == null && linearOpMode.opModeIsActive()) {
             jewelColorDetector.process(vuforia.getImage());
             analysis = jewelColorDetector.getAnalysis();
         }
@@ -108,12 +108,12 @@ public class CommonAutonomous {
             case BLUE_ONE:
                 switch (analysis.leftJewelColor) {
                     case RED:
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
-                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
                         break;
                     case BLUE:
-                        drive.moveInches(Direction.FORWARD,6,0.5);
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
                         break;
                     default:
 
@@ -122,12 +122,12 @@ public class CommonAutonomous {
             case BLUE_TWO:
                 switch (analysis.leftJewelColor) {
                     case RED:
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
-                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
                         break;
                     case BLUE:
-                        drive.moveInches(Direction.FORWARD,6,0.5);
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
                         break;
                     default:
 
@@ -136,12 +136,12 @@ public class CommonAutonomous {
             case RED_ONE:
                 switch (analysis.leftJewelColor) {
                     case RED:
-                        drive.moveInches(Direction.FORWARD,6,0.5);
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
                         break;
                     case BLUE:
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
-                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
                         break;
                     default:
 
@@ -150,12 +150,12 @@ public class CommonAutonomous {
             case RED_TWO:
                 switch (analysis.leftJewelColor) {
                     case RED:
-                        drive.moveInches(Direction.FORWARD,6,0.5);
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
                         break;
                     case BLUE:
-                        drive.moveInches(Direction.BACKWARD,6,0.5);
-                        drive.moveInches(Direction.FORWARD,6,0.5);
+                        drive.moveInches(Direction.BACKWARD, 6, 0.5);
+                        drive.moveInches(Direction.FORWARD, 6, 0.5);
                         break;
                     default:
 
@@ -200,7 +200,7 @@ public class CommonAutonomous {
 
                 switch (vuMark) {
                     case LEFT:
-                        drive.moveInches(Direction.RIGHT, 10,1);
+                        drive.moveInches(Direction.RIGHT, 10, 1);
                         break;
                     case CENTER:
                         drive.moveInches(Direction.RIGHT, 26, 1);
@@ -243,7 +243,7 @@ public class CommonAutonomous {
 
                 switch (vuMark) {
                     case LEFT:
-                        drive.moveInches(Direction.RIGHT, 10,1);
+                        drive.moveInches(Direction.RIGHT, 10, 1);
                         break;
                     case CENTER:
                         drive.moveInches(Direction.RIGHT, 26, 1);

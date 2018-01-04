@@ -20,7 +20,7 @@ import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
  * Created by wingertj01 on 11/21/17.
  */
 
-@Autonomous (name = "Red 2", group = OpModeGroups.MAIN)
+@Autonomous(name = "Red 2", group = OpModeGroups.MAIN)
 public class RedTwo extends LinearOpMode {
 
     private MecanumEncoderDrive drive;

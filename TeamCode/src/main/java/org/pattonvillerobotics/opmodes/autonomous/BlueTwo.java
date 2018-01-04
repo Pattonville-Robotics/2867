@@ -52,7 +52,7 @@ public class BlueTwo extends LinearOpMode {
 
         columnKey = vuforia.getCurrentVisibleRelic();
 
-        while(columnKey == RelicRecoveryVuMark.UNKNOWN) {
+        while (columnKey == RelicRecoveryVuMark.UNKNOWN) {
             columnKey = vuforia.getCurrentVisibleRelic();
         }
 
