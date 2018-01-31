@@ -129,6 +129,19 @@ public class BlueOne extends LinearOpMode {
         claw.open();
         drive.moveInches(Direction.FORWARD, 10, .5);
         drive.rotateDegrees(Direction.RIGHT, 180, .8);
+
+        // fancy !!
+
+//        drive.moveInches(Direction.FORWARD, 40, .8);
+//        claw.close();
+//        slides.setPower(-.5);
+//        sleep(500);
+//        slides.setPower(0);
+//        drive.moveInches(Direction.BACKWARD, 40, .8);
+//        drive.rotateDegrees(Direction.RIGHT, 180, .8);
+//        drive.moveInches(Direction.FORWARD, 20, .8);
+//        claw.open();
+//        drive.moveInches(Direction.BACKWARD, 20, .8);
     }
 
     public void initialize() {

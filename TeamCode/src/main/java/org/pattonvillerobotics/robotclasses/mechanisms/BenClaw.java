@@ -12,6 +12,7 @@ public class BenClaw extends AbstractMechanism {
 
     private static final double OPEN_POSITION = .95;
     private static final double CLOSED_POSITION = .1;
+    private static final double HALF_POSITION = .8;
     public Servo claw;
     private boolean isOpen;
 
@@ -41,6 +42,10 @@ public class BenClaw extends AbstractMechanism {
      */
     public void close() {
         claw.setPosition(CLOSED_POSITION);
+    }
+
+    public void half() {
+        claw.setPosition(HALF_POSITION);
     }
 
     /**
