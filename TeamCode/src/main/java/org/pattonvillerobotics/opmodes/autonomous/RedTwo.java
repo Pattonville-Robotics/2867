@@ -25,7 +25,7 @@ public class RedTwo extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
     private ServoArm arm;
-    private BenClaw claw;
+    private BenClaw bottomClaw, topClaw;
     private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
     private DcMotor slides;
@@ -43,7 +43,7 @@ public class RedTwo extends LinearOpMode {
 
         waitForStart();
 
-        claw.close();
+        bottomClaw.close();
         slides.setPower(-.3);
         sleep(1000);
         slides.setPower(0);
@@ -127,11 +127,11 @@ public class RedTwo extends LinearOpMode {
         }
 
         drive.moveInches(Direction.FORWARD, 15, .7);
-        claw.open();
+        bottomClaw.open();
         drive.moveInches(Direction.BACKWARD, 12, .7);
-        claw.close();
+        bottomClaw.close();
         drive.moveInches(Direction.FORWARD, 15, .7);
-        claw.open();
+        bottomClaw.open();
         drive.moveInches(Direction.BACKWARD, 11, .7);
         switch (columnKey) {
             case RIGHT:
@@ -151,7 +151,9 @@ public class RedTwo extends LinearOpMode {
         slides = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
-        claw = new BenClaw(hardwareMap, this);
+        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw");
+        topClaw = new BenClaw(hardwareMap, this, "top_claw");
+
         jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
 

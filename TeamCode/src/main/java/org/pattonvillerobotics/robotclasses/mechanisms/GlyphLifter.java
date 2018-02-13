@@ -14,7 +14,7 @@ public class GlyphLifter extends AbstractMechanism {
 
     public GlyphLifter(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap,linearOpMode);
-        claw = new BenClaw(hardwareMap,linearOpMode);
+        claw = new BenClaw(hardwareMap, linearOpMode, "bottom_claw");
         slideMotor = new SlideMotor(hardwareMap,linearOpMode);
     }
 

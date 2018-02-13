@@ -21,7 +21,7 @@ public class BlueOne extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
     private ServoArm arm;
-    private BenClaw claw;
+    private BenClaw bottomClaw, topClaw;
     private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
     private DcMotor slides;
@@ -39,7 +39,7 @@ public class BlueOne extends LinearOpMode {
 
         waitForStart();
 
-        claw.close();
+        bottomClaw.close();
         slides.setPower(-.3);
         sleep(1000);
         slides.setPower(0);
@@ -122,25 +122,25 @@ public class BlueOne extends LinearOpMode {
         }
 
         drive.moveInches(Direction.BACKWARD, 15, .5);
-        claw.open();
+        bottomClaw.open();
         drive.moveInches(Direction.FORWARD, 14, .5);
-        claw.close();
+        bottomClaw.close();
         drive.moveInches(Direction.BACKWARD, 14, .5);
-        claw.open();
+        bottomClaw.open();
         drive.moveInches(Direction.FORWARD, 10, .5);
         drive.rotateDegrees(Direction.RIGHT, 180, .8);
 
         // fancy !!
 
 //        drive.moveInches(Direction.FORWARD, 40, .8);
-//        claw.close();
+//        bottomClaw.close();
 //        slides.setPower(-.5);
 //        sleep(500);
 //        slides.setPower(0);
 //        drive.moveInches(Direction.BACKWARD, 40, .8);
 //        drive.rotateDegrees(Direction.RIGHT, 180, .8);
 //        drive.moveInches(Direction.FORWARD, 20, .8);
-//        claw.open();
+//        bottomClaw.open();
 //        drive.moveInches(Direction.BACKWARD, 20, .8);
     }
 
@@ -149,7 +149,9 @@ public class BlueOne extends LinearOpMode {
         slides = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
-        claw = new BenClaw(hardwareMap, this);
+        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw");
+        topClaw = new BenClaw(hardwareMap, this, "top_claw");
+
         jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
     }

@@ -50,7 +50,7 @@ public class CommonAutonomous {
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomizedRobotParameters.ROBOT_PARAMETERS);
 
-        claw = new BenClaw(hardwareMap, linearOpMode);
+        claw = new BenClaw(hardwareMap, linearOpMode, "bottom_claw");
         arm = new ServoArm(hardwareMap, linearOpMode);
         slideMotor = hardwareMap.dcMotor.get("slide_motor");
     }
@@ -298,7 +298,7 @@ public class CommonAutonomous {
         slideMotor = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, linearOpMode);
-        claw = new BenClaw(hardwareMap, linearOpMode);
+        claw = new BenClaw(hardwareMap, linearOpMode, "bottom_claw");
         jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activateTracking();
