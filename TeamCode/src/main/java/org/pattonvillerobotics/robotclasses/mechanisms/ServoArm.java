@@ -25,6 +25,7 @@ public class ServoArm extends AbstractMechanism {
     public ServoArm(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
         servo = hardwareMap.servo.get("servo_arm");
+        retractArm();
     }
 
     /**

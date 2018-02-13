@@ -33,7 +33,8 @@ public class MainTeleOp extends LinearOpMode {
     private ServoArm servoArm;
 
     private BNO055IMU imu;
-    private BenClaw claw;
+    private BenClaw topClaw;
+    private BenClaw bottomClaw;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -88,19 +89,11 @@ public class MainTeleOp extends LinearOpMode {
 
         gamepad = new ListenableGamepad();
 
-        claw = new BenClaw(hardwareMap, this);
+        topClaw = new BenClaw(hardwareMap, this, "top_claw");
+        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw");
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, claw::togglePosition);
-
-        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-//            if (gamepad1.back) {
-//                imu.stopAccelerationIntegration();
-//                imu.startAccelerationIntegration(new Position(), new Velocity(), 100);
-//            } else {
-//                fieldOrientedDriveMode = !fieldOrientedDriveMode;
-//            }
-            claw.half();
-        });
+        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, topClaw::togglePosition);
+        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, bottomClaw::togglePosition);
 
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::retractArm);
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::extendArm);

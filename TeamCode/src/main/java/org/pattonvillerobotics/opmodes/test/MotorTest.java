@@ -9,20 +9,20 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 /**
  * Created by skaggsw on 10/19/17.
  */
-@TeleOp(name = "SliderTest", group = OpModeGroups.TESTING)
-public class SliderTest extends LinearOpMode {
+@TeleOp(name = "MotorTest", group = OpModeGroups.TESTING)
+public class MotorTest extends LinearOpMode {
 
-    private DcMotor slideMotor;
+    private DcMotor motor;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        slideMotor = hardwareMap.dcMotor.get("slide_motor");
-        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor = hardwareMap.dcMotor.get("motor");
+        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         waitForStart();
 
         while(opModeIsActive()) {
-            slideMotor.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+            motor.setPower(-gamepad1.left_stick_y);
         }
     }
 }

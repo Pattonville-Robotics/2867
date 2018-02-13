@@ -14,7 +14,7 @@ public class BenClaw extends AbstractMechanism {
     private static final double CLOSED_POSITION = .1;
     private static final double HALF_POSITION = .8;
     public Servo claw;
-    private boolean isOpen;
+    private boolean isOpen, isHalf;
 
     /**
      * Initializes the hardwaremap and linearopmode, as well as the claw's servo
@@ -23,9 +23,9 @@ public class BenClaw extends AbstractMechanism {
      * @param hardwareMap a hardwaremap to initialize the claw's servo
      * @param linearOpMode a linearopmode that allows for sleeping and telemetry
      */
-    public BenClaw(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public BenClaw(HardwareMap hardwareMap, LinearOpMode linearOpMode, String name) {
         super(hardwareMap, linearOpMode);
-        claw = hardwareMap.servo.get("claw");
+        claw = hardwareMap.servo.get(name);
         claw.setPosition(1);
         isOpen = true;
     }
@@ -53,12 +53,15 @@ public class BenClaw extends AbstractMechanism {
      * Negates isOpen
      */
     public void togglePosition() {
-        if(isOpen) {
+        if (isHalf) {
             close();
+            isHalf = !isHalf;
+        } else if (isOpen) {
+            half();
+            isOpen = !isOpen;
         } else {
-            open();
+            close();
         }
-        isOpen = !isOpen;
     }
 
     /**
