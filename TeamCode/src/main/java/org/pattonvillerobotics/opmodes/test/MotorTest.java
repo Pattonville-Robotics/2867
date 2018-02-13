@@ -9,7 +9,7 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 /**
  * Created by skaggsw on 10/19/17.
  */
-@TeleOp(name = "MotorTest", group = OpModeGroups.TESTING)
+@TeleOp(name = "MotorTest w/ Joystick", group = OpModeGroups.TESTING)
 public class MotorTest extends LinearOpMode {
 
     private DcMotor motor;
