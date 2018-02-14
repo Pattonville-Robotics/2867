@@ -86,6 +86,10 @@ public class MainTeleOp extends LinearOpMode {
         drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        drive.leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        drive.leftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        drive.rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        drive.rightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         gamepad = new ListenableGamepad();
 

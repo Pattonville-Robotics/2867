@@ -1,8 +1,10 @@
 package org.pattonvillerobotics.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
@@ -10,7 +12,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
 /**
  * Created by gregbahr on 2/13/18.
  */
-
+@TeleOp(name = "Servo Position Test", group = OpModeGroups.TESTING)
 public class ServoPositionTest extends LinearOpMode {
 
     private Servo servo;
