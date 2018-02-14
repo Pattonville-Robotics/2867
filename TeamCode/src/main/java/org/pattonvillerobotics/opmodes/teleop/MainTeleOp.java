@@ -22,6 +22,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.Spinner;
 
 @TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 public class MainTeleOp extends LinearOpMode {
@@ -31,7 +32,7 @@ public class MainTeleOp extends LinearOpMode {
     private ListenableGamepad gamepad;
     private boolean fieldOrientedDriveMode;
     private ServoArm servoArm;
-
+    private Spinner spinny;
     private BNO055IMU imu;
     private BenClaw topClaw;
     private BenClaw bottomClaw;
@@ -51,15 +52,15 @@ public class MainTeleOp extends LinearOpMode {
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             gamepad.update(gamepad1);
 
-            drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.secondAngle : 0), polarCoords.getX(), -gamepad1.right_stick_x);
+            drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoords.getX(), -gamepad1.right_stick_x);
             slides.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
             telemetry.addData("Field Oriented Drive", fieldOrientedDriveMode);
 
             telemetry.addData("Left Stick Radius", polarCoords.getX());
-            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords.getY() + (fieldOrientedDriveMode ? angles.secondAngle : 0)));
+            telemetry.addData("Left Stick Angle", FastMath.toDegrees(polarCoords.getY() + (fieldOrientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0)));
             telemetry.addData("Right Stick X", gamepad1.right_stick_x);
             telemetry.addData("Angles", angles.toString());
-
+            telemetry.addData("Current Spinny Position", spinny.getCurrentPosition());
 
             telemetry.update();
         }
@@ -95,11 +96,14 @@ public class MainTeleOp extends LinearOpMode {
 
         topClaw = new BenClaw(hardwareMap, this, "top_claw");
         bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw");
+        spinny = new Spinner(hardwareMap, this);
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, topClaw::togglePosition);
         gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, bottomClaw::togglePosition);
 
-        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::retractArm);
-        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::extendArm);
+        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, spinny::rotate180);
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::toggleArmPosition);
+
+        gamepad.getButton(GamepadData.Button.STICK_BUTTON_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> fieldOrientedDriveMode = !fieldOrientedDriveMode);
     }
 }

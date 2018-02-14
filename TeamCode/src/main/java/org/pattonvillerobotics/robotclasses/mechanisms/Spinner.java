@@ -12,20 +12,30 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Spinner extends AbstractMechanism {
 
-    private static int ENCODER_TICKS = 144;
     public DcMotor spinnerMotor;
-
+    private SpinnerPosition currentPosition;
 
     public Spinner(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
-
         spinnerMotor = hardwareMap.dcMotor.get("spinner");
         spinnerMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        currentPosition = SpinnerPosition.UP;
     }
 
     public void rotate180() {
         spinnerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int targetPosition = spinnerMotor.getCurrentPosition() + ENCODER_TICKS;
+        int targetPosition = 0;
+
+        switch (currentPosition) {
+            case UP:
+                targetPosition = 144;
+                currentPosition = SpinnerPosition.DOWN;
+                break;
+            case DOWN:
+                targetPosition = 0;
+                currentPosition = SpinnerPosition.UP;
+                break;
+        }
 
         spinnerMotor.setTargetPosition(targetPosition);
 
@@ -35,5 +45,14 @@ public class Spinner extends AbstractMechanism {
             }
             spinnerMotor.setPower(0);
         });
+        spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public SpinnerPosition getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public enum SpinnerPosition {
+        UP, DOWN
     }
 }

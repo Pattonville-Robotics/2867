@@ -15,6 +15,7 @@ public class ServoArm extends AbstractMechanism {
 
     private Servo servo;
     private ColorSensor sensorColor;
+    private boolean isExtended;
 
     /**
      * Initializes the hardwaremap and linearopmode, as well as the servo and color sensor
@@ -33,6 +34,7 @@ public class ServoArm extends AbstractMechanism {
      */
     public void extendArm() {
         servo.setPosition(0.2);
+        isExtended = true;
     }
 
     /**
@@ -40,6 +42,15 @@ public class ServoArm extends AbstractMechanism {
      */
     public void retractArm() {
         servo.setPosition(.75);
+        isExtended = false;
+    }
+
+    public void toggleArmPosition() {
+        if (isExtended) {
+            retractArm();
+        } else {
+            extendArm();
+        }
     }
 
     /**
