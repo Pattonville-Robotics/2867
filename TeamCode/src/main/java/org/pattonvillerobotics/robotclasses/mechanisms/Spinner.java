@@ -22,7 +22,7 @@ public class Spinner extends AbstractMechanism {
         currentPosition = SpinnerPosition.UP;
     }
 
-    public void rotate180() {
+    public void toggleSpinnerPosition() {
         spinnerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         int targetPosition = 0;
 
