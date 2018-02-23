@@ -1,7 +1,5 @@
 package org.pattonvillerobotics.robotclasses.mechanisms;
 
-import android.os.AsyncTask;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -28,7 +26,7 @@ public class Spinner extends AbstractMechanism {
 
         switch (currentPosition) {
             case UP:
-                targetPosition = 144;
+                targetPosition = 120;
                 currentPosition = SpinnerPosition.DOWN;
                 break;
             case DOWN:
@@ -38,13 +36,10 @@ public class Spinner extends AbstractMechanism {
         }
 
         spinnerMotor.setTargetPosition(targetPosition);
-
-        AsyncTask.execute(() -> {
-            spinnerMotor.setPower(1);
-            while (spinnerMotor.isBusy()) {
-            }
-            spinnerMotor.setPower(0);
-        });
+        spinnerMotor.setPower(.8);
+        while (spinnerMotor.isBusy()) {
+        }
+        spinnerMotor.setPower(0);
         spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 

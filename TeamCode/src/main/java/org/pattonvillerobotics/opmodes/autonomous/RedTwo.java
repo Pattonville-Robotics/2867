@@ -44,11 +44,11 @@ public class RedTwo extends LinearOpMode {
         waitForStart();
 
         bottomClaw.close();
-        slides.setPower(-.3);
+        slides.setPower(-.7);
         sleep(1000);
         slides.setPower(0);
 
-        drive.rotateDegrees(Direction.LEFT, 20, .4);
+        drive.rotateDegrees(Direction.RIGHT, 20, .6);
 
         columnKey = vuforia.getCurrentVisibleRelic();
 
@@ -59,80 +59,67 @@ public class RedTwo extends LinearOpMode {
         telemetry.addData("Column Key: ", columnKey).setRetained(true);
         telemetry.update();
 
-        drive.rotateDegrees(Direction.RIGHT, 20, .4);
+        drive.rotateDegrees(Direction.LEFT, 20, .8);
 
         arm.extendArm();
 
         jewelColorDetector.process(vuforia.getImage());
-        analysis = jewelColorDetector.getAnalysis();
+        analysis = jewelColorDetector.getAnalysis(false);
 
         while ((analysis.leftJewelColor == null || analysis.rightJewelColor == null) && opModeIsActive()) {
             jewelColorDetector.process(vuforia.getImage());
-            analysis = jewelColorDetector.getAnalysis();
+            analysis = jewelColorDetector.getAnalysis(false);
         }
 
         telemetry.addData("LEFT", analysis.leftJewelColor).setRetained(true);
         telemetry.addData("RIGHT", analysis.rightJewelColor).setRetained(true);
         telemetry.update();
 
-
-        if (analysis.leftJewelColor != null) {
-            switch (analysis.leftJewelColor) {
-                case RED:
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    break;
-                case BLUE:
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    break;
-                default:
-            }
-        } else if (analysis.rightJewelColor != null) {
-            switch (analysis.rightJewelColor) {
-                case RED:
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    break;
-                case BLUE:
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    break;
-                default:
-            }
+        switch (analysis.leftJewelColor) {
+            case RED:
+                drive.rotateDegrees(Direction.LEFT, 20, .5);
+                arm.retractArm();
+                sleep(1000);
+                drive.rotateDegrees(Direction.RIGHT, 20, .5);
+                break;
+            case BLUE:
+                drive.rotateDegrees(Direction.RIGHT, 20, .5);
+                arm.retractArm();
+                sleep(1000);
+                drive.rotateDegrees(Direction.LEFT, 20, .5);
+                break;
+            default:
         }
 
-        drive.moveInches(Direction.FORWARD, 30, .7);
+
+        drive.moveInches(Direction.FORWARD, 32, .5);
+        drive.rotateDegrees(Direction.RIGHT, 90, .5);
 
         switch (columnKey) {
             case RIGHT:
-                drive.moveInches(Direction.RIGHT, 11.5, 1);
+                drive.moveInches(Direction.FORWARD, 10, 1);
                 break;
             case CENTER:
-                drive.moveInches(Direction.RIGHT, 19, 1);
+                drive.moveInches(Direction.FORWARD, 16, 1);
                 break;
             case LEFT:
-                drive.moveInches(Direction.RIGHT, 30, 1);
+                drive.moveInches(Direction.FORWARD, 26, 1);
                 break;
             default:
                 break;
         }
 
+        drive.rotateDegrees(Direction.LEFT, 90, .7);
+
         drive.moveInches(Direction.FORWARD, 15, .7);
         bottomClaw.open();
         drive.moveInches(Direction.BACKWARD, 12, .7);
-        bottomClaw.close();
+        slides.setPower(.5);
+        sleep(500);
+        slides.setPower(0);
         drive.moveInches(Direction.FORWARD, 15, .7);
-        bottomClaw.open();
         drive.moveInches(Direction.BACKWARD, 11, .7);
+
         switch (columnKey) {
             case RIGHT:
                 drive.moveInches(Direction.RIGHT, 18, 1);
@@ -143,7 +130,7 @@ public class RedTwo extends LinearOpMode {
             default:
                 break;
         }
-        drive.rotateDegrees(Direction.LEFT, 100, .7);
+        drive.rotateDegrees(Direction.RIGHT, 100, .7);
     }
 
     public void initialize() {
@@ -151,8 +138,8 @@ public class RedTwo extends LinearOpMode {
         slides = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
-        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw");
         topClaw = new BenClaw(hardwareMap, this, "top_claw");
+        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw", new double[]{.9, .7, .35});
 
         jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);

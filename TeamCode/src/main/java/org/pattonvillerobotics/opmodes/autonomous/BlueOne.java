@@ -40,11 +40,11 @@ public class BlueOne extends LinearOpMode {
         waitForStart();
 
         bottomClaw.close();
-        slides.setPower(-.3);
+        slides.setPower(-.5);
         sleep(1000);
         slides.setPower(0);
 
-        drive.rotateDegrees(Direction.RIGHT, 20, .4);
+        drive.rotateDegrees(Direction.LEFT, 20, .6);
 
         columnKey = vuforia.getCurrentVisibleRelic();
 
@@ -55,93 +55,79 @@ public class BlueOne extends LinearOpMode {
         telemetry.addData("Column Key: ", columnKey).setRetained(true);
         telemetry.update();
 
-        drive.rotateDegrees(Direction.LEFT, 20, .4);
+        drive.rotateDegrees(Direction.RIGHT, 20, .8);
 
         arm.extendArm();
 
         jewelColorDetector.process(vuforia.getImage());
-        analysis = jewelColorDetector.getAnalysis();
+        analysis = jewelColorDetector.getAnalysis(false);
 
         while ((analysis.leftJewelColor == null || analysis.rightJewelColor == null) && opModeIsActive()) {
             jewelColorDetector.process(vuforia.getImage());
-            analysis = jewelColorDetector.getAnalysis();
+            analysis = jewelColorDetector.getAnalysis(false);
         }
 
         telemetry.addData("LEFT", analysis.leftJewelColor).setRetained(true);
         telemetry.addData("RIGHT", analysis.rightJewelColor).setRetained(true);
         telemetry.update();
 
-
-        if (analysis.leftJewelColor != null) {
-            switch (analysis.leftJewelColor) {
-                case RED:
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    break;
-                case BLUE:
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    break;
-                default:
-            }
-        } else if (analysis.rightJewelColor != null) {
-            switch (analysis.rightJewelColor) {
-                case RED:
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    break;
-                case BLUE:
-                    drive.moveInches(Direction.BACKWARD, 6, 0.5);
-                    arm.retractArm();
-                    sleep(1000);
-                    drive.moveInches(Direction.FORWARD, 6, 0.5);
-                    break;
-                default:
-            }
+        switch (analysis.leftJewelColor) {
+            case RED:
+                drive.rotateDegrees(Direction.LEFT, 20, .5);
+                arm.retractArm();
+                sleep(1000);
+                drive.rotateDegrees(Direction.RIGHT, 20, .5);
+                break;
+            case BLUE:
+                drive.rotateDegrees(Direction.RIGHT, 20, .5);
+                arm.retractArm();
+                sleep(1000);
+                drive.rotateDegrees(Direction.LEFT, 20, .5);
+                break;
+            default:
         }
 
-        drive.moveInches(Direction.FORWARD, 30, 0.5);
-
-        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
-
         switch (columnKey) {
+            case LEFT:
+                drive.moveInches(Direction.FORWARD, 29, 0.7);
+                break;
             case CENTER:
-                drive.moveInches(Direction.RIGHT, 12, 1);
+                drive.moveInches(Direction.FORWARD, 38, .7);
                 break;
             case RIGHT:
-                drive.moveInches(Direction.RIGHT, 23, 1);
+                drive.moveInches(Direction.FORWARD, 46, .7);
                 break;
             default:
                 break;
         }
 
-        drive.moveInches(Direction.BACKWARD, 15, .5);
+        drive.rotateDegrees(Direction.RIGHT, 90, 0.7);
+        drive.moveInches(Direction.BACKWARD, 15, 1);
         bottomClaw.open();
-        drive.moveInches(Direction.FORWARD, 14, .5);
-        bottomClaw.close();
-        drive.moveInches(Direction.BACKWARD, 14, .5);
-        bottomClaw.open();
-        drive.moveInches(Direction.FORWARD, 10, .5);
-        drive.rotateDegrees(Direction.RIGHT, 180, .8);
+        drive.moveInches(Direction.FORWARD, 14, 1);
+        slides.setPower(.5);
+        sleep(500);
+        slides.setPower(0);
+        drive.moveInches(Direction.BACKWARD, 14, 1);
+        drive.moveInches(Direction.FORWARD, 10, 1);
+        drive.rotateDegrees(Direction.LEFT, 180, 1);
 
         // fancy !!
-
-//        drive.moveInches(Direction.FORWARD, 40, .8);
+//
+//        bottomClaw.half();
+//        topClaw.half();
+//        drive.moveInches(Direction.BACKWARD, 40, .8);
 //        bottomClaw.close();
+//        topClaw.close();
 //        slides.setPower(-.5);
 //        sleep(500);
 //        slides.setPower(0);
-//        drive.moveInches(Direction.BACKWARD, 40, .8);
+//        drive.moveInches(Direction.FORWARD, 40, .8);
 //        drive.rotateDegrees(Direction.RIGHT, 180, .8);
-//        drive.moveInches(Direction.FORWARD, 20, .8);
-//        bottomClaw.open();
 //        drive.moveInches(Direction.BACKWARD, 20, .8);
+//        bottomClaw.open();
+//        topClaw.open();
+//        drive.moveInches(Direction.FORWARD, 20, .8);
     }
 
     public void initialize() {
@@ -149,8 +135,8 @@ public class BlueOne extends LinearOpMode {
         slides = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
-        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw");
         topClaw = new BenClaw(hardwareMap, this, "top_claw");
+        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw", new double[]{.9, .7, .35});
 
         jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);

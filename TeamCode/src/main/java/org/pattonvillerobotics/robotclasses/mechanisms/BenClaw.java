@@ -10,11 +10,11 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 public class BenClaw extends AbstractMechanism {
 
-    private static final double OPEN_POSITION = .95;
-    private static final double CLOSED_POSITION = .1;
-    private static final double HALF_POSITION = .8;
+    private final double OPEN_POSITION;
+    private final double CLOSED_POSITION;
+    private final double HALF_POSITION;
     public Servo claw;
-    private boolean isOpen, isHalf;
+    private boolean isOpen, isHalfOpen, isClosed;
 
     /**
      * Initializes the hardwaremap and linearopmode, as well as the claw's servo
@@ -26,8 +26,23 @@ public class BenClaw extends AbstractMechanism {
     public BenClaw(HardwareMap hardwareMap, LinearOpMode linearOpMode, String name) {
         super(hardwareMap, linearOpMode);
         claw = hardwareMap.servo.get(name);
+        isOpen = true;
+
+        OPEN_POSITION = .8;
+        CLOSED_POSITION = .15;
+        HALF_POSITION = .5;
+        claw.setPosition(OPEN_POSITION);
+    }
+
+    public BenClaw(HardwareMap hardwareMap, LinearOpMode linearOpMode, String name, double[] positions) {
+        super(hardwareMap, linearOpMode);
+        claw = hardwareMap.servo.get(name);
         claw.setPosition(1);
         isOpen = true;
+
+        OPEN_POSITION = positions[0];
+        CLOSED_POSITION = positions[2];
+        HALF_POSITION = positions[1];
     }
 
     /**
@@ -53,14 +68,26 @@ public class BenClaw extends AbstractMechanism {
      * Negates isOpen
      */
     public void togglePosition() {
-        if (isHalf) {
+        if (isHalfOpen) {
             close();
-            isHalf = !isHalf;
+            isOpen = false;
+            isClosed = true;
+            isHalfOpen = false;
         } else if (isOpen) {
             half();
-            isOpen = !isOpen;
+            isHalfOpen = true;
+            isClosed = false;
+            isOpen = false;
+        } else if (isClosed) {
+            half();
+            isHalfOpen = false;
+            isOpen = false;
+            isClosed = false;
         } else {
-            close();
+            open();
+            isHalfOpen = false;
+            isOpen = true;
+            isClosed = false;
         }
     }
 

@@ -95,21 +95,45 @@ public class MainTeleOp extends LinearOpMode {
         gamepad = new ListenableGamepad();
 
         topClaw = new BenClaw(hardwareMap, this, "top_claw");
-        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw");
+        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw", new double[]{.9, .7, .35});
         spinny = new Spinner(hardwareMap, this);
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, topClaw::togglePosition);
-        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, bottomClaw::togglePosition);
+        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            if (spinny.getCurrentPosition() == Spinner.SpinnerPosition.UP) {
+                topClaw.togglePosition();
+            } else {
+                bottomClaw.togglePosition();
+            }
+        });
+        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            if (spinny.getCurrentPosition() == Spinner.SpinnerPosition.UP) {
+                bottomClaw.togglePosition();
+            } else {
+                topClaw.togglePosition();
+            }
+        });
 
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, spinny::toggleSpinnerPosition);
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, servoArm::toggleArmPosition);
 
         gamepad.getButton(GamepadData.Button.STICK_BUTTON_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> fieldOrientedDriveMode = !fieldOrientedDriveMode);
 
-        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> spinny.spinnerMotor.setPower(-.1));
-        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> spinny.spinnerMotor.setPower(0));
+        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            spinny.spinnerMotor.setPower(.4);
+        });
+        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
+//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            spinny.spinnerMotor.setPower(0);
+        });
 
-        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> spinny.spinnerMotor.setPower(.1));
-        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> spinny.spinnerMotor.setPower(0));
+        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            spinny.spinnerMotor.setPower(-.4);
+        });
+        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
+//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            spinny.spinnerMotor.setPower(0);
+        });
     }
 }
