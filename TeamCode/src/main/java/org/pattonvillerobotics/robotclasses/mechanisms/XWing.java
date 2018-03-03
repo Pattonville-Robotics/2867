@@ -12,7 +12,7 @@ import org.pattonvillerobotics.robotclasses.enums.ClawPosition;
 
 public class XWing extends AbstractMechanism {
 
-    public Servo topClawLeftServo, bottomClawLeftServo, topClawRightServo, bottomClawRightServo, spinner;
+    public Servo topClawLeftServo, bottomClawLeftServo, topClawRightServo, bottomClawRightServo;
 
     private ClawPosition topClawPosition;
     private ClawPosition bottomClawPosition;
@@ -26,19 +26,12 @@ public class XWing extends AbstractMechanism {
         bottomClawLeftServo    = hardwareMap.servo.get("claw2");
         bottomClawRightServo   = hardwareMap.servo.get("claw4");
 
-        spinner                = hardwareMap.servo.get("spinner");
-
         topClawPosition        = ClawPosition.OPEN;
         bottomClawPosition     = ClawPosition.OPEN;
 
         topClawOpen();
         bottomClawOpen();
     }
-
-    //claw1 aka topClawLeftServo       closed at 0.5   open at 0
-    //claw2 aka bottomClawLeftServo    closed at 0     open at 0.7
-    //claw3 aka topClawRightServo      closed at 0     open at 0.6
-    //claw4 aka bottomClawRightServo   closed at 0.65  open at 0
 
     public void topClawClose() {
         topClawPosition = ClawPosition.CLOSE;

@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.pattonvillerobotics.robotclasses.enums.SpinnerPosition;
+
 /**
  * Created by gregbahr on 2/13/18.
  */
@@ -36,9 +38,5 @@ public class Spinner extends AbstractMechanism {
 
     public SpinnerPosition getCurrentPosition() {
         return currentPosition;
-    }
-
-    public enum SpinnerPosition {
-        UP, DOWN
     }
 }
