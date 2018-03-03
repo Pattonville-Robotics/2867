@@ -13,7 +13,7 @@ import org.pattonvillerobotics.robotclasses.enums.ClawPosition;
 public class XWing extends AbstractMechanism {
 
     public Servo topClawLeftServo, bottomClawLeftServo, topClawRightServo, bottomClawRightServo;
-
+    private boolean justClosedBottom, justClosedTop;
     private ClawPosition topClawPosition;
     private ClawPosition bottomClawPosition;
 
@@ -48,7 +48,7 @@ public class XWing extends AbstractMechanism {
     public void topClawHalf() {
         topClawPosition = ClawPosition.HALF;
         topClawLeftServo.setPosition(0.45);
-        topClawRightServo.setPosition(0.15);
+        topClawRightServo.setPosition(0.1);
     }
 
     public void bottomClawClose() {
@@ -59,14 +59,14 @@ public class XWing extends AbstractMechanism {
 
     public void bottomClawOpen() {
         bottomClawPosition = ClawPosition.OPEN;
-        bottomClawLeftServo.setPosition(0.55);
+        bottomClawLeftServo.setPosition(0.6);
         bottomClawRightServo.setPosition(0);
     }
 
     public void bottomClawHalf() {
         bottomClawPosition = ClawPosition.HALF;
         bottomClawLeftServo.setPosition(0.15);
-        bottomClawRightServo.setPosition(0.45);
+        bottomClawRightServo.setPosition(0.4);
     }
 
     public ClawPosition getTopClawPosition() {
@@ -90,16 +90,23 @@ public class XWing extends AbstractMechanism {
     public void toggleTopClawPosition() {
         switch (topClawPosition) {
             case HALF:
-                topClawClose();
-                topClawPosition = ClawPosition.CLOSE;
+                if (justClosedTop) {
+                    topClawOpen();
+                    topClawPosition = ClawPosition.OPEN;
+                    justClosedTop = false;
+                } else {
+                    topClawClose();
+                    topClawPosition = ClawPosition.CLOSE;
+                }
                 break;
             case OPEN:
                 topClawHalf();
                 topClawPosition = ClawPosition.HALF;
                 break;
             case CLOSE:
-                topClawOpen();
-                topClawPosition = ClawPosition.OPEN;
+                topClawHalf();
+                justClosedTop = true;
+                topClawPosition = ClawPosition.HALF;
                 break;
             default:
                 topClawOpen();
@@ -111,16 +118,23 @@ public class XWing extends AbstractMechanism {
     public void toggleBottomClawPosition() {
         switch (bottomClawPosition) {
             case HALF:
-                bottomClawClose();
-                bottomClawPosition = ClawPosition.CLOSE;
+                if (justClosedBottom) {
+                    bottomClawOpen();
+                    bottomClawPosition = ClawPosition.OPEN;
+                    justClosedBottom = false;
+                } else {
+                    bottomClawClose();
+                    bottomClawPosition = ClawPosition.CLOSE;
+                }
                 break;
             case OPEN:
                 bottomClawHalf();
                 bottomClawPosition = ClawPosition.HALF;
                 break;
             case CLOSE:
-                bottomClawOpen();
-                bottomClawPosition = ClawPosition.OPEN;
+                bottomClawHalf();
+                justClosedBottom = true;
+                bottomClawPosition = ClawPosition.HALF;
                 break;
             default:
                 bottomClawOpen();

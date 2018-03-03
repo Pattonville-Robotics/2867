@@ -20,6 +20,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
+import org.pattonvillerobotics.robotclasses.enums.SpinnerPosition;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 import org.pattonvillerobotics.robotclasses.mechanisms.Spinner;
 import org.pattonvillerobotics.robotclasses.mechanisms.XWing;
@@ -98,14 +99,14 @@ public class MainTeleOp extends LinearOpMode {
         spinny = new Spinner(hardwareMap, this);
 
         gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            if (spinny.getCurrentPosition() == Spinner.SpinnerPosition.UP) {
+            if (spinny.getCurrentPosition() == SpinnerPosition.UP) {
                 xWing.toggleTopClawPosition();
             } else {
                 xWing.toggleBottomClawPosition();
             }
         });
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            if (spinny.getCurrentPosition() == Spinner.SpinnerPosition.UP) {
+            if (spinny.getCurrentPosition() == SpinnerPosition.UP) {
                 xWing.toggleBottomClawPosition();
             } else {
                 xWing.toggleTopClawPosition();
