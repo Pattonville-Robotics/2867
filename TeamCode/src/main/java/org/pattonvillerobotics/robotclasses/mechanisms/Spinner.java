@@ -1,8 +1,8 @@
 package org.pattonvillerobotics.robotclasses.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by gregbahr on 2/13/18.
@@ -10,37 +10,28 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Spinner extends AbstractMechanism {
 
-    public DcMotor spinnerMotor;
+    private static final double UP_POSITION = .125;
+    private static final double DOWN_POSITION = .85;
+    private Servo spinnerServo;
     private SpinnerPosition currentPosition;
 
     public Spinner(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
-        spinnerMotor = hardwareMap.dcMotor.get("spinner");
-        spinnerMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinnerServo = hardwareMap.servo.get("spinner");
         currentPosition = SpinnerPosition.UP;
     }
 
     public void toggleSpinnerPosition() {
-        spinnerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int targetPosition = 0;
-
-        switch (currentPosition) {
+        switch (this.currentPosition) {
             case UP:
-                targetPosition = 120;
-                currentPosition = SpinnerPosition.DOWN;
+                spinnerServo.setPosition(DOWN_POSITION);
+                this.currentPosition = SpinnerPosition.DOWN;
                 break;
             case DOWN:
-                targetPosition = 0;
-                currentPosition = SpinnerPosition.UP;
+                spinnerServo.setPosition(UP_POSITION);
+                this.currentPosition = SpinnerPosition.UP;
                 break;
         }
-
-        spinnerMotor.setTargetPosition(targetPosition);
-        spinnerMotor.setPower(.8);
-        while (spinnerMotor.isBusy()) {
-        }
-        spinnerMotor.setPower(0);
-        spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public SpinnerPosition getCurrentPosition() {

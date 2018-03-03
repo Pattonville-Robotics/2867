@@ -20,9 +20,9 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
-import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
 import org.pattonvillerobotics.robotclasses.mechanisms.Spinner;
+import org.pattonvillerobotics.robotclasses.mechanisms.XWing;
 
 @TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 public class MainTeleOp extends LinearOpMode {
@@ -34,8 +34,7 @@ public class MainTeleOp extends LinearOpMode {
     private ServoArm servoArm;
     private Spinner spinny;
     private BNO055IMU imu;
-    private BenClaw topClaw;
-    private BenClaw bottomClaw;
+    private XWing xWing;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -94,22 +93,22 @@ public class MainTeleOp extends LinearOpMode {
 
         gamepad = new ListenableGamepad();
 
-        topClaw = new BenClaw(hardwareMap, this, "top_claw");
-        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw", new double[]{.9, .7, .35});
+        xWing = new XWing(hardwareMap, this);
+
         spinny = new Spinner(hardwareMap, this);
 
         gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
             if (spinny.getCurrentPosition() == Spinner.SpinnerPosition.UP) {
-                topClaw.togglePosition();
+                xWing.toggleTopClawPosition();
             } else {
-                bottomClaw.togglePosition();
+                xWing.toggleBottomClawPosition();
             }
         });
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
             if (spinny.getCurrentPosition() == Spinner.SpinnerPosition.UP) {
-                bottomClaw.togglePosition();
+                xWing.toggleBottomClawPosition();
             } else {
-                topClaw.togglePosition();
+                xWing.toggleTopClawPosition();
             }
         });
 
@@ -118,22 +117,5 @@ public class MainTeleOp extends LinearOpMode {
 
         gamepad.getButton(GamepadData.Button.STICK_BUTTON_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> fieldOrientedDriveMode = !fieldOrientedDriveMode);
 
-        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            spinny.spinnerMotor.setPower(.4);
-        });
-        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
-//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            spinny.spinnerMotor.setPower(0);
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            spinny.spinnerMotor.setPower(-.4);
-        });
-        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
-//            spinny.spinnerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            spinny.spinnerMotor.setPower(0);
-        });
     }
 }

@@ -16,8 +16,8 @@ import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientat
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.enums.StartingPosition;
-import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.XWing;
 
 /**
  * Created by bahrg on 10/24/17.
@@ -34,7 +34,7 @@ public class CommonAutonomous {
     private RelicRecoveryVuMark vuMark;
     private JewelColorDetector.AnalysisResult analysis;
 
-    private BenClaw claw;
+    private XWing xWing;
     private ServoArm arm;
     private MecanumEncoderDrive drive;
     private DcMotor slideMotor;
@@ -50,12 +50,14 @@ public class CommonAutonomous {
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomizedRobotParameters.ROBOT_PARAMETERS);
 
-        claw = new BenClaw(hardwareMap, linearOpMode, "bottom_claw");
         arm = new ServoArm(hardwareMap, linearOpMode);
         slideMotor = hardwareMap.dcMotor.get("slide_motor");
     }
 
     public void detectAndStoreVuMark() {
+        xWing.bottomClawClose();
+        linearOpMode.sleep(500);
+
         switch (startingPosition) {
             case BLUE_ONE:
                 drive.rotateDegrees(Direction.RIGHT, 20, .4);
@@ -263,28 +265,28 @@ public class CommonAutonomous {
             case BLUE_ONE:
                 drive.moveInches(Direction.BACKWARD, 15, .5);
                 linearOpMode.sleep(500);
-                claw.open();
+                xWing.bottomClawOpen();
                 linearOpMode.sleep(500);
                 drive.moveInches(Direction.FORWARD, 14, .5);
                 break;
             case BLUE_TWO:
                 drive.moveInches(Direction.BACKWARD, 10, .5);
                 linearOpMode.sleep(500);
-                claw.open();
+                xWing.bottomClawOpen();
                 linearOpMode.sleep(500);
                 drive.moveInches(Direction.FORWARD, 9, .5);
                 break;
             case RED_ONE:
                 drive.moveInches(Direction.FORWARD, 15, .5);
                 linearOpMode.sleep(500);
-                claw.open();
+                xWing.bottomClawOpen();
                 linearOpMode.sleep(500);
                 drive.moveInches(Direction.BACKWARD, 14, .5);
                 break;
             case RED_TWO:
                 drive.moveInches(Direction.FORWARD, 10, .5);
                 linearOpMode.sleep(500);
-                claw.open();
+                xWing.bottomClawOpen();
                 linearOpMode.sleep(500);
                 drive.moveInches(Direction.BACKWARD, 9, .5);
                 break;
@@ -298,7 +300,8 @@ public class CommonAutonomous {
         slideMotor = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, linearOpMode);
-        claw = new BenClaw(hardwareMap, linearOpMode, "bottom_claw");
+        xWing = new XWing(hardwareMap, linearOpMode);
+
         jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activateTracking();

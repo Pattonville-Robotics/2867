@@ -13,8 +13,8 @@ import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewe
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.mechanisms.BenClaw;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.XWing;
 
 /**
  * Created by skaggsw on 11/21/17.
@@ -25,7 +25,7 @@ public class BlueTwo extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
     private ServoArm arm;
-    private BenClaw bottomClaw, topClaw;
+    private XWing xWing;
     private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
     private DcMotor slides;
@@ -43,7 +43,7 @@ public class BlueTwo extends LinearOpMode {
 
         waitForStart();
 
-        bottomClaw.close();
+        xWing.bottomClawClose();
         slides.setPower(-.5);
         sleep(1000);
         slides.setPower(0);
@@ -112,7 +112,7 @@ public class BlueTwo extends LinearOpMode {
         drive.rotateDegrees(Direction.LEFT, 90, .7);
 
         drive.moveInches(Direction.BACKWARD, 15, .7);
-        bottomClaw.open();
+        xWing.bottomClawOpen();
         drive.moveInches(Direction.FORWARD, 12, .7);
         slides.setPower(.5);
         sleep(500);
@@ -137,8 +137,7 @@ public class BlueTwo extends LinearOpMode {
         slides = hardwareMap.dcMotor.get("slides");
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
-        topClaw = new BenClaw(hardwareMap, this, "top_claw");
-        bottomClaw = new BenClaw(hardwareMap, this, "bottom_claw", new double[]{.9, .7, .35});
+        xWing = new XWing(hardwareMap, this);
 
         jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);

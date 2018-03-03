@@ -42,38 +42,42 @@ public class XWing extends AbstractMechanism {
 
     public void topClawClose() {
         topClawPosition = ClawPosition.CLOSE;
-        topClawLeftServo. setPosition(0.5);
+        topClawLeftServo.setPosition(0.55);
         topClawRightServo.setPosition(0);
     }
 
     public void topClawOpen() {
         topClawPosition = ClawPosition.OPEN;
         topClawLeftServo. setPosition(0);
-        topClawRightServo.setPosition(0.6);
+        topClawRightServo.setPosition(0.55);
     }
 
     public void topClawHalf() {
         topClawPosition = ClawPosition.HALF;
-        topClawLeftServo. setPosition(0.25);
-        topClawRightServo.setPosition(0.3);
+        topClawLeftServo.setPosition(0.45);
+        topClawRightServo.setPosition(0.15);
     }
 
     public void bottomClawClose() {
         bottomClawPosition = ClawPosition.CLOSE;
         bottomClawLeftServo. setPosition(0);
-        bottomClawRightServo.setPosition(0.65);
+        bottomClawRightServo.setPosition(0.55);
     }
 
     public void bottomClawOpen() {
         bottomClawPosition = ClawPosition.OPEN;
-        bottomClawLeftServo. setPosition(0.7);
+        bottomClawLeftServo.setPosition(0.55);
         bottomClawRightServo.setPosition(0);
     }
 
     public void bottomClawHalf() {
         bottomClawPosition = ClawPosition.HALF;
-        bottomClawLeftServo. setPosition(0.35);
-        bottomClawRightServo.setPosition(0.3);
+        bottomClawLeftServo.setPosition(0.15);
+        bottomClawRightServo.setPosition(0.45);
+    }
+
+    public ClawPosition getTopClawPosition() {
+        return topClawPosition;
     }
 
     public void setTopClawPosition(double position) {
@@ -81,17 +85,13 @@ public class XWing extends AbstractMechanism {
         topClawRightServo.setPosition(position);
     }
 
+    public ClawPosition getBottomClawPosition() {
+        return bottomClawPosition;
+    }
+
     public void setBottomClawPosition(double position) {
         bottomClawLeftServo. setPosition(position);
         bottomClawRightServo.setPosition(position);
-    }
-
-    public ClawPosition getTopClawPosition() {
-        return topClawPosition;
-    }
-
-    public ClawPosition getBottomClawPosition() {
-        return bottomClawPosition;
     }
 
     public void toggleTopClawPosition() {

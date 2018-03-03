@@ -37,6 +37,14 @@ public class ServoPositionTest extends LinearOpMode {
             }
         });
 
+        gamepad.addButtonListener(GamepadData.Button.DPAD_LEFT, ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            servo.setPosition(servo.getPosition() - .01);
+        });
+
+        gamepad.addButtonListener(GamepadData.Button.DPAD_RIGHT, ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            servo.setPosition(servo.getPosition() + .01);
+        });
+
         waitForStart();
 
         while (opModeIsActive()) {

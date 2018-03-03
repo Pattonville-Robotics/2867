@@ -5,15 +5,23 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
- * Contains the servo for the claw mechanism, as well as all the methods involved with
+ * Contains the servos for each claw mechanism, as well as all the methods involved with
  * the operation of the mechanism
  */
+@Deprecated
 public class BenClaw extends AbstractMechanism {
 
-    private final double OPEN_POSITION;
-    private final double CLOSED_POSITION;
-    private final double HALF_POSITION;
-    public Servo claw;
+    private static final double WIDE_POSITION_1 = 0;
+    private static final double OPEN_POSITION_1 = .3;
+    private static final double CLOSED_POSITION_1 = .55;
+    private static final double RELEASE_POSITION_1 = .4;
+
+    private static final double WIDE_POSITION_2 = .55;
+    private static final double OPEN_POSITION_2 = .4;
+    private static final double CLOSED_POSITION_2 = 0;
+    private static final double RELEASE_POSITION_2 = .3;
+
+    private Servo claw1, claw2;
     private boolean isOpen, isHalfOpen, isClosed;
 
     /**
@@ -23,44 +31,47 @@ public class BenClaw extends AbstractMechanism {
      * @param hardwareMap a hardwaremap to initialize the claw's servo
      * @param linearOpMode a linearopmode that allows for sleeping and telemetry
      */
-    public BenClaw(HardwareMap hardwareMap, LinearOpMode linearOpMode, String name) {
+    public BenClaw(HardwareMap hardwareMap, LinearOpMode linearOpMode, String claw1Name, String claw2Name) {
         super(hardwareMap, linearOpMode);
-        claw = hardwareMap.servo.get(name);
+        claw1 = hardwareMap.servo.get(claw1Name);
+        claw2 = hardwareMap.servo.get(claw2Name);
+
         isOpen = true;
 
-        OPEN_POSITION = .8;
-        CLOSED_POSITION = .15;
-        HALF_POSITION = .5;
-        claw.setPosition(OPEN_POSITION);
-    }
-
-    public BenClaw(HardwareMap hardwareMap, LinearOpMode linearOpMode, String name, double[] positions) {
-        super(hardwareMap, linearOpMode);
-        claw = hardwareMap.servo.get(name);
-        claw.setPosition(1);
-        isOpen = true;
-
-        OPEN_POSITION = positions[0];
-        CLOSED_POSITION = positions[2];
-        HALF_POSITION = positions[1];
+        claw1.setPosition(WIDE_POSITION_1);
+        claw2.setPosition(WIDE_POSITION_2);
     }
 
     /**
      * Opens the claw
      */
     public void open() {
-        claw.setPosition(OPEN_POSITION);
+        claw1.setPosition(OPEN_POSITION_1);
+        claw2.setPosition(OPEN_POSITION_2);
     }
 
     /**
      * Closes the claw
      */
     public void close() {
-        claw.setPosition(CLOSED_POSITION);
+        claw1.setPosition(CLOSED_POSITION_1);
+        claw2.setPosition(CLOSED_POSITION_2);
     }
 
-    public void half() {
-        claw.setPosition(HALF_POSITION);
+    /**
+     * Barely opens the claw to release any glyphs.
+     */
+    public void release() {
+        claw1.setPosition(RELEASE_POSITION_1);
+        claw2.setPosition(RELEASE_POSITION_2);
+    }
+
+    /**
+     * Opens the claws out wide.
+     */
+    public void wide() {
+        claw1.setPosition(WIDE_POSITION_1);
+        claw2.setPosition(WIDE_POSITION_2);
     }
 
     /**
@@ -74,12 +85,12 @@ public class BenClaw extends AbstractMechanism {
             isClosed = true;
             isHalfOpen = false;
         } else if (isOpen) {
-            half();
+            release();
             isHalfOpen = true;
             isClosed = false;
             isOpen = false;
         } else if (isClosed) {
-            half();
+            release();
             isHalfOpen = false;
             isOpen = false;
             isClosed = false;
@@ -89,14 +100,6 @@ public class BenClaw extends AbstractMechanism {
             isOpen = true;
             isClosed = false;
         }
-    }
-
-    /**
-     * Returns the claw's current position
-     * @return position of the claw
-     */
-    public double getServoPosition() {
-        return claw.getPosition();
     }
 
     /**
