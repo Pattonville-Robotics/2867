@@ -12,8 +12,8 @@ import org.pattonvillerobotics.robotclasses.enums.SpinnerPosition;
 
 public class Spinner extends AbstractMechanism {
 
-    private static final double UP_POSITION = .125;
-    private static final double DOWN_POSITION = .85;
+    private static final double UP_POSITION = .85;
+    private static final double DOWN_POSITION = .125;
     private Servo spinnerServo;
     private SpinnerPosition currentPosition;
 
@@ -21,6 +21,7 @@ public class Spinner extends AbstractMechanism {
         super(hardwareMap, linearOpMode);
         spinnerServo = hardwareMap.servo.get("spinner");
         currentPosition = SpinnerPosition.UP;
+        spinnerServo.setPosition(UP_POSITION);
     }
 
     public void toggleSpinnerPosition() {

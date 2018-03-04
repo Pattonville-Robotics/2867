@@ -33,7 +33,7 @@ public class ServoArm extends AbstractMechanism {
      * Extends the claw arm
      */
     public void extendArm() {
-        servo.setPosition(0.2);
+        servo.setPosition(0.25);
         isExtended = true;
     }
 
@@ -41,7 +41,7 @@ public class ServoArm extends AbstractMechanism {
      * Retracts the claw arm
      */
     public void retractArm() {
-        servo.setPosition(.75);
+        servo.setPosition(.8);
         isExtended = false;
     }
 
