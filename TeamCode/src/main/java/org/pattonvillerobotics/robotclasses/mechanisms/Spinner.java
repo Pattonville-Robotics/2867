@@ -12,7 +12,7 @@ import org.pattonvillerobotics.robotclasses.enums.SpinnerPosition;
 
 public class Spinner extends AbstractMechanism {
 
-    private static final double UP_POSITION = .85;
+    private static final double UP_POSITION = .87;
     private static final double DOWN_POSITION = .125;
     private Servo spinnerServo;
     private SpinnerPosition currentPosition;

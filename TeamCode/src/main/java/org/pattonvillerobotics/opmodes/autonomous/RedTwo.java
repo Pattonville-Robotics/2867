@@ -14,6 +14,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewe
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.Spinner;
 import org.pattonvillerobotics.robotclasses.mechanisms.XWing;
 
 /**
@@ -29,6 +30,7 @@ public class RedTwo extends LinearOpMode {
     private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
     private DcMotor slides;
+    private Spinner spinner;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -44,11 +46,12 @@ public class RedTwo extends LinearOpMode {
         waitForStart();
 
         xWing.bottomClawClose();
-        slides.setPower(-.7);
+        sleep(1000);
+        slides.setPower(-.3);
         sleep(1000);
         slides.setPower(0);
 
-        drive.rotateDegrees(Direction.RIGHT, 20, .6);
+        drive.rotateDegrees(Direction.LEFT, 20, .6);
 
         columnKey = vuforia.getCurrentVisibleRelic();
 
@@ -59,7 +62,7 @@ public class RedTwo extends LinearOpMode {
         telemetry.addData("Column Key: ", columnKey).setRetained(true);
         telemetry.update();
 
-        drive.rotateDegrees(Direction.LEFT, 20, .8);
+        drive.rotateDegrees(Direction.RIGHT, 20, .5);
 
         arm.extendArm();
 
@@ -77,49 +80,49 @@ public class RedTwo extends LinearOpMode {
 
         switch (analysis.leftJewelColor) {
             case RED:
-                drive.rotateDegrees(Direction.LEFT, 20, .5);
+                drive.rotateDegrees(Direction.RIGHT, 20, .5);
                 arm.retractArm();
                 sleep(1000);
-                drive.rotateDegrees(Direction.RIGHT, 20, .5);
+                drive.rotateDegrees(Direction.LEFT, 20, .5);
                 break;
             case BLUE:
-                drive.rotateDegrees(Direction.RIGHT, 20, .5);
+                drive.rotateDegrees(Direction.LEFT, 20, .5);
                 arm.retractArm();
                 sleep(1000);
-                drive.rotateDegrees(Direction.LEFT, 20, .5);
+                drive.rotateDegrees(Direction.RIGHT, 20, .5);
                 break;
             default:
         }
 
 
-        drive.moveInches(Direction.FORWARD, 32, .5);
-        drive.rotateDegrees(Direction.RIGHT, 90, .5);
+        drive.moveInches(Direction.FORWARD, 32, .25);
+        drive.rotateDegrees(Direction.LEFT, 90, .5);
 
         switch (columnKey) {
             case RIGHT:
-                drive.moveInches(Direction.FORWARD, 10, 1);
+                drive.moveInches(Direction.FORWARD, 6, .5);
                 break;
             case CENTER:
-                drive.moveInches(Direction.FORWARD, 16, 1);
+                drive.moveInches(Direction.FORWARD, 14, .5);
                 break;
             case LEFT:
-                drive.moveInches(Direction.FORWARD, 26, 1);
+                drive.moveInches(Direction.FORWARD, 25, .5);
                 break;
             default:
                 break;
         }
 
 
-        drive.rotateDegrees(Direction.LEFT, 90, .7);
+        drive.rotateDegrees(Direction.RIGHT, 90, .4);
 
-        drive.moveInches(Direction.FORWARD, 15, .7);
+        drive.moveInches(Direction.FORWARD, 15, .4);
         xWing.bottomClawOpen();
-        drive.moveInches(Direction.BACKWARD, 12, .7);
-        slides.setPower(.5);
+        drive.moveInches(Direction.BACKWARD, 12, .4);
+        slides.setPower(.3);
         sleep(500);
         slides.setPower(0);
-        drive.moveInches(Direction.FORWARD, 15, .7);
-        drive.moveInches(Direction.BACKWARD, 11, .7);
+        drive.moveInches(Direction.FORWARD, 15, .4);
+        drive.moveInches(Direction.BACKWARD, 11, .4);
 
         switch (columnKey) {
             case RIGHT:
@@ -131,7 +134,7 @@ public class RedTwo extends LinearOpMode {
             default:
                 break;
         }
-        drive.rotateDegrees(Direction.RIGHT, 100, .7);
+        drive.rotateDegrees(Direction.LEFT, 100, .4);
     }
 
     public void initialize() {
@@ -140,6 +143,7 @@ public class RedTwo extends LinearOpMode {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
         xWing = new XWing(hardwareMap, this);
+        spinner = new Spinner(hardwareMap, this);
 
         jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);

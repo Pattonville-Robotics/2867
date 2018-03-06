@@ -13,6 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewe
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.ServoArm;
+import org.pattonvillerobotics.robotclasses.mechanisms.Spinner;
 import org.pattonvillerobotics.robotclasses.mechanisms.XWing;
 
 
@@ -25,6 +26,7 @@ public class BlueOne extends LinearOpMode {
     private JewelColorDetector jewelColorDetector;
     private VuforiaNavigation vuforia;
     private DcMotor slides;
+    private Spinner spinner;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -40,6 +42,7 @@ public class BlueOne extends LinearOpMode {
         waitForStart();
 
         xWing.bottomClawClose();
+        sleep(1000);
         slides.setPower(-.5);
         sleep(1000);
         slides.setPower(0);
@@ -136,6 +139,7 @@ public class BlueOne extends LinearOpMode {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         arm = new ServoArm(hardwareMap, this);
         xWing = new XWing(hardwareMap, this);
+        spinner = new Spinner(hardwareMap, this);
 
         jewelColorDetector = new JewelColorDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
