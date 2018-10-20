@@ -18,7 +18,7 @@ public class ExampleTeleOp extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-
+            drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         }
     }
 
