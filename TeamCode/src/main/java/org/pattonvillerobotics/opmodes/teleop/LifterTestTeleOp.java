@@ -23,6 +23,7 @@ public class LifterTestTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             gamepad.update(gamepad1);
+            lifter.winchMotor.setPower(gamepad1.right_stick_y);
             telemetry.addData("Lifter Position : ", lifter.winchMotor.getCurrentPosition());
             telemetry.update();
         }
