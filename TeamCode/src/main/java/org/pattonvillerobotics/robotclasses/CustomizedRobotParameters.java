@@ -1,5 +1,7 @@
 package org.pattonvillerobotics.robotclasses;
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.pattonvillerobotics.R;
@@ -17,11 +19,13 @@ public class CustomizedRobotParameters {
         PHONE_ORIENTATION = PhoneOrientation.PORTRAIT_INVERSE;
 
         ROBOT_PARAMETERS = new RobotParameters.Builder()
-                .wheelBaseRadius(15)
                 .encodersEnabled(true)
-                .wheelRadius(2)
                 .gyroEnabled(true)
-                .driveGearRatio(2)
+                .wheelBaseRadius(8.5)
+                .wheelRadius(2)
+                .driveGearRatio(1.5)
+                .leftDriveMotorDirection(DcMotorSimple.Direction.REVERSE)
+                .rightDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
                 .build();
 
         VUFORIA_PARAMETERS = new VuforiaParameters.Builder()

@@ -61,13 +61,13 @@ dependencies {
 
     //FTC libraries
     implementation "com.github.modular-ftc:robotcontroller-repackaged:$ftc_version.1-lite"
-    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.1-lite"
+    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.1.1-lite"
     implementation "com.github.modular-ftc:ftc-common-repackaged:$ftc_version.0-lite"
 
     implementation "org.first.ftc:hardware:$ftc_version"
 
     //The Pattonville Robotics shared libraries are included by default. Remove the following line to stop using them.
-    implementation "com.github.Pattonville-Robotics:Common-Code:ba158220fe"
+    implementation "com.github.Pattonville-Robotics:Common-Code:25ea988582"
 
     implementation 'org.apache.commons:commons-math3:3.6.1'
 }

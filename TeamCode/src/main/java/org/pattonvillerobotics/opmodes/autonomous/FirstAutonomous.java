@@ -6,21 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.GyroEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
+import org.pattonvillerobotics.robotclasses.CustomizedRobotParameters;
 
 @Autonomous(name="Testing")
 public class FirstAutonomous extends LinearOpMode {
-
-    private RobotParameters parameters = new RobotParameters.Builder()
-            .encodersEnabled(true)
-            .gyroEnabled(true)
-            .wheelBaseRadius(7.25)
-            .wheelRadius(2)
-            .driveGearRatio(3)
-            .leftDriveMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .build();
-
-
 
     private GyroEncoderDrive drive;
 
@@ -29,7 +18,7 @@ public class FirstAutonomous extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
 
-        drive = new GyroEncoderDrive(hardwareMap, this, parameters);
+        drive = new GyroEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         waitForStart();
 
         // Moving to the center of the ring, and then turning towards the right 90°

@@ -3,26 +3,32 @@ package org.pattonvillerobotics.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
-@TeleOp(name = "ExampleTeleOp", group = "Examples")
+@TeleOp(name = "ExampleTeleOp")
 public class ExampleTeleOp extends LinearOpMode {
 
-    public SimpleDrive drive;
+    public SimpleMecanumDrive drive;
 
     @Override
     public void runOpMode() {
 
         initialize();
 
+        Vector2D polarCoords;
+
         waitForStart();
 
         while(opModeIsActive()) {
-            drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
+            polarCoords = SimpleMecanumDrive.toPolar(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+            drive.moveFreely(polarCoords.getY(), polarCoords.getX(), -gamepad1.right_stick_x);
         }
     }
 
     public void initialize() {
-        drive = new SimpleDrive(this, hardwareMap);
+        drive = new SimpleMecanumDrive(this, hardwareMap);
     }
 }
