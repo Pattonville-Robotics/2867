@@ -9,7 +9,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 @Autonomous(name="Blue2Autonomous", group = "Competition")
-public class Blue2Autonomous extends LinearOpMode {
+public class BlueDepotAutonomous extends LinearOpMode {
 
     private RobotParameters parameters = new RobotParameters.Builder()
             .encodersEnabled(true)

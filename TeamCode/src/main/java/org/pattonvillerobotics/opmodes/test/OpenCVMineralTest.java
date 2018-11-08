@@ -1,11 +1,13 @@
 package org.pattonvillerobotics.opmodes.test;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelColorDetector;
@@ -26,9 +28,15 @@ public class OpenCVMineralTest extends LinearOpMode {
 
         waitForStart();
 
-        Mat image = ImageProcessor.processBitmap(vuforia.getImage(), CustomizedRobotParameters.PHONE_ORIENTATION);
+        Mat rgbaMat = ImageProcessor.processBitmap(vuforia.getImage(), CustomizedRobotParameters.PHONE_ORIENTATION);
 
-        mineralDetector.process(image);
+        mineralDetector.process(rgbaMat);
+
+        Rect rectCrop = new Rect(0, 200, rgbaMat.width(), 50);
+
+        rgbaMat = new Mat(rgbaMat, rectCrop);
+
+        mineralDetector.process(rgbaMat);
     }
 
     public void initialize() {
