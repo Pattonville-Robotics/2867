@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,6 +10,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.robotclasses.TapeMeasureLifter;
 
+@Disabled
 @TeleOp(name = "LifterTestTeleOp", group = OpModeGroups.TESTING)
 public class LifterTestTeleOp extends LinearOpMode {
 

@@ -1,6 +1,7 @@
 package org.pattonvillerobotics.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -8,6 +9,7 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 import org.pattonvillerobotics.robotclasses.TapeMeasureLifter;
 
+@Disabled
 @Autonomous(name = "WinchTestAutonomous", group = OpModeGroups.TESTING)
 public class WinchTestAutonomous extends LinearOpMode {
 

@@ -1,6 +1,7 @@
 package org.pattonvillerobotics.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -10,6 +11,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 import org.pattonvillerobotics.robotclasses.CustomizedRobotParameters;
 
+@Disabled
 @Autonomous(name = "MecanumDriveTest", group = OpModeGroups.TESTING)
 public class MecanumDriveTest extends LinearOpMode {
 

@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,6 +9,7 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
+@Disabled
 @TeleOp(name = "ExampleTeleOp")
 public class ExampleTeleOp extends LinearOpMode {
 
