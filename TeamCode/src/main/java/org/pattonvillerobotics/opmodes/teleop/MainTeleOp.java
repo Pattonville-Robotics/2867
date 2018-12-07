@@ -17,12 +17,16 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.robotclasses.CustomizedRobotParameters;
+import org.pattonvillerobotics.robotclasses.IntakeMechanism;
+import org.pattonvillerobotics.robotclasses.TapeMeasureLifter;
 
 @TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 public class MainTeleOp extends LinearOpMode {
 
     public SimpleMecanumDrive drive;
-    public ListenableGamepad gamepad;
+    public ListenableGamepad listenableGamepad1;
+    private IntakeMechanism intakeMechanism;
+    private TapeMeasureLifter lifter;
     private boolean fieldOrientedDriveMode = false;
     private BNO055IMU imu;
 
@@ -36,20 +40,95 @@ public class MainTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            polarCoords = SimpleMecanumDrive.toPolar(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+            polarCoords = SimpleMecanumDrive.toPolar(-gamepad1.left_stick_x, gamepad1.left_stick_y);
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-            gamepad.update(gamepad1);
+            intakeMechanism.setExtentionPower(gamepad1.right_trigger+(gamepad1.left_trigger*-1));
+            listenableGamepad1.update(gamepad1);
             drive.moveFreely(polarCoords.getY() - (fieldOrientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoords.getX(), -gamepad1.right_stick_x);
+
+            telemetry.clearAll();
+
+            telemetry.addData("left drop servo position:", intakeMechanism.leftDropServo.getPosition());
+            telemetry.addData("right drop servo position:", intakeMechanism.rightDropServo.getPosition());
+
+            telemetry.update();
         }
     }
 
     public void initialize() {
-        gamepad = new ListenableGamepad();
+        listenableGamepad1 = new ListenableGamepad();
 
-        gamepad.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        lifter = new TapeMeasureLifter(hardwareMap, this);
+
+        intakeMechanism = new IntakeMechanism(hardwareMap, this);
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                fieldOrientedDriveMode = !fieldOrientedDriveMode;
+                lifter.winchMotor.setPower(1);
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                lifter.winchMotor.setPower(0);
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_DOWN, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                lifter.winchMotor.setPower(-1);
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_DOWN, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                lifter.winchMotor.setPower(0);
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_LEFT, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                intakeMechanism.setServoPositions(intakeMechanism.leftDropServo.getPosition()+0.05);
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_RIGHT, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                intakeMechanism.setServoPositions(intakeMechanism.leftDropServo.getPosition()-0.05);
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                intakeMechanism.intake();
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                intakeMechanism.turnOffIntake();
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                intakeMechanism.expulsion();
+            }
+        });
+
+        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                intakeMechanism.turnOffIntake();
             }
         });
 
@@ -66,10 +145,9 @@ public class MainTeleOp extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        drive.leftRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        drive.rightRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 }

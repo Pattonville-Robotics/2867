@@ -3,6 +3,7 @@ package org.pattonvillerobotics.robotclasses;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+
 public abstract class AbstractMechanism {
 
     protected final HardwareMap hardwareMap;

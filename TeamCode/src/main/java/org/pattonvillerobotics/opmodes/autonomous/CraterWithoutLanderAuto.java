@@ -16,8 +16,8 @@ import org.pattonvillerobotics.robotclasses.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.IntakeMechanism;
 import org.pattonvillerobotics.robotclasses.TapeMeasureLifter;
 
-@Autonomous(name="Crater Autonomous", group = OpModeGroups.MAIN)
-public class CraterAutonomous extends LinearOpMode {
+@Autonomous(name="Crater Without Lander Autonomous", group = OpModeGroups.MAIN)
+public class CraterWithoutLanderAuto extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
 
@@ -34,27 +34,12 @@ public class CraterAutonomous extends LinearOpMode {
 
         int mineralCompensationDistance;
 
-        lifter.winchMotor.setPower(0.5);
+        drive.moveInches(Direction.FORWARD, 7, 0.7);
 
-        sleep(3300);
-
-        lifter.winchMotor.setPower(0.1);
-
-        drive.moveInches(Direction.FORWARD,1, 0.3);
-
-        drive.moveInches(Direction.LEFT, 6, 0.4);
-
-        lifter.winchMotor.setPower(-0.5);
-
-        sleep(2900);
-
-        lifter.winchMotor.setPower(0);
-
-        drive.moveInches(Direction.FORWARD, 12, 0.7);
-
-        drive.rotateDegrees(Direction.CLOCKWISE, 6, 0.4);
+        drive.moveInches(Direction.LEFT, 6, 0.7);
 
         // take picture, analyze
+
         mineralDetector.process(vuforia.getImage());
 
         if(mineralDetector.getAnalysis() == ColorSensorColor.YELLOW) {
@@ -63,8 +48,8 @@ public class CraterAutonomous extends LinearOpMode {
             drive.moveInches(Direction.RIGHT, 4, 0.7);
         } else {
             drive.moveInches(Direction.RIGHT, 16, 0.7);
-
             //take picture, analyze
+
             mineralDetector.process(vuforia.getImage());
 
             if(mineralDetector.getAnalysis() == ColorSensorColor.YELLOW) {
@@ -72,17 +57,16 @@ public class CraterAutonomous extends LinearOpMode {
                 mineralCompensationDistance = 62;
 
             } else {
+                //program failed. Zero stars.
                 drive.moveInches(Direction.LEFT, 27, 0.7);
                 mineralCompensationDistance = 25;
             }
         }
 
-        drive.moveInches(Direction.FORWARD, 8, 0.7);
+        drive.moveInches(Direction.FORWARD, 12, 0.7);
         drive.moveInches(Direction.BACKWARD, 10, 0.7);
 
         drive.moveInches(Direction.LEFT, mineralCompensationDistance, 0.8);
-
-        /*
 
         drive.rotateDegrees(Direction.CLOCKWISE, 50, 0.7);
 
@@ -110,7 +94,7 @@ public class CraterAutonomous extends LinearOpMode {
 
         drive.moveInches(Direction.BACKWARD, 40, 1);
 
-        intakeMechanism.drop();*/
+        intakeMechanism.drop();
     }
 
     public void initialize() {
@@ -124,6 +108,6 @@ public class CraterAutonomous extends LinearOpMode {
 
         intakeMechanism = new IntakeMechanism(hardwareMap, this);
 
-        intakeMechanism.raise();
+        intakeMechanism.drop();
     }
 }

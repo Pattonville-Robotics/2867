@@ -67,7 +67,7 @@ dependencies {
     implementation "org.first.ftc:hardware:$ftc_version"
 
     //The Pattonville Robotics shared libraries are included by default. Remove the following line to stop using them.
-    implementation "com.github.Pattonville-Robotics:Common-Code:0285c7bd73"
+    implementation "com.github.Pattonville-Robotics:Common-Code:7d468d4ce4"
 
     implementation 'org.apache.commons:commons-math3:3.6.1'
 }
