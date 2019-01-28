@@ -24,77 +24,38 @@ public class CraterWithoutLanderAuto extends LinearOpMode {
     private MineralDetector mineralDetector;
     private VuforiaNavigation vuforia;
 
-    private TapeMeasureLifter lifter;
-    private IntakeMechanism intakeMechanism;
-
     @Override
     public void runOpMode() {
         initialize();
         waitForStart();
 
-        int mineralCompensationDistance;
+        drive.moveInches(Direction.RIGHT, 4, 0.8);
 
-        drive.moveInches(Direction.FORWARD, 7, 0.7);
-
-        drive.moveInches(Direction.LEFT, 6, 0.7);
+        drive.moveInches(Direction.BACKWARD, 2, 0.8);
 
         // take picture, analyze
 
-        mineralDetector.process(vuforia.getImage());
-
-        if(mineralDetector.getAnalysis() == ColorSensorColor.YELLOW) {
-            //for determining what distance will get the robot to a specific point, depending on which mineral is "chosen"
-            mineralCompensationDistance = 43;
-            drive.moveInches(Direction.RIGHT, 4, 0.7);
-        } else {
-            drive.moveInches(Direction.RIGHT, 16, 0.7);
-            //take picture, analyze
-
+        for (int i = 0; i < 7; i++) {
             mineralDetector.process(vuforia.getImage());
-
-            if(mineralDetector.getAnalysis() == ColorSensorColor.YELLOW) {
-                drive.moveInches(Direction.RIGHT, 5, 0.7);
-                mineralCompensationDistance = 62;
-
-            } else {
-                //program failed. Zero stars.
-                drive.moveInches(Direction.LEFT, 27, 0.7);
-                mineralCompensationDistance = 25;
-            }
         }
 
+        drive.rotateDegrees(Direction.CLOCKWISE, 6, 0.5);
+
         drive.moveInches(Direction.FORWARD, 12, 0.7);
-        drive.moveInches(Direction.BACKWARD, 10, 0.7);
 
-        drive.moveInches(Direction.LEFT, mineralCompensationDistance, 0.8);
+        switch (mineralDetector.getHorizontalAnalysis()) {
+            case RIGHT:
+                drive.moveInches(Direction.RIGHT, 8, 0.7);
+                break;
+            case MIDDLE:
+                drive.moveInches(Direction.LEFT, 7, 0.7);
+                break;
+            case LEFT:
+            default:
+                drive.moveInches(Direction.LEFT, 28, 0.7);
+        }
 
-        drive.rotateDegrees(Direction.CLOCKWISE, 50, 0.7);
-
-        drive.moveInches(Direction.LEFT, 10, 0.6);
-
-        drive.moveInches(Direction.RIGHT, 2, 0.5);
-
-        drive.moveInches(Direction.BACKWARD, 35, 1);
-
-        sleep(500);
-
-        intakeMechanism.raise();
-
-        sleep(600);
-
-        intakeMechanism.expulsion();
-
-        sleep(1000);
-
-        intakeMechanism.turnOffIntake();
-
-        intakeMechanism.raise();
-
-        drive.rotateDegrees(Direction.COUNTERCLOCKWISE, 180, 0.7);
-
-        drive.moveInches(Direction.BACKWARD, 40, 1);
-
-        intakeMechanism.drop();
+        drive.moveInches(Direction.FORWARD, 25, 1);
     }
 
     public void initialize() {
@@ -103,11 +64,5 @@ public class CraterWithoutLanderAuto extends LinearOpMode {
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
 
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
-
-        lifter = new TapeMeasureLifter(hardwareMap, this);
-
-        intakeMechanism = new IntakeMechanism(hardwareMap, this);
-
-        intakeMechanism.drop();
     }
 }

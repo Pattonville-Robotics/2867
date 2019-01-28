@@ -12,6 +12,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.roverruckus.minerals.MineralDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.robotclasses.CustomizedRobotParameters;
+import org.pattonvillerobotics.robotclasses.TapeMeasureLifter;
 
 @Autonomous(name="Depot Autonomous", group = "Competition")
 public class DepotAutonomous extends LinearOpMode {
@@ -20,42 +21,61 @@ public class DepotAutonomous extends LinearOpMode {
     private MineralDetector mineralDetector;
     private VuforiaNavigation vuforia;
 
+    private TapeMeasureLifter lifter;
+
     @Override
     public void runOpMode() {
         initialize();
         waitForStart();
 
-        double mineralCompensationDistance;
+        int mineralCompensationDistance;
 
-        // lower the robot
+        lifter.winchMotor.setPower(0.5);
 
-        drive.moveInches(Direction.FORWARD, 8, 0.5);
-        drive.moveInches(Direction.LEFT, 6, 0.5);
+        sleep(2300);
+
+        lifter.winchMotor.setPower(0.2);
+
+        drive.moveInches(Direction.FORWARD,1, 0.5);
+
+        sleep(100);
+
+        drive.moveInches(Direction.BACKWARD,0.7, 0.4);
+
+        drive.moveInches(Direction.LEFT, 4, 0.3);
+
+        lifter.winchMotor.setPower(-0.3);
+
+        drive.moveInches(Direction.FORWARD, 3, 0.8);
+
+        drive.moveInches(Direction.RIGHT, 8, 0.8);
+
+        drive.moveInches(Direction.BACKWARD, 4, 0.8);
 
         // take picture, analyze
 
-        mineralDetector.process(vuforia.getImage());
+        lifter.winchMotor.setPower(0);
+        // take picture, analyze
 
-        if(mineralDetector.getAnalysis() == ColorSensorColor.YELLOW) {
-            //for determining what distance will get the robot to a specific point, depending on which mineral is "chosen"
-            mineralCompensationDistance = 15;
-            //drive.moveInches(Direction.RIGHT, 4, 0.5);
-        } else {
-            drive.moveInches(Direction.RIGHT, 14, 0.5);
-            //take picture, analyze
-
+        for (int i = 0; i < 7; i++) {
             mineralDetector.process(vuforia.getImage());
-
-            if(mineralDetector.getAnalysis() == ColorSensorColor.YELLOW) {
-                //drive.moveInches(Direction.RIGHT, 5, 0.5);
-                mineralCompensationDistance = 0;
-
-            } else {
-                //program failed. Zero stars.
-                drive.moveInches(Direction.LEFT, 27, 0.5);
-                mineralCompensationDistance = 30;
-            }
         }
+
+        switch (mineralDetector.getHorizontalAnalysis()) {
+            case RIGHT:
+                drive.moveInches(Direction.RIGHT, 8, 0.7);
+                mineralCompensationDistance = 15;
+                break;
+            case MIDDLE:
+                drive.moveInches(Direction.LEFT, 7, 0.7);
+                mineralCompensationDistance = 0;
+                break;
+            case LEFT:
+            default:
+                drive.moveInches(Direction.LEFT, 28, 0.7);
+                mineralCompensationDistance = 30;
+        }
+
         drive.moveInches(Direction.RIGHT, 7, 0.5);
         drive.moveInches(Direction.FORWARD, 29, 1);
         drive.moveInches(Direction.RIGHT, mineralCompensationDistance, 1);
@@ -72,5 +92,7 @@ public class DepotAutonomous extends LinearOpMode {
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
 
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
+
+        lifter = new TapeMeasureLifter(hardwareMap, this);
     }
 }

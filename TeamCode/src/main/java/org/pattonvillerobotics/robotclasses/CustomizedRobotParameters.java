@@ -16,7 +16,7 @@ public class CustomizedRobotParameters {
     public static final PhoneOrientation PHONE_ORIENTATION;
 
     static {
-        PHONE_ORIENTATION = PhoneOrientation.PORTRAIT_INVERSE;
+        PHONE_ORIENTATION = PhoneOrientation.LANDSCAPE_INVERSE;
 
         ROBOT_PARAMETERS = new RobotParameters.Builder()
                 .encodersEnabled(true)
