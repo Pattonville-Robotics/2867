@@ -60,138 +60,43 @@ public class MainTeleOp extends LinearOpMode {
 
         intakeMechanism = new IntakeMechanism(hardwareMap, this);
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                lifter.winchMotor.setPower(1);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_PRESSED, () -> lifter.winchMotor.setPower(1));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                lifter.winchMotor.setPower(0);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_RELEASED, () -> lifter.winchMotor.setPower(0));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_DOWN, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                lifter.winchMotor.setPower(-1);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_DOWN, ListenableButton.ButtonState.JUST_PRESSED, () -> lifter.winchMotor.setPower(-1));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_DOWN, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                lifter.winchMotor.setPower(0);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.DPAD_DOWN, ListenableButton.ButtonState.JUST_RELEASED, () -> lifter.winchMotor.setPower(0));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.extendServo.setDirection(DcMotorSimple.Direction.FORWARD);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.JUST_PRESSED, () -> intakeMechanism.extendServo.setDirection(DcMotorSimple.Direction.FORWARD));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setExtendServoPower(1);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.BEING_PRESSED, () -> intakeMechanism.setExtendServoPower(1));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setExtendServoPower(0);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.X, ListenableButton.ButtonState.JUST_RELEASED, () -> intakeMechanism.setExtendServoPower(0));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.extendServo.setDirection(DcMotorSimple.Direction.REVERSE);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, () -> intakeMechanism.extendServo.setDirection(DcMotorSimple.Direction.REVERSE));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setExtendServoPower(1);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.BEING_PRESSED, () -> intakeMechanism.setExtendServoPower(1));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setExtendServoPower(0);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_RELEASED, () -> intakeMechanism.setExtendServoPower(0));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.bucketServo.setDirection(DcMotorSimple.Direction.FORWARD);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, () -> intakeMechanism.bucketServo.setDirection(DcMotorSimple.Direction.FORWARD));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setBucketServoPower(1);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.BEING_PRESSED, () -> intakeMechanism.setBucketServoPower(1));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setBucketServoPower(0);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_RELEASED, () -> intakeMechanism.setBucketServoPower(0));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.B, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.bucketServo.setDirection(DcMotorSimple.Direction.REVERSE);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.B, ListenableButton.ButtonState.JUST_PRESSED, () -> intakeMechanism.bucketServo.setDirection(DcMotorSimple.Direction.REVERSE));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.B, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setBucketServoPower(1);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.B, ListenableButton.ButtonState.BEING_PRESSED, () -> intakeMechanism.setBucketServoPower(1));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.B, ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setBucketServoPower(0);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.B, ListenableButton.ButtonState.JUST_RELEASED, () -> intakeMechanism.setBucketServoPower(0));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.RIGHT_BUMPER, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.tubeServo.setDirection(DcMotorSimple.Direction.REVERSE);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.RIGHT_BUMPER, ListenableButton.ButtonState.JUST_PRESSED, () -> intakeMechanism.tubeServo.setDirection(DcMotorSimple.Direction.REVERSE));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.RIGHT_BUMPER, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setTubeServoPower(1);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.RIGHT_BUMPER, ListenableButton.ButtonState.BEING_PRESSED, () -> intakeMechanism.setTubeServoPower(1));
 
-        listenableGamepad1.addButtonListener(GamepadData.Button.RIGHT_BUMPER, ListenableButton.ButtonState.BEING_RELEASED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                intakeMechanism.setTubeServoPower(0);
-            }
-        });
+        listenableGamepad1.addButtonListener(GamepadData.Button.RIGHT_BUMPER, ListenableButton.ButtonState.BEING_RELEASED, () -> intakeMechanism.setTubeServoPower(0));
 
         drive = new SimpleMecanumDrive(this, hardwareMap);
 
