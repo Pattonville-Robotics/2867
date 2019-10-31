@@ -18,7 +18,7 @@ public class CraterAutonomous extends LinearOpMode {
     private MecanumEncoderDrive drive;
 
     private MineralDetector mineralDetector;
-    private VuforiaNavigation vuforia;
+//    private VuforiaNavigation vuforia;
 
     private TapeMeasureLifter lifter;
 
@@ -54,7 +54,7 @@ public class CraterAutonomous extends LinearOpMode {
         lifter.winchMotor.setPower(0);
 
         for (int i = 0; i < 7; i++) {
-            mineralDetector.process(vuforia.getImage());
+//            mineralDetector.process(vuforia.getImage());
         }
 
         drive.rotateDegrees(Direction.CLOCKWISE, 6, 0.5);
@@ -81,7 +81,7 @@ public class CraterAutonomous extends LinearOpMode {
 
         mineralDetector = new MineralDetector(CustomizedRobotParameters.PHONE_ORIENTATION, false);
 
-        vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+//        vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
 
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
 
